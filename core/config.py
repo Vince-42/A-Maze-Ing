@@ -35,7 +35,6 @@ class Configuration():
         for truc in indicator:
             if truc in line:
                 self.placing_data(truc, line, indicator)
-            #  print(f"var: {truc}")
 
     def placing_data(self, truc, line, indicator):
         if truc == "WIDTH=":
@@ -45,7 +44,7 @@ class Configuration():
             y = self.split_return(line)
             self._height = y
 
-    # ca marche pour les INTS
+    # return an INT on success
     def split_return(self, line) -> int:
         rslt = line.split("=")
         # verifier que line [1] est bien un integer
