@@ -18,7 +18,6 @@ class MazeGenerator():
 
 # ######### methods ##########
 
-
 def start() -> bool:
     arg = sys.argv
     l_arg = len(arg)
@@ -26,7 +25,9 @@ def start() -> bool:
         pass
     else:
         if parsing(arg):
+            # print("start = true")
             return True
+    # print("start = false")
     return False
 
 
@@ -43,3 +44,7 @@ def main() -> bool:
 
 if __name__ == "__main__":
     start_maze = MazeGenerator()
+    # print parameters to check config 
+    for param in start_maze.start_config.__dict__:
+        print(param, end=": ")
+        print(start_maze.start_config.__dict__[param])

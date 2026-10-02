@@ -34,7 +34,7 @@ class Configuration():
                      "PERFECT=", "SEED="]
         for truc in indicator:
             if truc in line:
-                self.placing_data(truc, line, indicator)
+                self.placing_data(truc, line.rstrip(), indicator)
 
     def placing_data(self, truc, line, indicator):
         if truc == "WIDTH=":
