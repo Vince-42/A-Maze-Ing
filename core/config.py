@@ -38,19 +38,60 @@ class Configuration():
 
     def placing_data(self, truc, line, indicator):
         if truc == "WIDTH=":
-            x = self.split_return(line)
+            x = self.split_int(line)
             self._width = x
-        if truc == "HEIGHT=":
-            y = self.split_return(line)
-            self._height = y
+        elif truc == "HEIGHT=":
+            x = self.split_int(line)
+            self._height = x
+        elif truc == "ENTRY=":
+            x = self.split_tuple(line)
+            self._entry = x
+        elif truc == "EXIT=":
+            x = self.split_tuple(line)
+            self._exit = x
+        elif truc == "OUTPUT_FILE=":
+            x = self.split_str(line)
+            self._output_file = x
+        elif truc == "PERFECT=":
+            x = self.split_bool(line)
+            self._perfect = x
+            
+            
+    # return a True/False on success, None on fail
+    def split_bool(self, line) -> bool:
+        accept = {"True", "True\n", "False", "False\n"}
+        rslt = line.split("=")
+        try:
+            if rslt[1] in accept:
+                return bool(rslt[1])
+        except Exception as e:
+            print(f"WRONG DATA : {e}")
+            return None
 
     # return an INT on success
-    def split_return(self, line) -> int:
+    def split_int(self, line) -> int:
         rslt = line.split("=")
         # verifier que line [1] est bien un integer
         # return l'intenger si OK
         try:
             return int(rslt[1])
+        except TypeError as e:
+            print(f"WRONG DATA : {e}")
+
+    # return an STR on success
+    def split_str(self, line) -> int:
+        rslt = line.split("=")
+        try:
+            return str(rslt[1])
+        except TypeError as e:
+            print(f"WRONG DATA : {e}")
+        pass
+
+        # return a TUPLE on success
+    def split_tuple(self, line) -> int:
+        rslt = line.split("=")
+        try:
+            return tuple(rslt[1])
         except TypeError as e:
             print(f"WRONG DATA : {e}")
         pass
