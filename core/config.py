@@ -103,7 +103,7 @@ class Configuration():
         try:
             dt = rslt[1]
             dt_split = tuple(dt.split(","))
-            if len(dt_split) < 2:
+            if len(dt_split) != 2:
                 raise TupleError
             for d in dt_split:
                 int(d)
