@@ -6,3 +6,4 @@ a_maze_ing.py
 - initiate the program
 - parse the command argument 
 - inititiate the data retrieval from config.txt via config.py
+- validate the data within the config.txt file
