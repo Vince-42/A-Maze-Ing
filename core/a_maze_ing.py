@@ -14,7 +14,6 @@ class MazeGenerator():
     def __init__(self):
         if main():
             self.start_config = main_config()
-            print(f"result: {self.start_config._data}")
 
 # ######### methods ##########
 
@@ -44,7 +43,15 @@ def main() -> bool:
 
 if __name__ == "__main__":
     start_maze = MazeGenerator()
+    # this below is just for checking purpose
     # print parameters to check config
-    for param in start_maze.start_config.__dict__:
-        print(param, end=": ")
-        print(start_maze.start_config.__dict__[param])
+    try:
+        for param in start_maze.start_config.__dict__:
+            print(param, end=": ")
+            print(start_maze.start_config.__dict__[param])
+        if start_maze.start_config._data_check <= 6:
+            print("MAZE CAN BE GENERATED")
+        else:
+            print("Error on config - No Maze to be generated")
+    except Exception as e:
+        print("Error in checking printing parameters")

@@ -25,7 +25,7 @@ class Configuration():
         self._seed: int = None
         self._algorythm = None
         self._display_mode = None
-        self._data = None
+        self._data_check: int = 0
 
     def extract(self):
         with open(self.__file_name, "r") as f:
@@ -67,7 +67,9 @@ class Configuration():
         rslt = line.split("=")
         try:
             if rslt[1] in accept:
-                return bool(rslt[1])
+                ret = bool(rslt[1])
+                self._data_check += 1
+                return ret
         except Exception as e:
             print(f"WRONG DATA : {e}")
             return None
@@ -78,7 +80,9 @@ class Configuration():
         # verifier que line [1] est bien un integer
         # return l'intenger si OK
         try:
-            return int(rslt[1])
+            ret = int(rslt[1])
+            self._data_check += 1
+            return ret
         except TypeError as e:
             print(f"WRONG DATA : {e}")
 
@@ -86,7 +90,9 @@ class Configuration():
     def split_str(self, line) -> str:
         rslt = line.split("=")
         try:
-            return str(rslt[1])
+            ret = str(rslt[1])
+            self._data_check += 1
+            return ret
         except TypeError as e:
             print(f"WRONG DATA : {e}")
         pass
@@ -100,7 +106,8 @@ class Configuration():
             if len(dt_split) < 2:
                 raise TupleError
             for d in dt_split:
-                d = int(d)
+                int(d)
+            self._data_check += 1
             return dt_split
         except TypeError as e:
             print(f"WRONG DATA : {e}")
