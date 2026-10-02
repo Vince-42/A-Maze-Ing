@@ -4,25 +4,31 @@
 
 # ######### import  ##########
 
-from typing import IO
 
-# ######### class   ##########
+# ######### Errorclass   ##########
 
 class TupleError(Exception):
     def __init__(self, *args):
         super().__init__(*args)
 
 
+class NegativeError(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)
+
+# ######### class   ##########
+
+
 class Configuration():
     def __init__(self):
         self.__file_name = "config.txt"
-        self._width: int = None
-        self._height: int = None
+        self._width: int = 0
+        self._height: int = 0
         self._entry: tuple = ()
         self._exit: tuple = ()
-        self._output_file: str = None
-        self._perfect: bool = None
-        self._seed: int = None
+        self._output_file: str = ""
+        self._perfect: bool = False
+        self._seed: int = 0
         self._algorythm = None
         self._display_mode = None
         self._data_check: int = 0
@@ -45,48 +51,50 @@ class Configuration():
             x = self.split_int(line)
             self._width = x
         elif truc == "HEIGHT=":
-            x = self.split_int(line)
-            self._height = x
+            y = self.split_int(line)
+            self._height = y
         elif truc == "ENTRY=":
-            x = self.split_tuple(line)
-            self._entry = x
+            z = self.split_tuple(line)
+            self._entry = z
         elif truc == "EXIT=":
-            x = self.split_tuple(line)
-            self._exit = x
+            a = self.split_tuple(line)
+            self._exit = a
         elif truc == "OUTPUT_FILE=":
-            x = self.split_str(line)
-            self._output_file = x
+            b = self.split_str(line)
+            self._output_file = b
         elif truc == "PERFECT=":
-            x = self.split_bool(line)
-            self._perfect = x
-            
-            
-    # return a True/False on success, None on fail
-    def split_bool(self, line) -> bool:
+            c = bool(self.split_bool(line))
+            self._perfect = c
+
+    # return 'True' or 'False' on success | 'None' on failed
+    def split_bool(self, line) -> str:
         accept = {"True", "True\n", "False", "False\n"}
         rslt = line.split("=")
         try:
             if rslt[1] in accept:
-                ret = bool(rslt[1])
+                ret = rslt[1]
                 self._data_check += 1
                 return ret
         except Exception as e:
             print(f"WRONG DATA : {e}")
-            return None
+        return "None"
 
-    # return an INT on success
+    # return a positive INT on success | neg on failed
     def split_int(self, line) -> int:
         rslt = line.split("=")
         # verifier que line [1] est bien un integer
-        # return l'intenger si OK
+        # return l'intenger si positive
         try:
             ret = int(rslt[1])
+            if ret < 0:
+                raise NegativeError
             self._data_check += 1
             return ret
         except TypeError as e:
             print(f"WRONG DATA : {e}")
+        return -1
 
-    # return an STR on success
+    # return an STR on success | empty on fail
     def split_str(self, line) -> str:
         rslt = line.split("=")
         try:
@@ -95,9 +103,9 @@ class Configuration():
             return ret
         except TypeError as e:
             print(f"WRONG DATA : {e}")
-        pass
+        return ""
 
-        # return a TUPLE on success
+        # return a TUPLE on success | (-1, -1) on fail
     def split_tuple(self, line) -> tuple:
         rslt = line.split("=")
         try:
@@ -111,7 +119,9 @@ class Configuration():
             return dt_split
         except TypeError as e:
             print(f"WRONG DATA : {e}")
-        pass
+        return (-1, -1)
+
+
 # ######### methods ##########
 
 def main_config():
@@ -122,6 +132,8 @@ def main_config():
         print(f"Error in config file : {error}")
     except TupleError as e:
         print(f"Error in Tuple validation. {e}")
+    except NegativeError as e:
+        print(f"The config value cannot be negative. {e}")
     return default
 
 # ######### main    ##########

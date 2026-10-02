@@ -17,6 +17,7 @@ class MazeGenerator():
 
 # ######### methods ##########
 
+
 def start() -> bool:
     arg = sys.argv
     l_arg = len(arg)
@@ -30,7 +31,7 @@ def start() -> bool:
     return False
 
 
-def parsing(list_arg):
+def parsing(list_arg) -> bool:
     chck = list_arg[1]
     if chck == "config.txt":
         return True
@@ -49,9 +50,9 @@ if __name__ == "__main__":
         for param in start_maze.start_config.__dict__:
             print(param, end=": ")
             print(start_maze.start_config.__dict__[param])
-        if start_maze.start_config._data_check <= 6:
+        if start_maze.start_config._data_check >= 6:
             print("MAZE CAN BE GENERATED")
         else:
             print("Error on config - No Maze to be generated")
     except Exception as e:
-        print("Error in checking printing parameters")
+        print(f"Error in checking printing parameters. {e}")
