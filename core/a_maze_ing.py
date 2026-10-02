@@ -44,7 +44,7 @@ def main() -> bool:
 
 if __name__ == "__main__":
     start_maze = MazeGenerator()
-    # print parameters to check config 
+    # print parameters to check config
     for param in start_maze.start_config.__dict__:
         print(param, end=": ")
         print(start_maze.start_config.__dict__[param])

@@ -8,6 +8,10 @@ from typing import IO
 
 # ######### class   ##########
 
+class TupleError(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)
+
 
 class Configuration():
     def __init__(self):
@@ -79,7 +83,7 @@ class Configuration():
             print(f"WRONG DATA : {e}")
 
     # return an STR on success
-    def split_str(self, line) -> int:
+    def split_str(self, line) -> str:
         rslt = line.split("=")
         try:
             return str(rslt[1])
@@ -88,19 +92,29 @@ class Configuration():
         pass
 
         # return a TUPLE on success
-    def split_tuple(self, line) -> int:
+    def split_tuple(self, line) -> tuple:
         rslt = line.split("=")
         try:
-            return tuple(rslt[1])
+            dt = rslt[1]
+            dt_split = tuple(dt.split(","))
+            if len(dt_split) < 2:
+                raise TupleError
+            for d in dt_split:
+                d = int(d)
+            return dt_split
         except TypeError as e:
             print(f"WRONG DATA : {e}")
         pass
 # ######### methods ##########
 
-
 def main_config():
     default = Configuration()
-    default.extract()
+    try:
+        default.extract()
+    except ValueError as error:
+        print(f"Error in config file : {error}")
+    except TupleError as e:
+        print(f"Error in Tuple validation. {e}")
     return default
 
 # ######### main    ##########
