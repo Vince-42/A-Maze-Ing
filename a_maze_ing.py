@@ -6,14 +6,13 @@
 
 import sys
 from core.config import main_config
+from utils import error
+from core.maze_generator import MazeGenerator
 
 # ######### class   ##########
 
 
-class MazeGenerator():
-    def __init__(self):
-        if main():
-            self.start_config = main_config()
+
 
 # ######### methods ##########
 
@@ -43,15 +42,17 @@ def main() -> bool:
 
 
 if __name__ == "__main__":
-    start_maze = MazeGenerator()
+    if main():
+        conf = main_config()
+        maze_o = MazeGenerator(conf)
     # this below is just for checking purpose
     # print parameters to check config
     try:
         print("*"*45)
-        for param in start_maze.start_config.__dict__:
+        for param in maze_o.maze.__dict__:
             print(param, end=": ")
-            print(start_maze.start_config.__dict__[param])
-        if start_maze.start_config._data_check >= 6:
+            print(maze_o.maze.__dict__[param])
+        if maze_o.maze._data_check >= 6:
             print("*"*45)
             print("MAZE CAN BE GENERATED")
         else:
