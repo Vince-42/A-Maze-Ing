@@ -47,12 +47,15 @@ if __name__ == "__main__":
     # this below is just for checking purpose
     # print parameters to check config
     try:
+        print("*"*45)
         for param in start_maze.start_config.__dict__:
             print(param, end=": ")
             print(start_maze.start_config.__dict__[param])
         if start_maze.start_config._data_check >= 6:
+            print("*"*45)
             print("MAZE CAN BE GENERATED")
         else:
+            print("*"*45)
             print("Error on config - No Maze to be generated")
     except Exception as e:
         print(f"Error in checking printing parameters. {e}")

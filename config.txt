@@ -3,7 +3,7 @@
 WIDTH=12
 
 # HEIGHT Maze height 
-HEIGHT=-1
+HEIGHT=12
 
 # ENTRY Entry coordinates (x,y) 
 ENTRY=0,0

@@ -12,13 +12,13 @@ from utils import error as err
 class Configuration():
     def __init__(self):
         self.__file_name = "config.txt"
-        self._width: int = 0
-        self._height: int = 0
+        self._width: int = -1
+        self._height: int = -1
         self._entry: tuple = ()
         self._exit: tuple = ()
         self._output_file: str = ""
         self._perfect: bool = False
-        self._seed: int = 0
+        self._seed: int = -1
         self._algorythm = None
         self._display_mode = None
         self._data_check: int = 0
