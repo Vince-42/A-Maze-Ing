@@ -5,7 +5,7 @@
 # ######### import  ##########
 
 import sys
-from config import main_config
+from core.config import main_config
 
 # ######### class   ##########
 

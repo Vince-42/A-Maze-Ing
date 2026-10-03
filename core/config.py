@@ -1,20 +1,10 @@
 # ######### comments ##########
 
-# Main file of the A-Maze-Ing project
+# Configuration file of the A-Maze-Ing project
 
 # ######### import  ##########
 
-
-# ######### Errorclass   ##########
-
-class TupleError(Exception):
-    def __init__(self, *args):
-        super().__init__(*args)
-
-
-class NegativeError(Exception):
-    def __init__(self, *args):
-        super().__init__(*args)
+from utils import error as err
 
 # ######### class   ##########
 
@@ -87,7 +77,7 @@ class Configuration():
         try:
             ret = int(rslt[1])
             if ret < 0:
-                raise NegativeError
+                raise err.NegativeError
             self._data_check += 1
             return ret
         except TypeError as e:
@@ -112,7 +102,7 @@ class Configuration():
             dt = rslt[1]
             dt_split = tuple(dt.split(","))
             if len(dt_split) != 2:
-                raise TupleError
+                raise err.TupleError
             for d in dt_split:
                 int(d)
             self._data_check += 1
@@ -130,10 +120,12 @@ def main_config():
         default.extract()
     except ValueError as error:
         print(f"Error in config file : {error}")
-    except TupleError as e:
+    except err.TupleError as e:
         print(f"Error in Tuple validation. {e}")
-    except NegativeError as e:
+    except err.NegativeError as e:
         print(f"The config value cannot be negative. {e}")
+    except FileNotFoundError as e:
+        print(f"Error in the file name or location. {e}")
     return default
 
 # ######### main    ##########
