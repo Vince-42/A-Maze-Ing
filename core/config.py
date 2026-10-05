@@ -115,6 +115,19 @@ class Configuration():
             print(f"WRONG DATA : {e}")
         return (-1, -1)
 
+    def validation(self):
+        # checking entry/exit
+        print(f"entry : {self._entry}")
+        print(f"exit : {self._exit}")
+        for nb in self._exit:
+            if self._entry[0] > self._exit[0] or self._entry[1] > self._exit[1]:
+                print(f"NOK | {self._entry[0]} | {self._entry[1]} | nb {nb}")
+                self._data_check -= 1
+                raise err.EntryExitError
+        if self._entry == self._exit:
+            self._data_check -= 1
+            raise err.EntryExitError
+
 
 # ######### methods ##########
 
@@ -122,6 +135,7 @@ def main_config():
     default = Configuration()
     try:
         default.extract()
+        default.validation()
     except ValueError as error:
         print(f"Error in config file : {error}")
     except err.TupleError as e:
@@ -132,6 +146,8 @@ def main_config():
         print(f"Error in the file name or location. {e}")
     except err.BooleanError as e:
         print(f"Error in the boolean part of config file. {e}")
+    except err.EntryExitError as e:
+        print(f"Error in the entry/exit parameters. {e}")
     return default
 
 # ######### main    ##########

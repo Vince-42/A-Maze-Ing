@@ -20,3 +20,7 @@ class NegativeError(Exception):
 class BooleanError(Exception):
     def __init__(self, *args):
         super().__init__(*args)
+
+class EntryExitError(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)
