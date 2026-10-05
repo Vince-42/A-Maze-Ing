@@ -1,8 +1,8 @@
 # MANDATORY KEY
-# WIDTH Maze width (number of cells)
+# WIDTH Maze width (number of cells - x)
 WIDTH=12
 
-# HEIGHT Maze height 
+# HEIGHT Maze height (y)
 HEIGHT=12
 
 # ENTRY Entry coordinates (x,y) 

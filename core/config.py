@@ -34,9 +34,9 @@ class Configuration():
                      "PERFECT=", "SEED="]
         for truc in indicator:
             if truc in line:
-                self.placing_data(truc, line.rstrip(), indicator)
+                self.placing_data(truc, line.rstrip())
 
-    def placing_data(self, truc, line, indicator):
+    def placing_data(self, truc, line):
         if truc == "WIDTH=":
             x = self.split_int(line)
             self._width = x
@@ -69,7 +69,7 @@ class Configuration():
                 self._data_check += 1
                 return False
             else:
-                raise err.BooleanError
+                raise err.BooleanError("Perfect config issue. Must be True or False")
         except err.BooleanError:
             raise err.BooleanError
 
@@ -81,7 +81,7 @@ class Configuration():
         try:
             ret = int(rslt[1])
             if ret < 0:
-                raise err.NegativeError
+                raise err.NegativeError("Integer cannot be negative.")
             self._data_check += 1
             return ret
         except TypeError as e:
@@ -117,6 +117,7 @@ class Configuration():
 
     def validation(self):
         # checking entry/exit
+        # issue on the first check
         if self._entry[0] > self._exit[0] or self._entry[1] > self._exit[1]:
             self._data_check -= 1
             raise err.EntryExitError("Entry point outside of the maze.")

@@ -42,6 +42,7 @@ if __name__ == "__main__":
     if main():
         conf = main_config()
         maze_o = MazeGenerator(conf)
+        maze_o.print_config()
     # this below is just for checking purpose
     # print parameters to check config
     try:
