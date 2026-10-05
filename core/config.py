@@ -11,13 +11,13 @@ from utils import error as err
 
 class Configuration():
     def __init__(self):
-        self.__file_name = "config.txt"
+        self.__file_name: str = "config.txt"
         self._width: int = -1
         self._height: int = -1
         self._entry: tuple = ()
         self._exit: tuple = ()
         self._output_file: str = ""
-        self._perfect: bool = False
+        self._perfect = None
         self._seed: int = -1
         self._algorythm = None
         self._display_mode = None
@@ -53,21 +53,25 @@ class Configuration():
             b = self.split_str(line)
             self._output_file = b
         elif truc == "PERFECT=":
-            c = bool(self.split_bool(line))
+            c = self.split_bool(line)
             self._perfect = c
 
     # return 'True' or 'False' on success | 'None' on failed
-    def split_bool(self, line) -> str:
-        accept = {"True", "True\n", "False", "False\n"}
+    def split_bool(self, line) -> bool:
+        accept = {"True", "True\n"}
+        false = {"False", "False\n"}
         rslt = line.split("=")
         try:
             if rslt[1] in accept:
-                ret = rslt[1]
                 self._data_check += 1
-                return ret
-        except Exception as e:
-            print(f"WRONG DATA : {e}")
-        return "None"
+                return True
+            elif rslt[1] in false:
+                self._data_check += 1
+                return False
+            else:
+                raise err.BooleanError
+        except err.BooleanError:
+            raise err.BooleanError
 
     # return a positive INT on success | neg on failed
     def split_int(self, line) -> int:
@@ -126,6 +130,8 @@ def main_config():
         print(f"The config value cannot be negative. {e}")
     except FileNotFoundError as e:
         print(f"Error in the file name or location. {e}")
+    except err.BooleanError as e:
+        print(f"Error in the boolean part of config file. {e}")
     return default
 
 # ######### main    ##########

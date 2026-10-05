@@ -15,3 +15,8 @@ class TupleError(Exception):
 class NegativeError(Exception):
     def __init__(self, *args):
         super().__init__(*args)
+
+
+class BooleanError(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)

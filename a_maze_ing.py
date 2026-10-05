@@ -6,12 +6,9 @@
 
 import sys
 from core.config import main_config
-from utils import error
 from core.maze_generator import MazeGenerator
 
 # ######### class   ##########
-
-
 
 
 # ######### methods ##########
