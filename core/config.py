@@ -117,14 +117,19 @@ class Configuration():
 
     def validation(self):
         # checking entry/exit
-        # issue on the first check
+        # issue on the first check - should be ok
         if self._entry[0] > self._exit[0] or self._entry[1] > self._exit[1]:
             self._data_check -= 1
             raise err.EntryExitError("Entry point outside of the maze.")
         if self._entry == self._exit:
             self._data_check -= 1
             raise err.EntryExitError("Entry can not be the same point as the Exit.")
-
+        if int(self._entry[0]) > self._width or int(self._entry[1]) > self._height:
+            self._data_check -= 1
+            raise err.EntryExitError("Entry point cannot be outside the maze boundaries.")
+        if int(self._exit[0]) > self._width or int(self._exit[1]) > self._height:
+            self._data_check -= 1
+            raise err.EntryExitError("Exit point cannot be outside the maze boundaries.")
 
 # ######### methods ##########
 
