@@ -29,7 +29,7 @@ class MazeGenerator():
 
     def cell_gen(self):
         generator = CellGenerator(x=0,y=0)
-        generator.create()
+        generator.create(5,5)
         pass
 
 
@@ -40,11 +40,14 @@ class CellGenerator(MazeGenerator):
         self._coordinate = (x, y)
         self._all_cells = []
 
-    def create(self):
-        for i in range(5):
-            for ii in range(5):
+    def create(self, x: int, y: int):
+        count = 1
+        for i in range(x):
+            for ii in range(y):
+                print(f"i={i} | ii={ii} | cell #{count}")
+                count += 1
                 new = CellGenerator(i, ii)
                 self._all_cells.append(new)
 
         for obj in self._all_cells:
-            print(obj._coordinate)
+            print(f"Cell located at coordinate : {obj._coordinate}.")
