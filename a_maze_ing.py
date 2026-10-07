@@ -7,6 +7,7 @@
 import sys
 from core.config import main_config
 from core.maze_generator import MazeGenerator
+from core.maze_generator import CellGenerator
 
 # ######### class   ##########
 
@@ -42,7 +43,9 @@ if __name__ == "__main__":
     if main():
         conf = main_config()
         maze_o = MazeGenerator(conf)
-        maze_o.print_config()
+        # maze_o.print_config() # printing config file to check
+        maze_o.cell_gen()
+        
     # this below is just for checking purpose
     # print parameters to check config
     try:

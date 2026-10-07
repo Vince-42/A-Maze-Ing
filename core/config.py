@@ -106,7 +106,7 @@ class Configuration():
             dt = rslt[1]
             dt_split = tuple(dt.split(","))
             if len(dt_split) != 2:
-                raise err.TupleError
+                raise err.TupleError("Coordinate can not be more than 2D.")
             for d in dt_split:
                 int(d)
             self._data_check += 1
@@ -152,8 +152,3 @@ def main_config():
         print(f"Error in the entry/exit parameters. {e}")
     return default
 
-# ######### main    ##########
-
-
-if __name__ == "__main__":
-    main_config()
