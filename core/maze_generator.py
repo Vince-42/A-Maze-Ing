@@ -61,4 +61,6 @@ class CellGenerator(MazeGenerator):
             elif obj.coordinate[1] == obj.width - 1:
                 obj._color = color.YELLOW
                 obj._stateW = True
+            if obj.coordinate == obj._entry:
+                print("HELLO")
             print(obj._color, end="")
