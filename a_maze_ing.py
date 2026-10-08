@@ -48,6 +48,7 @@ if __name__ == "__main__":
         
     # this below is just for checking purpose
     # print parameters to check config
+    print("\n")
     try:
         print("*"*45)
         for param in maze_o.maze.__dict__:
