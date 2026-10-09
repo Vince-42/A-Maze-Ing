@@ -117,10 +117,10 @@ class Configuration():
 
     def validation(self):
         # checking entry/exit
-        # issue on the first check - should be ok
+        # NEED TO BE SURE THAT ENTRANCE AND EXIT ARE ON THE BORDER
         if int(self._exit[0]) > self._width or int(self._exit[1]) > self._height:
             self._data_check -= 1
-            raise err.EntryExitError(f"Entry point outside of the maze.\nentry{self._entry[0]}>{self._exit[0]}\nentry{self._entry[1]}>{self._exit[1]}\n")
+            raise err.EntryExitError(f"Entry point outside of the maze.")
         if self._entry == self._exit:
             self._data_check -= 1
             raise err.EntryExitError("Entry can not be the same point as the Exit.")
@@ -130,6 +130,12 @@ class Configuration():
         if int(self._exit[0]) > self._width or int(self._exit[1]) > self._height:
             self._data_check -= 1
             raise err.EntryExitError("Exit point cannot be outside the maze boundaries.")
+        if self._entry[0] != 0 and self._entry[0] != self._width - 1 and self._entry[1] != 0 and self._entry[1] != self._width - 1:
+            print(f"entry point 0 : {self._entry[0]} | width - 1 : {self._width - 1}")
+            raise err.EntryExitError("Entry point cannot be within the boundaries of the maze.")
+        if self._exit[0] != 0 and self._exit[0] != self._width - 1 and self._exit[1] != 0 and self._exit[1] != self._width - 1:
+            print(f"exit point 0 : {self._exit[0]} | width - 1 : {self._width - 1}")
+            raise err.EntryExitError("Exit point cannot be within the boundaries of the maze.")
 
 # ######### methods ##########
 
