@@ -104,13 +104,13 @@ class Configuration():
         rslt = line.split("=")
         try:
             dt = rslt[1]
-            dt_split = tuple(dt.split(","))
+            dt_split = dt.split(",")
             if len(dt_split) != 2:
                 raise err.TupleError("Coordinate can not be more than 2D.")
-            for d in dt_split:
-                int(d)
+            dt_split[0] = int(dt_split[0])
+            dt_split[1] = int(dt_split[1])
             self._data_check += 1
-            return dt_split
+            return tuple(dt_split)
         except TypeError as e:
             print(f"WRONG DATA : {e}")
         return (-1, -1)
