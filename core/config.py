@@ -109,6 +109,8 @@ class Configuration():
                 raise err.TupleError("Coordinate can not be more than 2D.")
             dt_split[0] = int(dt_split[0])
             dt_split[1] = int(dt_split[1])
+            if dt_split[0] < 0 or dt_split[1] < 0:
+                raise err.NegativeError("Integer cannot be negative.")
             self._data_check += 1
             return tuple(dt_split)
         except TypeError as e:
@@ -130,12 +132,12 @@ class Configuration():
         if int(self._exit[0]) > self._width or int(self._exit[1]) > self._height:
             self._data_check -= 1
             raise err.EntryExitError("Exit point cannot be outside the maze boundaries.")
-        if self._entry[0] != 0 and self._entry[0] != self._width - 1 and self._entry[1] != 0 and self._entry[1] != self._width - 1:
-            print(f"entry point 0 : {self._entry[0]} | width - 1 : {self._width - 1}")
-            raise err.EntryExitError("Entry point cannot be within the boundaries of the maze.")
-        if self._exit[0] != 0 and self._exit[0] != self._width - 1 and self._exit[1] != 0 and self._exit[1] != self._width - 1:
-            print(f"exit point 0 : {self._exit[0]} | width - 1 : {self._width - 1}")
-            raise err.EntryExitError("Exit point cannot be within the boundaries of the maze.")
+        # if self._entry[0] != 0 and self._entry[0] != self._width - 1 and self._entry[1] != 0 and self._entry[1] != self._width - 1:
+        #    print(f"entry point 0 : {self._entry[0]} | width - 1 : {self._width - 1}")
+        #    raise err.EntryExitError("Entry point cannot be within the boundaries of the maze.")
+        # if self._exit[0] != 0 and self._exit[0] != self._width - 1 and self._exit[1] != 0 and self._exit[1] != self._width - 1:
+        #    print(f"exit point 0 : {self._exit[0]} | width - 1 : {self._width - 1}")
+        #    raise err.EntryExitError("Exit point cannot be within the boundaries of the maze.")
 
 # ######### methods ##########
 

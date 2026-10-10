@@ -24,8 +24,6 @@ class MazeGenerator():
         generator.create()
         generator.print_maze()
 
-        pass
-
     def get_entry(self) -> tuple:
         return self.entry
 
