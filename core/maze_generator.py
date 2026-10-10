@@ -5,11 +5,14 @@
 # ######### import  ##########
 
 import utils.color as color
+import random
 
 
 # ######### class   ##########
 
 # I NEED TO HAVE ONLY MAZE GENERATOR
+
+idea = (color.BLACK, color.BLUE)
 
 class MazeGenerator():
     def __init__(self, conf: object):
@@ -62,6 +65,7 @@ class CellGenerator(MazeGenerator):
                 self._all_cells.append(new)
 
     def print_maze(self):
+        self.print_again()
         for obj in self._all_cells:
             if obj.coordinate[1] == 0:
                 obj._stateE = True
@@ -78,9 +82,14 @@ class CellGenerator(MazeGenerator):
                 obj._stateW = True
             # print(f"obj coordinate {type(obj.coordinate[0])} | obj entry {type(self.entry_maze[0])}")
             if obj.coordinate == self.entry_maze:
-                obj._color = color.BLUE
+                obj._color = color.PURPLE
                 obj.entry = True
             if obj.coordinate == self.exit_maze:
-                obj._color = color.BLUE
-                obj.entry = True
+                obj._color = color.PURPLE
+                obj.exit = True
             print(obj._color, end="")
+
+    def print_again(self):
+        for obj in self._all_cells:
+            obj._color = random.choice(idea)
+        pass
