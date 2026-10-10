@@ -9,6 +9,8 @@ import utils.color as color
 
 # ######### class   ##########
 
+# I NEED TO HAVE ONLY MAZE GENERATOR
+
 class MazeGenerator():
     def __init__(self, conf: object):
         self.maze = conf
