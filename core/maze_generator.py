@@ -65,7 +65,7 @@ class CellGenerator(MazeGenerator):
                 self._all_cells.append(new)
 
     def print_maze(self):
-        self.print_again()
+        self.check_maze()
         for obj in self._all_cells:
             if obj.coordinate[1] == 0:
                 obj._stateE = True
@@ -88,8 +88,28 @@ class CellGenerator(MazeGenerator):
                 obj._color = color.PURPLE
                 obj.exit = True
             print(obj._color, end="")
+        self.check_maze()
 
-    def print_again(self):
+    def check_maze(self):
+        print("\n")
         for obj in self._all_cells:
-            obj._color = random.choice(idea)
-        pass
+            try:
+                cell_x = obj.coordinate[0]
+                cell_y = obj.coordinate[1]
+                droite = self.ret_state((cell_x + 1, cell_y))
+                bas = self.ret_state((cell_x, cell_y + 1))
+                haut = self.ret_state((cell_x, cell_y - 1))
+                print(f"IN OBJ cell ({cell_x},{cell_y}) ||"
+                    f"\nRIGHT cell({cell_x + 1},{cell_y}) - East: {self.ret_state((cell_x + 1, cell_y))._stateE}, North: {self.ret_state((cell_x + 1, cell_y))._stateN}, South: {self.ret_state((cell_x + 1, cell_y))._stateS}, WEST: {self.ret_state((cell_x + 1, cell_y))._stateW}"
+                    f"\nDOWN cell({cell_x},{cell_y + 1}) - East: {self.ret_state((cell_x, cell_y + 1))._stateE}, North: {self.ret_state((cell_x, cell_y + 1))._stateN}, South: {self.ret_state((cell_x, cell_y + 1))._stateS}, WEST: {self.ret_state((cell_x, cell_y + 1))._stateW}"
+                    f"\nLEFT cell({cell_x - 1},{cell_y}) - East: {self.ret_state((cell_x - 1, cell_y))._stateE}, North: {self.ret_state((cell_x - 1, cell_y))._stateN}, South: {self.ret_state((cell_x - 1, cell_y))._stateS}, WEST: {self.ret_state((cell_x - 1, cell_y))._stateW}"
+                    f"\nUP cell({cell_x},{cell_y - 1}) - East: {self.ret_state((cell_x, cell_y - 1))._stateE}, North: {self.ret_state((cell_x, cell_y - 1))._stateN}, South: {self.ret_state((cell_x, cell_y - 1))._stateS}, WEST: {self.ret_state((cell_x, cell_y - 1))._stateW}")
+                    # obj._color = random.choice(idea)
+            except AttributeError as e:
+                print(f"error when checking : ({cell_x + 1},{cell_y}) ")
+                continue
+
+    def ret_state(self, coordinate: tuple):
+        for obj in self._all_cells:
+            if obj.coordinate == coordinate:
+                return obj
