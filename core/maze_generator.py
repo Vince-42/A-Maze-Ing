@@ -35,6 +35,11 @@ class MazeGenerator():
     def get_entry(self) -> tuple:
         return self.entry
 
+def chg_state(Cell):
+        print("CHANGING STATE FT")
+        Cell.etat = True
+        print(Cell.etat)
+
 class CellGenerator(MazeGenerator):
     entry_maze = ()
     exit_maze = ()
@@ -52,7 +57,7 @@ class CellGenerator(MazeGenerator):
         self.height = height
         self.coordinate = (x, y)
         self._all_cells = []
-
+    
     def fill(self, entry_m: tuple[int, int], exit_m: tuple):
         self.entry_maze = entry_m
         self.exit_maze = exit_m
@@ -102,30 +107,83 @@ class CellGenerator(MazeGenerator):
             try:
                 cell_x = obj.coordinate[0]
                 cell_y = obj.coordinate[1]
-                droite = self.ret_state((cell_x + 1, cell_y))
-                bas = self.ret_state((cell_x, cell_y + 1))
-                # haut = self.ret_state((cell_x, cell_y - 1))
-                # gauche = self.ret_state((cell_x - 1, cell_y))
-                # print(f"IN OBJ cell ({cell_x},{cell_y})")
-                # print(f"IN OBJ cell ({cell_x},{cell_y}) | droite: {droite.etat}, gauche {gauche.etat}, haut {haut.etat}, bas {bas.etat}.")
+                et_droit = self.ret_state((cell_x, cell_y + 1))
+                et_bas = self.ret_state((cell_x + 1, cell_y))
+                et_haut = self.ret_state((cell_x - 1, cell_y))
+                et_gauche = self.ret_state((cell_x, cell_y - 1))
+                ce_droit = self.ret_cell((cell_x, cell_y + 1))
+                ce_bas = self.ret_cell((cell_x + 1, cell_y))
+                ce_haut = self.ret_cell((cell_x - 1, cell_y))
+                ce_gauche = self.ret_cell((cell_x, cell_y - 1))
+                print(f"cell {cell_x}{cell_y} | et_droit {et_droit}, et_bas {et_bas}, et_gauche {et_gauche}, et_haut {et_haut}")
+                # print(f"cell {cell_x}{cell_y} | ce_droit {ce_droit}, ce_bas {ce_bas}, ce_gauche {ce_gauche}, ce_haut {ce_haut}")
                 if obj.etat == False:
-                    if droite.etat == False and bas.etat == False:
-                        print(f"IN OBJ cell ({cell_x},{cell_y})")
-                        obj._color = color.BLACK
-                        droite.etat = random.choice(verite)
-                        bas.etat = random.choice(verite)
-                        obj.etat == True
+                    print("cell is OPEN")
+                    if et_haut == None and et_bas == False and et_droit == False and et_gauche == None:
+                        print("str - trying changing")
+                        chg_state(self)
+                        print("CHANGING STATE SELF")
+                    if et_haut == None and et_bas == False and et_droit == False and et_gauche == True:
+                        print("trying changing")
+                        if self.ret_rdm() == 1:
+                            print("CHANGING STATE SELF")
+                            chg_state(self)
+                        else:
+                            print("CHANGING STATE DROIT")
+                            chg_state(ce_droit)
+                    if et_haut == None and et_bas == False and et_droit == False and et_gauche == False:
+                        print("trying changing")
+                        nb = self.ret_rdm()
+                        if nb == 1:
+                            print("CHANGING STATE BAS")
+                            chg_state(ce_bas)
+                        elif nb == 2:
+                            print("CHANGING STATE DROIT")
+                            chg_state(ce_droit)
+                        elif nb == 3:
+                            print("CHANGING STATE GAUCHE")
+                            chg_state(ce_gauche)
 
+                    if et_haut == False and et_bas == False and et_droit == False and et_gauche == False:
+                        print("trying changing")
+                        nb = self.ret_rdm()
+                        if nb == 1:
+                            print("CHANGING STATE BAS")
+                            chg_state(ce_bas)
+                        elif nb == 2:
+                            print("CHANGING STATE DROIT")
+                            chg_state(ce_droit)
+                        elif nb == 3:
+                            print("CHANGING STATE GAUCHE")
+                            chg_state(ce_gauche)
+                        elif nb == 4:
+                            print("CHANGING STATE HAUT")
+                            chg_state(ce_haut)
+                        # choisir un des objet bas ou droite
+                        # changer l'etat de cette obj a true 
 #                print(f"IN OBJ cell ({cell_x},{cell_y}) ||"
-#                    f"\nRIGHT cell({cell_x + 1},{cell_y}) - East: {self.ret_state((cell_x + 1, cell_y))._stateE}, North: {self.ret_state((cell_x + 1, cell_y))._stateN}, South: {self.ret_state((cell_x + 1, cell_y))._stateS}, WEST: {self.ret_state((cell_x + 1, cell_y))._stateW}"
-#                    f"\nDOWN cell({cell_x},{cell_y + 1}) - East: {self.ret_state((cell_x, cell_y + 1))._stateE}, North: {self.ret_state((cell_x, cell_y + 1))._stateN}, South: {self.ret_state((cell_x, cell_y + 1))._stateS}, WEST: {self.ret_state((cell_x, cell_y + 1))._stateW}"
-#                    f"\nLEFT cell({cell_x - 1},{cell_y}) - East: {self.ret_state((cell_x - 1, cell_y))._stateE}, North: {self.ret_state((cell_x - 1, cell_y))._stateN}, South: {self.ret_state((cell_x - 1, cell_y))._stateS}, WEST: {self.ret_state((cell_x - 1, cell_y))._stateW}"
-#                    f"\nUP cell({cell_x},{cell_y - 1}) - East: {self.ret_state((cell_x, cell_y - 1))._stateE}, North: {self.ret_state((cell_x, cell_y - 1))._stateN}, South: {self.ret_state((cell_x, cell_y - 1))._stateS}, WEST: {self.ret_state((cell_x, cell_y - 1))._stateW}")
+#                    f"\nRIGHT cell({cell_x + 1},{cell_y}) - East: {self.ret_cell((cell_x + 1, cell_y))._stateE}, North: {self.ret_cell((cell_x + 1, cell_y))._stateN}, South: {self.ret_cell((cell_x + 1, cell_y))._stateS}, WEST: {self.ret_cell((cell_x + 1, cell_y))._stateW}"
+#                    f"\nDOWN cell({cell_x},{cell_y + 1}) - East: {self.ret_cell((cell_x, cell_y + 1))._stateE}, North: {self.ret_cell((cell_x, cell_y + 1))._stateN}, South: {self.ret_cell((cell_x, cell_y + 1))._stateS}, WEST: {self.ret_cell((cell_x, cell_y + 1))._stateW}"
+#                    f"\nLEFT cell({cell_x - 1},{cell_y}) - East: {self.ret_cell((cell_x - 1, cell_y))._stateE}, North: {self.ret_cell((cell_x - 1, cell_y))._stateN}, South: {self.ret_cell((cell_x - 1, cell_y))._stateS}, WEST: {self.ret_cell((cell_x - 1, cell_y))._stateW}"
+#                    f"\nUP cell({cell_x},{cell_y - 1}) - East: {self.ret_cell((cell_x, cell_y - 1))._stateE}, North: {self.ret_cell((cell_x, cell_y - 1))._stateN}, South: {self.ret_cell((cell_x, cell_y - 1))._stateS}, WEST: {self.ret_cell((cell_x, cell_y - 1))._stateW}")
             except AttributeError as e:
                 print(f"error when checking : ({cell_x},{cell_y}) ")
                 continue
 
+    def ret_cell(self, coordinate: tuple):
+        try:
+            for obj in self._all_cells:
+                if obj.coordinate == coordinate:
+                    return obj
+        except:
+            return None
+
     def ret_state(self, coordinate: tuple):
         for obj in self._all_cells:
             if obj.coordinate == coordinate:
-                return obj
+                return obj.etat
+        return None
+
+    def ret_rdm(self):
+        nbr = (1, 2, 3)
+        return random.choice(nbr)
