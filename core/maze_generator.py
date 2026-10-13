@@ -55,6 +55,7 @@ class CellGenerator(MazeGenerator):
         self.exit = False
         self.width = width
         self.height = height
+        self.visit = False
         self.coordinate = (x, y)
         self._all_cells = []
     
@@ -90,11 +91,11 @@ class CellGenerator(MazeGenerator):
                 obj._stateW = True
             # print(f"obj coordinate {type(obj.coordinate[0])} | obj entry {type(self.entry_maze[0])}")
             if obj.coordinate == self.entry_maze:
-                obj._color = color.YELLOW
+                obj._color = "\033[92mSS\033[0m"
                 obj.entry = True
                 obj.etat = True
             if obj.coordinate == self.exit_maze:
-                obj._color = color.YELLOW
+                obj._color = "\033[91mEE\033[0m"
                 obj.exit = True
                 obj.etat = True
             if obj.etat == True and obj.exit == False and obj.entry == False:
@@ -103,55 +104,44 @@ class CellGenerator(MazeGenerator):
 
     def check_maze(self):
         print("\n")
-        for obj in self._all_cells:
-            try:
-                cell_x = obj.coordinate[0]
-                cell_y = obj.coordinate[1]
-                et_droit = self.ret_state((cell_x, cell_y + 1))
-                et_bas = self.ret_state((cell_x + 1, cell_y))
-                et_haut = self.ret_state((cell_x - 1, cell_y))
-                et_gauche = self.ret_state((cell_x, cell_y - 1))
-                ce_droit = self.ret_cell((cell_x, cell_y + 1))
-                ce_bas = self.ret_cell((cell_x + 1, cell_y))
-                ce_haut = self.ret_cell((cell_x - 1, cell_y))
-                ce_gauche = self.ret_cell((cell_x, cell_y - 1))
-                print(f"cell {cell_x}{cell_y} | et_droit {et_droit}, et_bas {et_bas}, et_gauche {et_gauche}, et_haut {et_haut}")
-                # print(f"cell {cell_x}{cell_y} | ce_droit {ce_droit}, ce_bas {ce_bas}, ce_gauche {ce_gauche}, ce_haut {ce_haut}")
-                if obj.etat == False:
-                    print("cell is OPEN")
-                    if et_haut == None and et_bas == False and et_droit == False and et_gauche == None:
-                        print("str - trying changing")
-                        chg_state(self)
-                        print("CHANGING STATE SELF")
-                    if et_haut == None and et_bas == False and et_droit == False and et_gauche == True:
-                        print("trying changing")
-                        if self.ret_rdm() == 1:
-                            print("CHANGING STATE SELF")
-                            chg_state(self)
-                        else:
-                            print("CHANGING STATE DROIT")
-                            chg_state(ce_droit)
-                    if et_haut == None and et_bas == False and et_droit == False and et_gauche == False:
-                        print("trying changing")
-                        nb = self.ret_rdm()
-                        if nb == 1:
-                            print("CHANGING STATE BAS")
-                            chg_state(ce_bas)
-                        elif nb == 2:
-                            print("CHANGING STATE DROIT")
-                            chg_state(ce_droit)
-                        elif nb == 3:
-                            print("CHANGING STATE GAUCHE")
-                            chg_state(ce_gauche)
-
+        unvisited_cell = len(self._all_cells)
+        while unvisited_cell > 0:
+            for obj in self._all_cells:
+                try:
+                    cell_x = obj.coordinate[0]
+                    cell_y = obj.coordinate[1]
+                    et_droit = self.ret_state((cell_x, cell_y + 1))
+                    et_bas = self.ret_state((cell_x + 1, cell_y))
+                    et_haut = self.ret_state((cell_x - 1, cell_y))
+                    et_gauche = self.ret_state((cell_x, cell_y - 1))
+                    lst_et = (et_bas, et_haut, et_droit, et_gauche)
+                    ce_droit = self.ret_cell((cell_x, cell_y + 1))
+                    ce_bas = self.ret_cell((cell_x + 1, cell_y))
+                    ce_haut = self.ret_cell((cell_x - 1, cell_y))
+                    ce_gauche = self.ret_cell((cell_x, cell_y - 1))
+#                     print(f"cell {cell_x}{cell_y} | et_droit {et_droit}, et_bas {et_bas}, et_gauche {et_gauche}, et_haut {et_haut}")
+                    # print(f"cell {cell_x}{cell_y} | ce_droit {ce_droit}, ce_bas {ce_bas}, ce_gauche {ce_gauche}, ce_haut {ce_haut}")
+                    if obj.entry == True:
+                        # write the first path cell from the given cell
+                        if et_haut == None and et_bas == False and et_droit == False and et_gauche == None:
+                            print("trying changing")
+                            nb = self.ret_rdm()
+                            if nb == 1 or nb == 3:
+                                print("CHANGING STATE BAS")
+                                chg_state(ce_bas)
+                            elif nb == 2 or nb == 4:
+                                print("CHANGING STATE DROIT")
+                                chg_state(ce_droit)
+                            unvisited_cell -= 1
                     if et_haut == False and et_bas == False and et_droit == False and et_gauche == False:
                         print("trying changing")
                         nb = self.ret_rdm()
+                        unvisited_cell -= 1
                         if nb == 1:
                             print("CHANGING STATE BAS")
                             chg_state(ce_bas)
                         elif nb == 2:
-                            print("CHANGING STATE DROIT")
+                            print("CHANGING STATE DROIT")                                
                             chg_state(ce_droit)
                         elif nb == 3:
                             print("CHANGING STATE GAUCHE")
@@ -159,16 +149,12 @@ class CellGenerator(MazeGenerator):
                         elif nb == 4:
                             print("CHANGING STATE HAUT")
                             chg_state(ce_haut)
-                        # choisir un des objet bas ou droite
-                        # changer l'etat de cette obj a true 
-#                print(f"IN OBJ cell ({cell_x},{cell_y}) ||"
-#                    f"\nRIGHT cell({cell_x + 1},{cell_y}) - East: {self.ret_cell((cell_x + 1, cell_y))._stateE}, North: {self.ret_cell((cell_x + 1, cell_y))._stateN}, South: {self.ret_cell((cell_x + 1, cell_y))._stateS}, WEST: {self.ret_cell((cell_x + 1, cell_y))._stateW}"
-#                    f"\nDOWN cell({cell_x},{cell_y + 1}) - East: {self.ret_cell((cell_x, cell_y + 1))._stateE}, North: {self.ret_cell((cell_x, cell_y + 1))._stateN}, South: {self.ret_cell((cell_x, cell_y + 1))._stateS}, WEST: {self.ret_cell((cell_x, cell_y + 1))._stateW}"
-#                    f"\nLEFT cell({cell_x - 1},{cell_y}) - East: {self.ret_cell((cell_x - 1, cell_y))._stateE}, North: {self.ret_cell((cell_x - 1, cell_y))._stateN}, South: {self.ret_cell((cell_x - 1, cell_y))._stateS}, WEST: {self.ret_cell((cell_x - 1, cell_y))._stateW}"
-#                    f"\nUP cell({cell_x},{cell_y - 1}) - East: {self.ret_cell((cell_x, cell_y - 1))._stateE}, North: {self.ret_cell((cell_x, cell_y - 1))._stateN}, South: {self.ret_cell((cell_x, cell_y - 1))._stateS}, WEST: {self.ret_cell((cell_x, cell_y - 1))._stateW}")
-            except AttributeError as e:
-                print(f"error when checking : ({cell_x},{cell_y}) ")
-                continue
+                            # choisir un des objet bas ou droite
+                            # changer l'etat de cette obj a true       
+                except AttributeError as e:
+                    print(f"error when checking : ({cell_x},{cell_y}) ")
+                    continue
+            unvisited_cell -= 1
 
     def ret_cell(self, coordinate: tuple):
         try:
@@ -185,5 +171,5 @@ class CellGenerator(MazeGenerator):
         return None
 
     def ret_rdm(self):
-        nbr = (1, 2, 3)
+        nbr = (1, 2, 3, 4)
         return random.choice(nbr)
