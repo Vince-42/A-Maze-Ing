@@ -7,6 +7,7 @@
 import utils.color as color
 import random
 
+random.seed()
 
 # ######### class   ##########
 
@@ -29,16 +30,18 @@ class MazeGenerator():
         generator.fill(self.entry, self.exit)
         generator.create()
         generator.print_maze()
-        generator.check_maze()
+        generator.backtracker()
+        # generator.check_maze()
+        print("\n\n")
         generator.print_maze()
 
     def get_entry(self) -> tuple:
         return self.entry
 
+
 def chg_state(Cell):
-        print("CHANGING STATE FT")
-        Cell.etat = True
-        print(Cell.etat)
+    Cell.visit = True
+
 
 class CellGenerator(MazeGenerator):
     entry_maze = ()
@@ -50,7 +53,7 @@ class CellGenerator(MazeGenerator):
         self._stateE = False  # True = Open | False = Wall
         self._stateS = False  # True = Open | False = Wall
         self._stateW = False  # True = Open | False = Wall
-        self.etat = False # False = closed
+        self.visit = False  # False = closed
         self.entry = False
         self.exit = False
         self.width = width
@@ -66,39 +69,40 @@ class CellGenerator(MazeGenerator):
         pass
 
     def create(self):
-        # count = 1
         for i in range(self.width):
             for ii in range(self.height):
-                # print(f"i={i} | ii={ii} | cell #{count}")
-                # count += 1
                 new = CellGenerator(i, ii, self.width, self.height)
                 self._all_cells.append(new)
 
     def print_maze(self):
         for obj in self._all_cells:
             if obj.coordinate[1] == 0:
-                obj._stateE = True
+                # obj._stateE = True
                 # obj._color = color.BLACK
+                pass
                 print("\n", end="")
             if obj.coordinate[0] == 0:
                 # obj._color = color.BLACK
-                obj._stateS = True
+                # obj._stateS = True
+                pass
             if obj.coordinate[0] == obj.width - 1:
-                obj._stateN = True
+                # obj._stateN = True
                 # obj._color = color.BLACK
+                pass
             if obj.coordinate[1] == obj.width - 1:
                 # obj._color = color.BLACK
-                obj._stateW = True
+                # obj._stateW = True
+                pass
             # print(f"obj coordinate {type(obj.coordinate[0])} | obj entry {type(self.entry_maze[0])}")
             if obj.coordinate == self.entry_maze:
                 obj._color = "\033[92mSS\033[0m"
                 obj.entry = True
-                obj.etat = True
+                obj.visit = True
             if obj.coordinate == self.exit_maze:
                 obj._color = "\033[91mEE\033[0m"
                 obj.exit = True
-                obj.etat = True
-            if obj.etat == True and obj.exit == False and obj.entry == False:
+                obj.visit = True
+            if obj.visit is True and obj.exit is False and obj.entry is False:
                 obj._color = color.PURPLE
             print(obj._color, end="")
 
@@ -156,18 +160,79 @@ class CellGenerator(MazeGenerator):
                     continue
             unvisited_cell -= 1
 
+# 1 Départ : Choisissez une case au hasard. Marquez-la comme Visité.
+# 2. Boucle : Tant qu'il reste des cases non visitées dans le labyrinthe :
+#	• Regardez autour : Listez les cases voisines de la case actuelle (haut, bas, gauche, droite) qui sont encore Non visitées.
+#	• Choix 1 : S'il y a des voisins non visités :
+#		1. Choisissez-en un au hasard.
+#		2. Abattez le mur entre la case actuelle et ce voisin choisi.
+#		3. Ajoutez la case actuelle à la Pile.
+#		4. Déplacez-vous sur le voisin, et marquez-le comme Visité.
+#	• Choix 2 : Si tous les voisins sont déjà visités (Cul-de-sac) :
+#		1. Sortez la dernière case de la Pile (on revient en arrière).
+#		2. Cette case redevient votre case actuelle.
+
+    def backtracker(self):
+        # cell to start the maze generation
+        current_cell = random.choice(self._all_cells)
+        current_cell.visit = True
+        # visited cell in list
+        visited_stack = [current_cell]
+        while len(visited_stack) > 0:
+            try:
+                cell_x = current_cell.coordinate[0]
+                cell_y = current_cell.coordinate[0]
+                # get info on cell next to current cell 
+                lst_et = [
+                    self.ret_cell((cell_x, cell_y + 1)),  # Right
+                    self.ret_cell((cell_x + 1, cell_y)),  # Down
+                    self.ret_cell((cell_x - 1, cell_y)),  # Up
+                    self.ret_cell((cell_x, cell_y - 1))   # Left
+                ]
+                # filtered None return from next to current cell
+                unvisited_ok_cell = [obj for obj in lst_et if obj is not None and not obj.visit]
+                if unvisited_ok_cell:
+                    # 5. Choose a random unvisited neighbor to move to
+                    next_cell = random.choice(unvisited_ok_cell)
+                    # --- Breaking the Wall ---
+                    # define diff between x,y of current/next cell
+                    d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
+                    d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
+                    if d_y == 1:  # This means moving East / Right
+                        current_cell.stateE = True
+                        next_cell.stateE = True
+                    elif d_y == -1:  # This means moving West / Left
+                        current_cell.stateW = True
+                        next_cell.stateW = True
+                    elif d_x == 1:  # This means moving South / Down
+                        current_cell.stateS = True
+                        next_cell.stateS = True
+                    elif d_x == -1:  # This means moving North / Up
+                        current_cell.stateN = True
+                        next_cell.stateN = True
+                    # 6. Push the current cell to the stack, move to next, mark visited
+                    visited_stack.append(current_cell)
+                    current_cell = next_cell
+                    current_cell.visit = True
+                else:
+                    # This is a dead end
+                    current_cell = visited_stack.pop()
+            except ImportError:
+                print("ERR")
+
+
     def ret_cell(self, coordinate: tuple):
         try:
             for obj in self._all_cells:
                 if obj.coordinate == coordinate:
                     return obj
-        except:
+        except Exception:
             return None
 
     def ret_state(self, coordinate: tuple):
         for obj in self._all_cells:
             if obj.coordinate == coordinate:
-                return obj.etat
+                return obj.visit
         return None
 
     def ret_rdm(self):
