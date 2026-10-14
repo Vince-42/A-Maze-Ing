@@ -50,7 +50,7 @@ class CellGenerator(MazeGenerator):
         self._stateE = False  # True = Open | False = Wall
         self._stateS = False  # True = Open | False = Wall
         self._stateW = False  # True = Open | False = Wall
-        self.etat = False # False = closed
+        self.etat = False  # False = closed
         self.entry = False
         self.exit = False
         self.width = width
@@ -97,7 +97,7 @@ class CellGenerator(MazeGenerator):
                 obj._color = color.YELLOW
                 obj.exit = True
                 obj.etat = True
-            if obj.etat == True and obj.exit == False and obj.entry == False:
+            if obj.etat is True and obj.exit is False and obj.entry is False:
                 obj._color = color.PURPLE
             print(obj._color, end="")
 
@@ -115,24 +115,21 @@ class CellGenerator(MazeGenerator):
                 ce_bas = self.ret_cell((cell_x + 1, cell_y))
                 ce_haut = self.ret_cell((cell_x - 1, cell_y))
                 ce_gauche = self.ret_cell((cell_x, cell_y - 1))
-                print(f"cell {cell_x}{cell_y} | et_droit {et_droit}, et_bas {et_bas}, et_gauche {et_gauche}, et_haut {et_haut}")
-                # print(f"cell {cell_x}{cell_y} | ce_droit {ce_droit}, ce_bas {ce_bas}, ce_gauche {ce_gauche}, ce_haut {ce_haut}")
-                if obj.etat == False:
+                # print(f"cell {cell_x}{cell_y} | et_droit {et_droit}, et_bas {et_bas}, et_gauche {et_gauche}, et_haut {et_haut}")
+                if obj.etat is False:
                     print("cell is OPEN")
-                    if et_haut == None and et_bas == False and et_droit == False and et_gauche == None:
-                        print("str - trying changing")
+                    if et_haut is None and et_bas is False and et_droit is False and et_gauche is None:
+                        print("start")
                         chg_state(self)
                         print("CHANGING STATE SELF")
-                    if et_haut == None and et_bas == False and et_droit == False and et_gauche == True:
-                        print("trying changing")
+                    if et_haut is None and et_bas is False and et_droit is False and et_gauche is True:
                         if self.ret_rdm() == 1:
                             print("CHANGING STATE SELF")
                             chg_state(self)
                         else:
                             print("CHANGING STATE DROIT")
                             chg_state(ce_droit)
-                    if et_haut == None and et_bas == False and et_droit == False and et_gauche == False:
-                        print("trying changing")
+                    if et_haut is None and et_bas is False and et_droit is False and et_gauche is False:
                         nb = self.ret_rdm()
                         if nb == 1:
                             print("CHANGING STATE BAS")
