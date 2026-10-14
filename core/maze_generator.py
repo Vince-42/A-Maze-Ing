@@ -46,6 +46,24 @@ def chg_state(Cell):
 class CellGenerator(MazeGenerator):
     entry_maze = ()
     exit_maze = ()
+    CELL_SHAPES = {
+    (0, 0, 0, 0): "█",
+    (1, 0, 0, 0): "╵",
+    (0, 1, 0, 0): "╶",
+    (0, 0, 1, 0): "╷",
+    (0, 0, 0, 1): "╴",
+    (1, 1, 0, 0): "└",
+    (1, 0, 1, 0): "│",
+    (1, 0, 0, 1): "┘",
+    (0, 1, 1, 0): "┌",
+    (0, 1, 0, 1): "─",
+    (0, 0, 1, 1): "┐",
+    (1, 1, 1, 0): "├",
+    (1, 1, 0, 1): "┴",
+    (1, 0, 1, 1): "┤",
+    (0, 1, 1, 1): "┬",
+    (1, 1, 1, 1): "┼",
+}
 
     def __init__(self, x: int, y: int, width: int, height: int):
         self._color = "██"  # The color of the cell on the maze
@@ -77,34 +95,21 @@ class CellGenerator(MazeGenerator):
     def print_maze(self):
         for obj in self._all_cells:
             if obj.coordinate[1] == 0:
-                # obj._stateE = True
-                # obj._color = color.BLACK
-                pass
                 print("\n", end="")
-            if obj.coordinate[0] == 0:
-                # obj._color = color.BLACK
-                # obj._stateS = True
-                pass
-            if obj.coordinate[0] == obj.width - 1:
-                # obj._stateN = True
-                # obj._color = color.BLACK
-                pass
-            if obj.coordinate[1] == obj.width - 1:
-                # obj._color = color.BLACK
-                # obj._stateW = True
-                pass
-            # print(f"obj coordinate {type(obj.coordinate[0])} | obj entry {type(self.entry_maze[0])}")
+            states = (
+                    obj._stateN,
+                    obj._stateE,
+                    obj._stateS,
+                    obj._stateW
+                )
+            symbol = self.CELL_SHAPES[states]
             if obj.coordinate == self.entry_maze:
-                obj._color = "\033[92mSS\033[0m"
-                obj.entry = True
-                obj.visit = True
-            if obj.coordinate == self.exit_maze:
-                obj._color = "\033[91mEE\033[0m"
-                obj.exit = True
-                obj.visit = True
-            if obj.visit is True and obj.exit is False and obj.entry is False:
-                obj._color = color.PURPLE
-            print(obj._color, end="")
+                obj._color = "\033[92mEE\033[0m"
+            elif obj.coordinate == self.exit_maze:
+                obj._color = "\033[91mOO\033[0m"
+            elif obj.visit is True:
+                symbol = f"\033[95m{symbol}\033[0m"
+            print(f" {symbol} ", end="")
 
     def check_maze(self):
         print("\n")
@@ -173,6 +178,7 @@ class CellGenerator(MazeGenerator):
 #		2. Cette case redevient votre case actuelle.
 
     def backtracker(self):
+        count = 0
         # cell to start the maze generation
         current_cell = random.choice(self._all_cells)
         current_cell.visit = True
@@ -181,7 +187,7 @@ class CellGenerator(MazeGenerator):
         while len(visited_stack) > 0:
             try:
                 cell_x = current_cell.coordinate[0]
-                cell_y = current_cell.coordinate[0]
+                cell_y = current_cell.coordinate[1]
                 # get info on cell next to current cell 
                 lst_et = [
                     self.ret_cell((cell_x, cell_y + 1)),  # Right
@@ -194,22 +200,22 @@ class CellGenerator(MazeGenerator):
                 if unvisited_ok_cell:
                     # 5. Choose a random unvisited neighbor to move to
                     next_cell = random.choice(unvisited_ok_cell)
-                    # --- Breaking the Wall ---
+                    # Breaking the Wall between cell
                     # define diff between x,y of current/next cell
                     d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                     d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
                     if d_y == 1:  # This means moving East / Right
                         current_cell.stateE = True
-                        next_cell.stateE = True
+                        next_cell.stateW = True
                     elif d_y == -1:  # This means moving West / Left
                         current_cell.stateW = True
-                        next_cell.stateW = True
+                        next_cell.stateE = True
                     elif d_x == 1:  # This means moving South / Down
                         current_cell.stateS = True
-                        next_cell.stateS = True
+                        next_cell.stateN = True
                     elif d_x == -1:  # This means moving North / Up
                         current_cell.stateN = True
-                        next_cell.stateN = True
+                        next_cell.stateS = True
                     # 6. Push the current cell to the stack, move to next, mark visited
                     visited_stack.append(current_cell)
                     current_cell = next_cell
