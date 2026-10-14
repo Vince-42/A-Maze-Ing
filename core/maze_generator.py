@@ -30,7 +30,9 @@ class MazeGenerator():
         generator.fill(self.entry, self.exit)
         generator.create()
         generator.print_maze()
-        generator.check_maze()
+        generator.backtracker()
+        # generator.check_maze()
+        print("\n\n")
         generator.print_maze()
 
     def get_entry(self) -> tuple:
@@ -38,9 +40,7 @@ class MazeGenerator():
 
 
 def chg_state(Cell):
-    print("CHANGING STATE FT")
     Cell.visit = True
-    print(Cell.visit)
 
 
 class CellGenerator(MazeGenerator):
@@ -184,21 +184,51 @@ class CellGenerator(MazeGenerator):
 #		2. Cette case redevient votre case actuelle.
 
     def backtracker(self):
-        nb_cell = len(self._all_cells)
-        start_cell = random.randint(0, nb_cell)
-        for obj in self._all_cells:
+        # cell to start the maze generation
+        current_cell = random.choice(self._all_cells)
+        current_cell.visit = True
+        # visited cell in list
+        visited_stack = [current_cell]
+        while len(visited_stack) > 0:
             try:
-                cell_x = obj.coordinate[0]
-                cell_y = obj.coordinate[1]
-                et_droit = self.ret_state((cell_x, cell_y + 1))
-                et_bas = self.ret_state((cell_x + 1, cell_y))
-                et_haut = self.ret_state((cell_x - 1, cell_y))
-                et_gauche = self.ret_state((cell_x, cell_y - 1))
-                ce_droit = self.ret_cell((cell_x, cell_y + 1))
-                ce_bas = self.ret_cell((cell_x + 1, cell_y))
-                ce_haut = self.ret_cell((cell_x - 1, cell_y))
-                ce_gauche = self.ret_cell((cell_x, cell_y - 1))
-            except:
+                cell_x = current_cell.coordinate[0]
+                cell_y = current_cell.coordinate[0]
+                # get info on cell next to current cell 
+                lst_et = [
+                    self.ret_cell((cell_x, cell_y + 1)),  # Right
+                    self.ret_cell((cell_x + 1, cell_y)),  # Down
+                    self.ret_cell((cell_x - 1, cell_y)),  # Up
+                    self.ret_cell((cell_x, cell_y - 1))   # Left
+                ]
+                # filtered None return from next to current cell
+                unvisited_ok_cell = [obj for obj in lst_et if obj is not None and not obj.visit]
+                if unvisited_ok_cell:
+                    # 5. Choose a random unvisited neighbor to move to
+                    next_cell = random.choice(unvisited_ok_cell)
+                    # --- Breaking the Wall ---
+                    # define diff between x,y of current/next cell
+                    d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
+                    d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
+                    if d_y == 1:  # This means moving East / Right
+                        current_cell.stateE = True
+                        next_cell.stateE = True
+                    elif d_y == -1:  # This means moving West / Left
+                        current_cell.stateW = True
+                        next_cell.stateW = True
+                    elif d_x == 1:  # This means moving South / Down
+                        current_cell.stateS = True
+                        next_cell.stateS = True
+                    elif d_x == -1:  # This means moving North / Up
+                        current_cell.stateN = True
+                        next_cell.stateN = True
+                    # 6. Push the current cell to the stack, move to next, mark visited
+                    visited_stack.append(current_cell)
+                    current_cell = next_cell
+                    current_cell.visit = True
+                else:
+                    # This is a dead end
+                    current_cell = visited_stack.pop()
+            except ImportError:
                 print("ERR")
 
 
