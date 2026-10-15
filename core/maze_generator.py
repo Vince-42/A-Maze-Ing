@@ -42,35 +42,41 @@ class MazeGenerator():
 def chg_state(Cell):
     Cell.visit = True
 
+def chgstateN(Cell):
+    Cell.stateN = True
+
+
 
 class CellGenerator(MazeGenerator):
     entry_maze = ()
     exit_maze = ()
+
     CELL_SHAPES = {
     (0, 0, 0, 0): "█",
-    (1, 0, 0, 0): "╵",
-    (0, 1, 0, 0): "╶",
-    (0, 0, 1, 0): "╷",
-    (0, 0, 0, 1): "╴",
-    (1, 1, 0, 0): "└",
-    (1, 0, 1, 0): "│",
-    (1, 0, 0, 1): "┘",
-    (0, 1, 1, 0): "┌",
-    (0, 1, 0, 1): "─",
-    (0, 0, 1, 1): "┐",
-    (1, 1, 1, 0): "├",
-    (1, 1, 0, 1): "┴",
-    (1, 0, 1, 1): "┤",
-    (0, 1, 1, 1): "┬",
-    (1, 1, 1, 1): "┼",
+    (1, 0, 0, 0): "╹",
+    (0, 1, 0, 0): "╺",
+    (0, 0, 1, 0): "╻",
+    (0, 0, 0, 1): "╸",
+    (1, 1, 0, 0): "┗",
+    (1, 0, 1, 0): "┃",
+    (1, 0, 0, 1): "┛",
+    (0, 1, 1, 0): "┏",
+    (0, 1, 0, 1): "━",
+    (0, 0, 1, 1): "┓",
+    (1, 1, 1, 0): "┣",
+    (1, 1, 0, 1): "┻",
+    (1, 0, 1, 1): "┫",
+    (0, 1, 1, 1): "┳",
+    (1, 1, 1, 1): "╋",
 }
+
 
     def __init__(self, x: int, y: int, width: int, height: int):
         self._color = "██"  # The color of the cell on the maze
-        self._stateN = False  # True = Open | False = Wall
-        self._stateE = False  # True = Open | False = Wall
-        self._stateS = False  # True = Open | False = Wall
-        self._stateW = False  # True = Open | False = Wall
+        self.stateN = False  # True = Open | False = Wall
+        self.stateE = False  # True = Open | False = Wall
+        self.stateS = False  # True = Open | False = Wall
+        self.stateW = False  # True = Open | False = Wall
         self.visit = False  # False = closed
         self.entry = False
         self.exit = False
@@ -97,10 +103,10 @@ class CellGenerator(MazeGenerator):
             if obj.coordinate[1] == 0:
                 print("\n", end="")
             states = (
-                    obj._stateN,
-                    obj._stateE,
-                    obj._stateS,
-                    obj._stateW
+                    obj.stateN,
+                    obj.stateE,
+                    obj.stateS,
+                    obj.stateW
                 )
             symbol = self.CELL_SHAPES[states]
             if obj.coordinate == self.entry_maze:
@@ -108,7 +114,8 @@ class CellGenerator(MazeGenerator):
             elif obj.coordinate == self.exit_maze:
                 obj._color = "\033[91mOO\033[0m"
             elif obj.visit is True:
-                symbol = f"\033[95m{symbol}\033[0m"
+                pass
+                # symbol = f"{symbol}"
             print(f" {symbol} ", end="")
 
     def check_maze(self):
@@ -205,15 +212,19 @@ class CellGenerator(MazeGenerator):
                     d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                     d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
                     if d_y == 1:  # This means moving East / Right
+                        print("Moving East")
                         current_cell.stateE = True
                         next_cell.stateW = True
                     elif d_y == -1:  # This means moving West / Left
+                        print("Moving West")
                         current_cell.stateW = True
                         next_cell.stateE = True
                     elif d_x == 1:  # This means moving South / Down
+                        print("Moving South")
                         current_cell.stateS = True
                         next_cell.stateN = True
                     elif d_x == -1:  # This means moving North / Up
+                        print("Moving North")
                         current_cell.stateN = True
                         next_cell.stateS = True
                     # 6. Push the current cell to the stack, move to next, mark visited

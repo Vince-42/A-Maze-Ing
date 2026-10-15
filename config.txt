@@ -3,13 +3,13 @@
 WIDTH=20
 
 # HEIGHT Maze height (y)
-HEIGHT=15
+HEIGHT=20
 
 # ENTRY Entry coordinates (x,y) 
-ENTRY=5,5
+ENTRY=0,0
 
 # EXIT Exit coordinates (x,y) 
-EXIT=19,14
+EXIT=19,4
 
 # OUTPUT_FILE Output filename
 OUTPUT_FILE=maze.txt
