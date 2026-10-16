@@ -90,7 +90,7 @@ class CellGenerator(MazeGenerator):
             if obj.coordinate == self.entry_maze:
                 symbol = color.GREEN + "███"  + color.RESET
             elif obj.coordinate == self.exit_maze:
-                symbol = color.GREEN + "███" + color.RESET
+                symbol = color.RED + "███" + color.RESET
             if obj.coordinate[1] == 0:
                 #symbol = "GG" 
                 symbol = CELL_SHAPES[(0, 0, 0, 1)]
