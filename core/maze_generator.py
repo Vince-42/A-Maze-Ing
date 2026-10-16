@@ -6,6 +6,7 @@
 
 import utils.color as color
 import random
+from utils.design import CELL_SHAPES
 
 random.seed()
 
@@ -51,26 +52,6 @@ class CellGenerator(MazeGenerator):
     entry_maze = ()
     exit_maze = ()
 
-    CELL_SHAPES = {
-    (0, 0, 0, 0): "█",
-    (1, 0, 0, 0): "╹",
-    (0, 1, 0, 0): "╺",
-    (0, 0, 1, 0): "╻",
-    (0, 0, 0, 1): "╸",
-    (1, 1, 0, 0): "┗",
-    (1, 0, 1, 0): "┃",
-    (1, 0, 0, 1): "┛",
-    (0, 1, 1, 0): "┏",
-    (0, 1, 0, 1): "━",
-    (0, 0, 1, 1): "┓",
-    (1, 1, 1, 0): "┣",
-    (1, 1, 0, 1): "┻",
-    (1, 0, 1, 1): "┫",
-    (0, 1, 1, 1): "┳",
-    (1, 1, 1, 1): "╋",
-}
-
-
     def __init__(self, x: int, y: int, width: int, height: int):
         self._color = "██"  # The color of the cell on the maze
         self.stateN = False  # True = Open | False = Wall
@@ -93,8 +74,8 @@ class CellGenerator(MazeGenerator):
         pass
 
     def create(self):
-        for i in range(self.width):
-            for ii in range(self.height):
+        for i in range(self.width + 1):
+            for ii in range(self.height + 1):
                 new = CellGenerator(i, ii, self.width, self.height)
                 self._all_cells.append(new)
 
@@ -108,15 +89,36 @@ class CellGenerator(MazeGenerator):
                     obj.stateS,
                     obj.stateW
                 )
-            symbol = self.CELL_SHAPES[states]
+            symbol = CELL_SHAPES[states]
             if obj.coordinate == self.entry_maze:
-                obj._color = "\033[92mEE\033[0m"
+                symbol = symbol + color.GREEN + color.RESET
             elif obj.coordinate == self.exit_maze:
-                obj._color = "\033[91mOO\033[0m"
-            elif obj.visit is True:
-                pass
-                # symbol = f"{symbol}"
-            print(f" {symbol} ", end="")
+                symbol = symbol + color.GREEN + color.RESET
+            if obj.coordinate[1] == 0:
+                #symbol = "GA" 
+                symbol = CELL_SHAPES[(0, 0, 0, 1)]
+            if obj.coordinate[0] == self.width and ( obj.coordinate[1] != 0 or obj.coordinate[1] != self.height):
+                #symbol = "BB" 
+                symbol = CELL_SHAPES[(0, 0, 1, 0)]  
+            if obj.coordinate[1] == 0 and obj.coordinate[0] == 0:
+                #symbol = "HG" 
+                symbol = CELL_SHAPES[(1, 0, 0, 1)]
+            if obj.coordinate[1] == self.height:
+                #symbol = "DR"
+                symbol = CELL_SHAPES[(0, 1, 0, 0)]
+            if obj.coordinate[0] == 0 and (obj.coordinate[1] != 0 and obj.coordinate[1] != self.height):
+                #symbol = "HH"
+                symbol = CELL_SHAPES[(1, 0, 0, 0)]
+            if obj.coordinate[0] == 0 and obj.coordinate[1] == self.height:
+                #symbol = "HD"
+                symbol = CELL_SHAPES[(1, 1, 0, 0)]
+            if obj.coordinate[0] == self.width and obj.coordinate[1] == 0:
+                #symbol = "BG"
+                symbol = CELL_SHAPES[(0, 0, 1, 1)] 
+            if obj.coordinate[0] == self.width and obj.coordinate[1] == self.height:
+                #symbol = "BD"
+                symbol = CELL_SHAPES[(0, 1, 1, 0)] 
+            print(f"{symbol}", end="")
 
     def check_maze(self):
         print("\n")
@@ -185,7 +187,6 @@ class CellGenerator(MazeGenerator):
 #		2. Cette case redevient votre case actuelle.
 
     def backtracker(self):
-        count = 0
         # cell to start the maze generation
         current_cell = random.choice(self._all_cells)
         current_cell.visit = True
