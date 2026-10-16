@@ -14,9 +14,6 @@ random.seed()
 
 # I NEED TO HAVE ONLY MAZE GENERATOR
 
-idea = (color.BLACK, color.BLUE)
-verite = (True, False)
-
 class MazeGenerator():
     def __init__(self, conf: object):
         self.maze = conf
@@ -91,33 +88,41 @@ class CellGenerator(MazeGenerator):
                 )
             symbol = CELL_SHAPES[states]
             if obj.coordinate == self.entry_maze:
-                symbol = symbol + color.GREEN + color.RESET
+                symbol = color.GREEN + "███"  + color.RESET
             elif obj.coordinate == self.exit_maze:
-                symbol = symbol + color.GREEN + color.RESET
+                symbol = color.GREEN + "███" + color.RESET
             if obj.coordinate[1] == 0:
-                #symbol = "GA" 
+                #symbol = "GG" 
                 symbol = CELL_SHAPES[(0, 0, 0, 1)]
+                obj.visit = True
             if obj.coordinate[0] == self.width and ( obj.coordinate[1] != 0 or obj.coordinate[1] != self.height):
                 #symbol = "BB" 
-                symbol = CELL_SHAPES[(0, 0, 1, 0)]  
+                symbol = CELL_SHAPES[(0, 0, 1, 0)]
+                obj.visit = True
             if obj.coordinate[1] == 0 and obj.coordinate[0] == 0:
                 #symbol = "HG" 
                 symbol = CELL_SHAPES[(1, 0, 0, 1)]
+                obj.visit = True
             if obj.coordinate[1] == self.height:
-                #symbol = "DR"
+                #symbol = "DD"
                 symbol = CELL_SHAPES[(0, 1, 0, 0)]
+                obj.visit = True
             if obj.coordinate[0] == 0 and (obj.coordinate[1] != 0 and obj.coordinate[1] != self.height):
                 #symbol = "HH"
                 symbol = CELL_SHAPES[(1, 0, 0, 0)]
+                obj.visit = True
             if obj.coordinate[0] == 0 and obj.coordinate[1] == self.height:
                 #symbol = "HD"
                 symbol = CELL_SHAPES[(1, 1, 0, 0)]
+                obj.visit = True
             if obj.coordinate[0] == self.width and obj.coordinate[1] == 0:
                 #symbol = "BG"
-                symbol = CELL_SHAPES[(0, 0, 1, 1)] 
+                symbol = CELL_SHAPES[(0, 0, 1, 1)]
+                obj.visit = True
             if obj.coordinate[0] == self.width and obj.coordinate[1] == self.height:
                 #symbol = "BD"
-                symbol = CELL_SHAPES[(0, 1, 1, 0)] 
+                symbol = CELL_SHAPES[(0, 1, 1, 0)]
+                obj.visit = True
             print(f"{symbol}", end="")
 
     def check_maze(self):
