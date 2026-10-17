@@ -6,7 +6,7 @@
 
 import utils.color as color
 import random
-from utils.design import CELL_SHAPES
+from utils.design import MAZE
 
 random.seed()
 
@@ -71,115 +71,45 @@ class CellGenerator(MazeGenerator):
         pass
 
     def create(self):
-        for i in range(self.width + 1):
-            for ii in range(self.height + 1):
+        for i in range(self.width):
+            for ii in range(self.height):
                 new = CellGenerator(i, ii, self.width, self.height)
                 self._all_cells.append(new)
 
+
     def print_maze(self):
-        for obj in self._all_cells:
-            if obj.coordinate[1] == 0:
-                print("\n", end="")
-            states = (
-                    obj.stateN,
-                    obj.stateE,
-                    obj.stateS,
-                    obj.stateW
-                )
-            symbol = CELL_SHAPES[states]
-            if obj.coordinate == self.entry_maze:
-                symbol = color.GREEN + "███"  + color.RESET
-            elif obj.coordinate == self.exit_maze:
-                symbol = color.RED + "███" + color.RESET
-            if obj.coordinate[1] == 0:
-                #symbol = "GG" 
-                symbol = CELL_SHAPES[(0, 0, 0, 1)]
-                obj.visit = True
-            if obj.coordinate[0] == self.width and ( obj.coordinate[1] != 0 or obj.coordinate[1] != self.height):
-                #symbol = "BB" 
-                symbol = CELL_SHAPES[(0, 0, 1, 0)]
-                obj.visit = True
-            if obj.coordinate[1] == 0 and obj.coordinate[0] == 0:
-                #symbol = "HG" 
-                symbol = CELL_SHAPES[(1, 0, 0, 1)]
-                obj.visit = True
-            if obj.coordinate[1] == self.height:
-                #symbol = "DD"
-                symbol = CELL_SHAPES[(0, 1, 0, 0)]
-                obj.visit = True
-            if obj.coordinate[0] == 0 and (obj.coordinate[1] != 0 and obj.coordinate[1] != self.height):
-                #symbol = "HH"
-                symbol = CELL_SHAPES[(1, 0, 0, 0)]
-                obj.visit = True
-            if obj.coordinate[0] == 0 and obj.coordinate[1] == self.height:
-                #symbol = "HD"
-                symbol = CELL_SHAPES[(1, 1, 0, 0)]
-                obj.visit = True
-            if obj.coordinate[0] == self.width and obj.coordinate[1] == 0:
-                #symbol = "BG"
-                symbol = CELL_SHAPES[(0, 0, 1, 1)]
-                obj.visit = True
-            if obj.coordinate[0] == self.width and obj.coordinate[1] == self.height:
-                #symbol = "BD"
-                symbol = CELL_SHAPES[(0, 1, 1, 0)]
-                obj.visit = True
-            print(f"{symbol}", end="")
+        # create matrix - visualisation *3 - better
+        display = [
+            ["wall"] * (2 * self.width + 1) 
+            for _ in range(2 * self.height + 1)
+        ]
+        # create the path
+        for x in range(self.height):
+            for y in range(self.width):
+                cell = self.ret_cell((x,y))
+                ligne = 2 * x + 1
+                col = 2 * y + 1
+                
+                display[ligne][col] = "path"
+                # open next cell if true
+                if cell.stateN:
+                    display[ligne - 1][col] = "path"
+                
+                if cell.stateE:
+                    display[ligne][col + 1] = "path"
+                
+                if cell.stateS:
+                    display[ligne + 1][col] = "path"
+                
+                if cell.stateW:
+                    display[ligne][col - 1] = "path"
+        # start & end
+        display[2 * self.entry_maze[0] + 1][2 * self.entry_maze[0] + 1] = "start"
+        display[2 * self.exit_maze[0] + 1][2 * self.exit_maze[1] + 1] = "end"
+        for ligne in display:
+            print("".join(MAZE[pixel] for pixel in ligne))
 
-    def check_maze(self):
-        print("\n")
-        unvisited_cell = len(self._all_cells)
-        while unvisited_cell > 0:
-            for obj in self._all_cells:
-                try:
-                    cell_x = obj.coordinate[0]
-                    cell_y = obj.coordinate[1]
-                    et_droit = self.ret_state((cell_x, cell_y + 1))
-                    et_bas = self.ret_state((cell_x + 1, cell_y))
-                    et_haut = self.ret_state((cell_x - 1, cell_y))
-                    et_gauche = self.ret_state((cell_x, cell_y - 1))
-                    lst_et = (et_bas, et_haut, et_droit, et_gauche)
-                    ce_droit = self.ret_cell((cell_x, cell_y + 1))
-                    ce_bas = self.ret_cell((cell_x + 1, cell_y))
-                    ce_haut = self.ret_cell((cell_x - 1, cell_y))
-                    ce_gauche = self.ret_cell((cell_x, cell_y - 1))
-#                     print(f"cell {cell_x}{cell_y} | et_droit {et_droit}, et_bas {et_bas}, et_gauche {et_gauche}, et_haut {et_haut}")
-                    # print(f"cell {cell_x}{cell_y} | ce_droit {ce_droit}, ce_bas {ce_bas}, ce_gauche {ce_gauche}, ce_haut {ce_haut}")
-                    if obj.entry == True:
-                        # write the first path cell from the given cell
-                        if et_haut == None and et_bas == False and et_droit == False and et_gauche == None:
-                            print("trying changing")
-                            nb = self.ret_rdm()
-                            if nb == 1 or nb == 3:
-                                print("CHANGING STATE BAS")
-                                chg_state(ce_bas)
-                            elif nb == 2 or nb == 4:
-                                print("CHANGING STATE DROIT")
-                                chg_state(ce_droit)
-                            unvisited_cell -= 1
-                    if et_haut == False and et_bas == False and et_droit == False and et_gauche == False:
-                        print("trying changing")
-                        nb = self.ret_rdm()
-                        unvisited_cell -= 1
-                        if nb == 1:
-                            print("CHANGING STATE BAS")
-                            chg_state(ce_bas)
-                        elif nb == 2:
-                            print("CHANGING STATE DROIT")                                
-                            chg_state(ce_droit)
-                        elif nb == 3:
-                            print("CHANGING STATE GAUCHE")
-                            chg_state(ce_gauche)
-                        elif nb == 4:
-                            print("CHANGING STATE HAUT")
-                            chg_state(ce_haut)
-                            # choisir un des objet bas ou droite
-                            # changer l'etat de cette obj a true       
-                except AttributeError as e:
-                    print(f"error when checking : ({cell_x},{cell_y}) ")
-                    continue
-            unvisited_cell -= 1
-
-# 1 Départ : Choisissez une case au hasard. Marquez-la comme Visité.
+# 1 Départ : Choisir une case au hasard. Marquer comme Visité.
 # 2. Boucle : Tant qu'il reste des cases non visitées dans le labyrinthe :
 #	• Regardez autour : Listez les cases voisines de la case actuelle (haut, bas, gauche, droite) qui sont encore Non visitées.
 #	• Choix 1 : S'il y a des voisins non visités :
@@ -194,6 +124,7 @@ class CellGenerator(MazeGenerator):
     def backtracker(self):
         # cell to start the maze generation
         current_cell = random.choice(self._all_cells)
+        #current_cell = self.ret_cell(self.entry_maze)
         current_cell.visit = True
         # visited cell in list
         visited_stack = [current_cell]
@@ -218,19 +149,19 @@ class CellGenerator(MazeGenerator):
                     d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                     d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
                     if d_y == 1:  # This means moving East / Right
-                        print("Moving East")
+                        print("E")
                         current_cell.stateE = True
                         next_cell.stateW = True
                     elif d_y == -1:  # This means moving West / Left
-                        print("Moving West")
+                        print("W")
                         current_cell.stateW = True
                         next_cell.stateE = True
                     elif d_x == 1:  # This means moving South / Down
-                        print("Moving South")
+                        print("S")
                         current_cell.stateS = True
                         next_cell.stateN = True
                     elif d_x == -1:  # This means moving North / Up
-                        print("Moving North")
+                        print("N")
                         current_cell.stateN = True
                         next_cell.stateS = True
                     # 6. Push the current cell to the stack, move to next, mark visited
