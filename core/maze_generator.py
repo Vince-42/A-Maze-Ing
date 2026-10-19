@@ -27,6 +27,7 @@ class MazeGenerator():
         generator = CellGenerator(0, 0, width=self.width, height=self.height)
         generator.fill(self.entry, self.exit)
         generator.create()
+        generator.create_fortytwo()
         generator.print_maze()
         generator.backtracker()
         # generator.check_maze()
@@ -60,21 +61,45 @@ class CellGenerator(MazeGenerator):
         self.exit = False
         self.width = width
         self.height = height
-        self.visit = False
+        self.fortytwo = False
         self.coordinate = (x, y)
         self._all_cells = []
     
     def fill(self, entry_m: tuple[int, int], exit_m: tuple):
         self.entry_maze = entry_m
         self.exit_maze = exit_m
-        print(f"entry {self.entry_maze} | exit {self.exit_maze}")
-        pass
+
 
     def create(self):
         for i in range(self.width):
             for ii in range(self.height):
                 new = CellGenerator(i, ii, self.width, self.height)
                 self._all_cells.append(new)
+
+    def create_fortytwo(self):
+        rows = 2 * self.height + 1
+        cols = 2 * self.width + 1
+        offset_row = (rows - 6) // 2
+        offset_col = (cols - 7) // 2
+        display = [
+                    ["wall"] * rows
+                    for _ in range(cols)
+                ]
+        for i in range(3):
+            display[3 + offset_row][i + offset_col] = "fortytwo"
+            display[i + 1 + offset_row][6 + offset_col] = "fortytwo"
+            display[i + 3 + offset_row][4 + offset_col] = "fortytwo"
+            display[0 + offset_row][i + 4 + offset_col] = "fortytwo"
+        for i in range(6):
+            display[i + offset_row][2 + offset_col] = "fortytwo"
+        display[2 + offset_row][0 + offset_col] = "fortytwo"
+        display[1 + offset_row][1 + offset_col] = "fortytwo"
+        display[3 + offset_row][5 + offset_col] = "fortytwo"
+        display[5 + offset_row][5 + offset_col] = "fortytwo"
+        display[5 + offset_row][6 + offset_col] = "fortytwo"
+        for ligne in display:
+            print("".join(MAZE[pixel] for pixel in ligne))
+
 
 
     def print_maze(self):
@@ -89,18 +114,15 @@ class CellGenerator(MazeGenerator):
                 cell = self.ret_cell((x,y))
                 ligne = 2 * x + 1
                 col = 2 * y + 1
-                
+                # open the middle part of the display
                 display[ligne][col] = "path"
                 # open next cell if true
                 if cell.stateN:
                     display[ligne - 1][col] = "path"
-                
                 if cell.stateE:
                     display[ligne][col + 1] = "path"
-                
                 if cell.stateS:
                     display[ligne + 1][col] = "path"
-                
                 if cell.stateW:
                     display[ligne][col - 1] = "path"
         # start & end
