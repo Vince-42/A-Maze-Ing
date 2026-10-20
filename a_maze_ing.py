@@ -40,6 +40,7 @@ def main() -> bool:
 
 
 if __name__ == "__main__":
+    # could be the main menu on LOOP
     if main():
         conf = main_config()
         maze_o = MazeGenerator(conf)
