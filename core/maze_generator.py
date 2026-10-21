@@ -84,9 +84,15 @@ class CellGenerator(MazeGenerator):
             se = 0 if obj.stateE else 1
             ss = 0 if obj.stateS else 1
             sw = 0 if obj.stateW else 1
-            print(f"{sn}{se}{ss}{sw}", end="")
+            str_bi = str(sn) + str(se) + str(ss) + str(sw)
+            print(str_bi, end="")
+            hexa = hex(int(str_bi, 2))
+            # print(hexa, end="")
             if obj.coordinate[1] == self.width - 1:
                 print()
+        print()
+        print(self.entry_maze)
+        print(self.exit_maze)
 
     def update_fortytwo(self, coordinate: tuple):
         cell_forty = self.ret_cell(coordinate)
