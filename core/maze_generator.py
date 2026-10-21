@@ -80,11 +80,11 @@ class CellGenerator(MazeGenerator):
     def update_fortytwo(self,coordinate: tuple):
         cell_forty = self.ret_cell(coordinate)
         if cell_forty:
-            cell_forty.visit = True
-            # cell_forty.stateN = False
-            # cell_forty.stateE = False
-            # cell_forty.stateS = False
-            # cell_forty.stateW = False
+            cell_forty.visit = False
+            cell_forty.stateN = False
+            cell_forty.stateE = False
+            cell_forty.stateS = False
+            cell_forty.stateW = False
             cell_forty.fortytwo = True
 
     def create_fortytwo(self) -> list:
@@ -119,7 +119,6 @@ class CellGenerator(MazeGenerator):
         display[5 + offset_row][6 + offset_col] = "fortytwo"
         # self.update_fortytwo((5 + offset_row, 6 + offset_col))
         return display
-
 
 
     def print_maze(self):
