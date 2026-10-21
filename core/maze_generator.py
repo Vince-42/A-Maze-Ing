@@ -70,17 +70,16 @@ class CellGenerator(MazeGenerator):
         self.entry_maze = entry_m
         self.exit_maze = exit_m
 
-
     def create(self):
         for i in range(self.width):
             for ii in range(self.height):
                 new = CellGenerator(i, ii, self.width, self.height)
                 self._all_cells.append(new)
 
-    def update_fortytwo(self,coordinate: tuple):
+    def update_fortytwo(self, coordinate: tuple):
         cell_forty = self.ret_cell(coordinate)
         if cell_forty:
-            cell_forty.visit = False
+            cell_forty.visit = True
             cell_forty.stateN = False
             cell_forty.stateE = False
             cell_forty.stateS = False
@@ -98,7 +97,7 @@ class CellGenerator(MazeGenerator):
                 ]
         if self.height < 3 or self.width < 3:
             return display
-           # raise err.FortyTwoError("42 logo can not be displayed on a maze with x or y inferior to 3.")
+        # raise err.FortyTwoError("42 logo can not be displayed on a maze with x or y inferior to 3.")
         for i in range(3):
             display[3 + offset_row][i + offset_col] = "fortytwo"
             # self.update_fortytwo((3 + offset_row, i + offset_col))
@@ -106,10 +105,10 @@ class CellGenerator(MazeGenerator):
             # self.update_fortytwo((i + 1 + offset_row, 6 + offset_col))
             display[i + 3 + offset_row][4 + offset_col] = "fortytwo"
             # self.update_fortytwo((i + 3 + offset_row, 4 + offset_col))
-            display[offset_row][i + 4 + offset_col] = "fortytwo"
+            display[offset_row + 1][i + 4 + offset_col] = "fortytwo"
             # self.update_fortytwo((offset_row, i + 4 + offset_col))
-            display[i + offset_row][offset_col] = "fortytwo"
-        for i in range(6):
+            display[i + 1 + offset_row][offset_col] = "fortytwo"
+        for i in range(1, 6):
             display[i + offset_row][2 + offset_col] = "fortytwo"
             # self.update_fortytwo((i + offset_row, 2 + offset_col))
         display[3 + offset_row][5 + offset_col] = "fortytwo"
@@ -120,13 +119,12 @@ class CellGenerator(MazeGenerator):
         # self.update_fortytwo((5 + offset_row, 6 + offset_col))
         return display
 
-
     def print_maze(self):
         # create matrix - visualisation *3 - better
         # display = [
-       #    ["wall"] * (2 * self.width + 1) 
-       #     for _ in range(2 * self.height + 1)
-       # ]
+        #    ["wall"] * (2 * self.width + 1) 
+        #     for _ in range(2 * self.height + 1)
+        # ]
         display = self.create_fortytwo()
         # Test out the display
         for ligne in display:
@@ -135,21 +133,23 @@ class CellGenerator(MazeGenerator):
         # create the path
         for x in range(self.height):
             for y in range(self.width):
-                cell = self.ret_cell((x,y))
+                cell = self.ret_cell((x, y))
                 ligne = 2 * x + 1
                 col = 2 * y + 1
                 # open the middle part of the display
-                if display[ligne][col] != "fortytwo":
+                if display[ligne][col] != "fortytwo" and display[ligne + 1][col] != "fortytwo" and display[ligne - 1][col] != "fortytwo":
                     display[ligne][col] = "path"
                     # open next cell if true
-                    if cell.stateN and display[ligne - 1][col] is not "fortytwo":
+                    if cell.stateN and display[ligne - 1][col] != "fortytwo":
                         display[ligne - 1][col] = "path"
-                    if cell.stateE and display[ligne][col + 1] is not "fortytwo": 
+                    if cell.stateE and display[ligne][col + 1] != "fortytwo":
                         display[ligne][col + 1] = "path"
-                    if cell.stateS and display[ligne + 1][col] is not "fortytwo":
+                    if cell.stateS and display[ligne + 1][col] != "fortytwo":
                         display[ligne + 1][col] = "path"
-                    if cell.stateW and display[ligne][col - 1] is not "fortytwo":
+                    if cell.stateW and display[ligne][col - 1] != "fortytwo":
                         display[ligne][col - 1] = "path"
+                else:
+                    self.update_fortytwo((x, y))
         # start & end
         display[2 * self.entry_maze[0] + 1][2 * self.entry_maze[0] + 1] = "start"
         display[2 * self.exit_maze[0] + 1][2 * self.exit_maze[1] + 1] = "end"
@@ -171,7 +171,7 @@ class CellGenerator(MazeGenerator):
     def backtracker(self):
         # cell to start the maze generation
         current_cell = random.choice(self._all_cells)
-        #current_cell = self.ret_cell(self.entry_maze)
+        # current_cell = self.ret_cell(self.entry_maze)
         current_cell.visit = True
         # visited cell in list
         visited_stack = [current_cell]
@@ -187,7 +187,9 @@ class CellGenerator(MazeGenerator):
                     self.ret_cell((cell_x, cell_y - 1))   # Left
                 ]
                 # filtered None return from next to current cell
-                unvisited_ok_cell = [obj for obj in lst_et if obj is not None and not obj.visit]
+                unvisited_ok_cell = [obj for obj in lst_et if obj is not None
+                                     and not obj.visit]
+                print(unvisited_ok_cell)
                 if unvisited_ok_cell:
                     # 5. Choose a random unvisited neighbor to move to
                     next_cell = random.choice(unvisited_ok_cell)
@@ -220,7 +222,6 @@ class CellGenerator(MazeGenerator):
                     current_cell = visited_stack.pop()
             except ImportError:
                 print("ERR")
-
 
     def ret_cell(self, coordinate: tuple):
         try:
