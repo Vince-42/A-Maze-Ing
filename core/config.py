@@ -19,8 +19,8 @@ class Configuration():
         self._output_file: str = ""
         self._perfect = None
         self._seed: int = -1
-        self._algorythm = None
-        self._display_mode = None
+        self._algorythm = "Backtracking"
+        self._display_mode = "ASCII"
         self._data_check: int = 0
 
     def extract(self):

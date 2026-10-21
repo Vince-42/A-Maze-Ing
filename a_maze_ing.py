@@ -8,6 +8,7 @@ import sys
 from core.config import main_config
 from core.maze_generator import MazeGenerator
 from core.maze_generator import CellGenerator
+from utils import error as err
 
 # ######### class   ##########
 
@@ -42,10 +43,13 @@ def main() -> bool:
 if __name__ == "__main__":
     # could be the main menu on LOOP
     if main():
-        conf = main_config()
-        if conf._data_check >= 6:
-            maze_o = MazeGenerator(conf)
-            maze_o.cell_gen()
+        try:
+            conf = main_config()
+            if conf._data_check >= 6:
+                maze_o = MazeGenerator(conf)
+                maze_o.cell_gen()
+        except err.FortyTwoError as e:
+            print("You can't have the entry/exit within the 42 logo.")
         
     # this below is just for checking purpose
     # print parameters to check config

@@ -9,7 +9,7 @@ import random
 from utils.design import MAZE
 from utils import error as err
 
-random.seed()
+random.seed(6)
 
 # ######### class   ##########
 
@@ -70,9 +70,7 @@ class CellGenerator(MazeGenerator):
 
     def create(self):
         for i in range(self.height):
-            print(f"y - {i}")
             for ii in range(self.width):
-                print(f"x - {ii}")
                 new = CellGenerator(ii, i, self.width, self.height)
                 self._all_cells.append(new)
     
@@ -120,7 +118,6 @@ class CellGenerator(MazeGenerator):
                 ]
         if self.height <= 7 or self.width <= 7:
             return display
-        # raise err.FortyTwoError("42 logo can not be displayed on a maze with x or y inferior to 3.")
         for i in range(3):
             display[3 + offset_row][i + offset_col] = "fortytwo"
             # self.update_fortytwo((3 + offset_row, i + offset_col))
@@ -166,8 +163,11 @@ class CellGenerator(MazeGenerator):
                         display[ligne][col - 1] = "path"
                 else:
                     self.update_fortytwo((x, y))
+                    if self.entry_maze == ((x,y)):
+                        raise err.FortyTwoError("entry within 42 logo.")
+
         # start & end
-        display[2 * self.entry_maze[0] + 1][2 * self.entry_maze[0] + 1] = "start"
+        display[2 * self.entry_maze[0] + 1][2 * self.entry_maze[1] + 1] = "start"
         display[2 * self.exit_maze[0] + 1][2 * self.exit_maze[1] + 1] = "end"
         if printing:
             for ligne in display:
@@ -216,19 +216,15 @@ class CellGenerator(MazeGenerator):
                     d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                     d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
                     if d_y == 1:  # This means moving East / Right
-                        print("E")
                         current_cell.stateE = True
                         next_cell.stateW = True
                     elif d_y == -1:  # This means moving West / Left
-                        print("W")
                         current_cell.stateW = True
                         next_cell.stateE = True
                     elif d_x == 1:  # This means moving South / Down
-                        print("S")
                         current_cell.stateS = True
                         next_cell.stateN = True
                     elif d_x == -1:  # This means moving North / Up
-                        print("N")
                         current_cell.stateN = True
                         next_cell.stateS = True
                     # 6. Push the current cell to the stack, move to next, mark visited
