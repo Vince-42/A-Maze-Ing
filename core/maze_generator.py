@@ -32,6 +32,7 @@ class MazeGenerator():
         generator.backtracker()
         print("\n\n")
         generator.print_maze(True)
+        generator.print_data()
 
     def get_entry(self) -> tuple:
         return self.entry
@@ -73,6 +74,16 @@ class CellGenerator(MazeGenerator):
             for ii in range(self.height):
                 new = CellGenerator(i, ii, self.width, self.height)
                 self._all_cells.append(new)
+    
+    def print_data(self):
+        for obj in self._all_cells:
+            sn = 0 if obj.stateN else 1
+            se = 0 if obj.stateE else 1
+            ss = 0 if obj.stateS else 1
+            sw = 0 if obj.stateW else 1
+            print(f"{sn}{se}{ss}{sw}", end="")
+            if obj.coordinate[1] == self.width - 1:
+                print()
 
     def update_fortytwo(self, coordinate: tuple):
         cell_forty = self.ret_cell(coordinate)
