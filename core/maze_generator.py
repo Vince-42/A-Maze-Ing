@@ -72,7 +72,6 @@ class CellGenerator(MazeGenerator):
         for i in range(self.height):
             for ii in range(self.width):
                 new = CellGenerator(ii, i, self.width, self.height)
-                print(f"created cell x{ii},y{i}")
                 self._all_cells.append(new)
     
     def print_data(self):
@@ -104,8 +103,8 @@ class CellGenerator(MazeGenerator):
     def create_fortytwo(self) -> list:
         rows = 2 * self.height + 1
         cols = 2 * self.width + 1
-        offset_row = (rows - 6) // 2
-        offset_col = (cols - 7) // 2
+        offset_row = (cols - 6) // 2
+        offset_col = (rows - 7) // 2
         display = [
             ["wall"] * rows
             for _ in range(cols)
@@ -132,24 +131,16 @@ class CellGenerator(MazeGenerator):
         # self.update_fortytwo((5 + offset_row, 5 + offset_col))
         display[5 + offset_row][6 + offset_col] = "fortytwo"
         # self.update_fortytwo((5 + offset_row, 6 + offset_col))
-        for ligne in display:
-            print("".join(MAZE[pixel] for pixel in ligne))
         return display
 
     def print_maze(self, printing: bool):
         display = self.create_fortytwo()
         # create the path
-        count = 0
         for x in range(self.width):
             for y in range(self.height):
                 cell = self.ret_cell((x, y))
-                if cell is None:
-                    print(f"None - cell {x},{y}")
-                    continue
                 ligne = 2 * x + 1
                 col = 2 * y + 1
-                count += 1
-                print(count)
                 # open the middle part of the displays
                 if display[ligne][col] != "fortytwo" and\
                     display[ligne + 1][col] != "fortytwo" and\
