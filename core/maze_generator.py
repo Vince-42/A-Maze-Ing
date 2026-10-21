@@ -36,6 +36,9 @@ class MazeGenerator():
 
     def get_entry(self) -> tuple:
         return self.entry
+    
+    def get_cells(self):
+        return self._all_cells
 
 
 def chg_state(Cell):
