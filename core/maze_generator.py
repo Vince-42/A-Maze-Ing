@@ -69,9 +69,10 @@ class CellGenerator(MazeGenerator):
         self.exit_maze = exit_m
 
     def create(self):
-        for i in range(self.width):
-            for ii in range(self.height):
-                new = CellGenerator(i, ii, self.width, self.height)
+        for i in range(self.height):
+            for ii in range(self.width):
+                new = CellGenerator(ii, i, self.width, self.height)
+                print(f"created cell x{ii},y{i}")
                 self._all_cells.append(new)
     
     def print_data(self):
@@ -106,8 +107,8 @@ class CellGenerator(MazeGenerator):
         offset_row = (rows - 6) // 2
         offset_col = (cols - 7) // 2
         display = [
-                    ["wall"] * rows
-                    for _ in range(cols)
+            ["wall"] * rows
+            for _ in range(cols)
                 ]
         if self.height <= 7 or self.width <= 7:
             return display
@@ -131,20 +132,28 @@ class CellGenerator(MazeGenerator):
         # self.update_fortytwo((5 + offset_row, 5 + offset_col))
         display[5 + offset_row][6 + offset_col] = "fortytwo"
         # self.update_fortytwo((5 + offset_row, 6 + offset_col))
+        for ligne in display:
+            print("".join(MAZE[pixel] for pixel in ligne))
         return display
 
     def print_maze(self, printing: bool):
         display = self.create_fortytwo()
         # create the path
-        for x in range(self.height):
-            for y in range(self.width):
+        count = 0
+        for x in range(self.width):
+            for y in range(self.height):
                 cell = self.ret_cell((x, y))
+                if cell is None:
+                    print(f"None - cell {x},{y}")
+                    continue
                 ligne = 2 * x + 1
                 col = 2 * y + 1
-                # open the middle part of the display
+                count += 1
+                print(count)
+                # open the middle part of the displays
                 if display[ligne][col] != "fortytwo" and\
                     display[ligne + 1][col] != "fortytwo" and\
-                        display[ligne - 1][col] != "fortytwo":
+                    display[ligne - 1][col] != "fortytwo":
                     display[ligne][col] = "path"
                     # open next cell if true
                     if cell.stateN and display[ligne - 1][col] != "fortytwo":
