@@ -28,12 +28,10 @@ class MazeGenerator():
         generator = CellGenerator(0, 0, width=self.width, height=self.height)
         generator.fill(self.entry, self.exit)
         generator.create()
-        # generator.create_fortytwo()
-        generator.print_maze()
+        generator.print_maze(False)
         generator.backtracker()
-        # generator.check_maze()
         print("\n\n")
-        generator.print_maze()
+        generator.print_maze(True)
 
     def get_entry(self) -> tuple:
         return self.entry
@@ -95,7 +93,7 @@ class CellGenerator(MazeGenerator):
                     ["wall"] * rows
                     for _ in range(cols)
                 ]
-        if self.height < 3 or self.width < 3:
+        if self.height <= 7 or self.width <= 7:
             return display
         # raise err.FortyTwoError("42 logo can not be displayed on a maze with x or y inferior to 3.")
         for i in range(3):
@@ -119,17 +117,8 @@ class CellGenerator(MazeGenerator):
         # self.update_fortytwo((5 + offset_row, 6 + offset_col))
         return display
 
-    def print_maze(self):
-        # create matrix - visualisation *3 - better
-        # display = [
-        #    ["wall"] * (2 * self.width + 1) 
-        #     for _ in range(2 * self.height + 1)
-        # ]
+    def print_maze(self, printing: bool):
         display = self.create_fortytwo()
-        # Test out the display
-        for ligne in display:
-            print("".join(MAZE[pixel] for pixel in ligne))
-        print()
         # create the path
         for x in range(self.height):
             for y in range(self.width):
@@ -137,7 +126,9 @@ class CellGenerator(MazeGenerator):
                 ligne = 2 * x + 1
                 col = 2 * y + 1
                 # open the middle part of the display
-                if display[ligne][col] != "fortytwo" and display[ligne + 1][col] != "fortytwo" and display[ligne - 1][col] != "fortytwo":
+                if display[ligne][col] != "fortytwo" and\
+                    display[ligne + 1][col] != "fortytwo" and\
+                        display[ligne - 1][col] != "fortytwo":
                     display[ligne][col] = "path"
                     # open next cell if true
                     if cell.stateN and display[ligne - 1][col] != "fortytwo":
@@ -153,8 +144,9 @@ class CellGenerator(MazeGenerator):
         # start & end
         display[2 * self.entry_maze[0] + 1][2 * self.entry_maze[0] + 1] = "start"
         display[2 * self.exit_maze[0] + 1][2 * self.exit_maze[1] + 1] = "end"
-        for ligne in display:
-            print("".join(MAZE[pixel] for pixel in ligne))
+        if printing:
+            for ligne in display:
+                print("".join(MAZE[pixel] for pixel in ligne))
 
 # 1 Départ : Choisir une case au hasard. Marquer comme Visité.
 # 2. Boucle : Tant qu'il reste des cases non visitées dans le labyrinthe :
@@ -171,7 +163,9 @@ class CellGenerator(MazeGenerator):
     def backtracker(self):
         # cell to start the maze generation
         current_cell = random.choice(self._all_cells)
-        # current_cell = self.ret_cell(self.entry_maze)
+        while current_cell.fortytwo is True:
+            current_cell = random.choice(self._all_cells)
+        print(f"Coordinate Starting Maze Cell : {current_cell.coordinate}")
         current_cell.visit = True
         # visited cell in list
         visited_stack = [current_cell]
@@ -189,7 +183,6 @@ class CellGenerator(MazeGenerator):
                 # filtered None return from next to current cell
                 unvisited_ok_cell = [obj for obj in lst_et if obj is not None
                                      and not obj.visit]
-                print(unvisited_ok_cell)
                 if unvisited_ok_cell:
                     # 5. Choose a random unvisited neighbor to move to
                     next_cell = random.choice(unvisited_ok_cell)

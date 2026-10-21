@@ -43,9 +43,9 @@ if __name__ == "__main__":
     # could be the main menu on LOOP
     if main():
         conf = main_config()
-        maze_o = MazeGenerator(conf)
-        # maze_o.print_config() # printing config file to check
-        maze_o.cell_gen()
+        if conf._data_check >= 6:
+            maze_o = MazeGenerator(conf)
+            maze_o.cell_gen()
         
     # this below is just for checking purpose
     # print parameters to check config

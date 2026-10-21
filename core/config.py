@@ -122,14 +122,14 @@ class Configuration():
         # NEED TO BE SURE THAT ENTRANCE AND EXIT ARE ON THE BORDER
         if int(self._exit[0]) > self._width or int(self._exit[1]) > self._height:
             self._data_check -= 1
-            raise err.EntryExitError(f"Entry point outside of the maze.")
+            raise err.EntryExitError("Entry point outside of the maze.")
         if self._entry == self._exit:
             self._data_check -= 1
             raise err.EntryExitError("Entry can not be the same point as the Exit.")
         if int(self._entry[0]) > self._width or int(self._entry[1]) > self._height:
             self._data_check -= 1
             raise err.EntryExitError("Entry point cannot be outside the maze boundaries.")
-        if int(self._exit[0]) > self._width or int(self._exit[1]) > self._height:
+        if int(self._exit[0]) >= self._width or int(self._exit[1]) >= self._height:
             self._data_check -= 1
             raise err.EntryExitError("Exit point cannot be outside the maze boundaries.")
         # if self._entry[0] != 0 and self._entry[0] != self._width - 1 and self._entry[1] != 0 and self._entry[1] != self._width - 1:
