@@ -76,16 +76,16 @@ class CellGenerator(MazeGenerator):
     
     def print_data(self):
         for obj in self._all_cells:
+            if obj.coordinate[0] == 0:
+                print()
             sn = 0 if obj.stateN else 1
             se = 0 if obj.stateE else 1
             ss = 0 if obj.stateS else 1
             sw = 0 if obj.stateW else 1
             str_bi = str(sn) + str(se) + str(ss) + str(sw)
-            print(str_bi, end="")
-            hexa = hex(int(str_bi, 2))
+            hexa = int(str_bi, 2)
+            print(f"{hexa:x}", end="")
             # print(hexa, end="")
-            if obj.coordinate[1] == self.width - 1:
-                print()
         print()
         print(self.entry_maze)
         print(self.exit_maze)
