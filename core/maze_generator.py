@@ -18,7 +18,6 @@ random.seed()
 class MazeGenerator():
     def __init__(self, conf: object):
         self.maze = conf
-        self._all_cells = []
         self.entry = conf._entry
         self.exit = conf._exit
         self.width = conf._width
@@ -36,9 +35,6 @@ class MazeGenerator():
 
     def get_entry(self) -> tuple:
         return self.entry
-    
-    def get_cells(self):
-        return self._all_cells
 
 
 def chg_state(Cell):
@@ -253,3 +249,6 @@ class CellGenerator(MazeGenerator):
     def ret_rdm(self):
         nbr = (1, 2, 3, 4)
         return random.choice(nbr)
+
+    def get_all_cells(self):
+        return self._all_cells
