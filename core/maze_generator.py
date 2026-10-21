@@ -70,25 +70,34 @@ class CellGenerator(MazeGenerator):
 
     def create(self):
         for i in range(self.height):
+            print(f"y - {i}")
             for ii in range(self.width):
+                print(f"x - {ii}")
                 new = CellGenerator(ii, i, self.width, self.height)
                 self._all_cells.append(new)
     
     def print_data(self):
-        for obj in self._all_cells:
-            if obj.coordinate[0] == 0:
-                print()
-            sn = 0 if obj.stateN else 1
-            se = 0 if obj.stateE else 1
-            ss = 0 if obj.stateS else 1
-            sw = 0 if obj.stateW else 1
-            str_bi = str(sn) + str(se) + str(ss) + str(sw)
-            hexa = int(str_bi, 2)
-            print(f"{hexa:x}", end="")
-            # print(hexa, end="")
+        count = 0
+        for height in range(self.height):
+            for width in range(self.width):
+                current_cell = self.ret_cell((width,height))
+                if count == self.width:
+                    print()
+                    count = 0
+                sn = 0 if current_cell.stateN else 1
+                se = 0 if current_cell.stateE else 1
+                ss = 0 if current_cell.stateS else 1
+                sw = 0 if current_cell.stateW else 1
+                str_bi = str(sn) + str(se) + str(ss) + str(sw)
+                hexa = int(str_bi, 2)
+                print(f"{hexa:x}", end="")
+                count += 1
         print()
-        print(self.entry_maze)
-        print(self.exit_maze)
+        print()
+        data_entry = str(self.entry_maze).replace("(", "")
+        data_exit = str(self.exit_maze).replace("(", "")
+        print(data_entry.replace(")", ""))
+        print(data_exit.replace(")", ""))
 
     def update_fortytwo(self, coordinate: tuple):
         cell_forty = self.ret_cell(coordinate)
