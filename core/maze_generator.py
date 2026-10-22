@@ -32,6 +32,7 @@ class MazeGenerator():
         print("\n\n")
         generator.print_maze(True)
         self.output_txt = generator.print_data(self.output_name)
+        ## Call your Maze Solver Class / Method from HERE
 
     def get_entry(self) -> tuple:
         return self.entry
