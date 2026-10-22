@@ -32,6 +32,7 @@ class MazeGenerator():
         print("\n\n")
         generator.print_maze(True)
         self.output_txt = generator.print_data(self.output_name)
+        
         ## Call your Maze Solver Class / Method from HERE
         return generator
 
@@ -65,6 +66,8 @@ class CellGenerator(MazeGenerator):
         self.fortytwo = False
         self.coordinate = (x, y)
         self._all_cells = []
+        self.solution = False
+
     
     def fill(self, entry_m: tuple[int, int], exit_m: tuple):
         self.entry_maze = entry_m
