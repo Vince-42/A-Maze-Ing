@@ -28,6 +28,7 @@ class MazeGenerator():
         generator.fill(self.entry, self.exit)
         generator.create()
         generator.print_maze(False)
+        # create a IF here if perfect backtracker if not perfect UNPERFECT algo.
         generator.backtracker()
         print("\n\n")
         generator.print_maze(True)

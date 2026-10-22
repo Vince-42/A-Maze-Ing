@@ -9,6 +9,8 @@ from core.config import main_config
 from core.maze_generator import MazeGenerator
 from core.maze_generator import CellGenerator
 from utils import error as err
+from utils import design
+from utils import color
 
 # ######### class   ##########
 
@@ -41,15 +43,38 @@ def main() -> bool:
 
 
 if __name__ == "__main__":
+    count = 0
     # could be the main menu on LOOP
     if main():
-        try:
-            conf = main_config()
-            if conf._data_check >= 6:
-                maze_o = MazeGenerator(conf)
-                maze_o.cell_gen()
-        except err.FortyTwoError as e:
-            print("You can't have the entry/exit within the 42 logo.")
+        while(1):
+            try:
+                conf = main_config()
+                if conf._data_check >= 6:
+                    maze_o = MazeGenerator(conf)
+                    gen_obj = maze_o.cell_gen()
+            except err.FortyTwoError as e:
+                print("You can't have the entry/exit within the 42 logo.")
+            print("**********\n1 - REGENERATE\n2 - CHANGE COLORS\n3 - SHOW SOLUTION\n4 - QUIT\n")
+            sys.stdout.flush()
+            user_input = sys.stdin.readline().rstrip()
+            if user_input == "1":
+                print("REGENERATE THE MAZE")
+            if user_input == "2":
+                print("CHANGE THE MAZE COLORS")
+                choice = [
+                    color.PURPLE + "██" + color.RESET,
+                    color.YELLOW + "██" + color.RESET,
+                    color.ORANGE + "██" + color.RESET,
+                    color.GREEN + "██" + color.RESET
+                ]
+                design.MAZE["wall"] =  choice[count]
+                count += 1
+                if count == 4:
+                    count = 0
+            if user_input == "3":
+                print("SHOW THE SOLUTION")
+            if user_input == "4":
+                break
         
     # this below is just for checking purpose
     # print parameters to check config
