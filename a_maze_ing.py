@@ -43,7 +43,7 @@ def main() -> bool:
 
 
 def print_menu():
-    print("\n\n**********\n1 - REGENERATE\n2 - CHANGE COLORS\n3 - SHOW SOLUTION\n4 - OUTPUT MAZE DATA\n5 - QUIT\n**********\n\n")
+    print("\n\n**********\n1 - REGENERATE\n2 - CHANGE WALL COLOR\n3 - SHOW SOLUTION\n4 - OUTPUT MAZE DATA (Bonus)\n5 - CHANGE 42 COLOR (Bonus)\n6 - QUIT\n**********\n\n")
 
 
 if __name__ == "__main__":
@@ -79,10 +79,23 @@ if __name__ == "__main__":
                     gen_obj.print_maze(True)
                     print_menu()
                 if user_input == "3":
-                    print("SHOW THE SOLUTION")
+                    print("SHOW THE SOLUTION PATH")
                 if user_input == "4":
                     print(maze_o.output_txt)
                 if user_input == "5":
+                    choice = [
+                        color.PURPLE + "██" + color.RESET,
+                        color.YELLOW + "██" + color.RESET,
+                        color.ORANGE + "██" + color.RESET,
+                        color.GREEN + "██" + color.RESET
+                    ]
+                    design.MAZE["fortytwo"] =  choice[count]
+                    count += 1
+                    if count == 4:
+                        count = 0
+                    gen_obj.print_maze(True)
+                    print_menu()    
+                if user_input == "6":
                     exit(0)
         
     # this below is just for checking purpose

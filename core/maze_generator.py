@@ -298,7 +298,23 @@ class CellGenerator(MazeGenerator):
                     current_cell.visit = True
                 else:
                     # This is a dead end
-                    current_cell.visit = True
+                    unvisited_dead_cell = [obj for obj in lst_et if obj is not None
+                                     and obj.visit]
+                    next_cell_dead = random.choice(unvisited_dead_cell)
+                    d_x = next_cell_dead.coordinate[0] - current_cell.coordinate[0]
+                    d_y = next_cell_dead.coordinate[1] - current_cell.coordinate[1]
+                    if d_y == 1:  # This means moving East / Right
+                        current_cell.stateE = True
+                        next_cell_dead.stateW = True
+                    elif d_y == -1:  # This means moving West / Left
+                        current_cell.stateW = True
+                        next_cell_dead.stateE = True
+                    elif d_x == 1:  # This means moving South / Down
+                        current_cell.stateS = True
+                        next_cell_dead.stateN = True
+                    elif d_x == -1:  # This means moving North / Up
+                        current_cell.stateN = True
+                        next_cell_dead.stateS = True
                     current_cell = visited_stack.pop()
             except ImportError:
                 print("ERR")
