@@ -5,9 +5,9 @@
 # ######### import  ##########
 
 from utils import error as err
+import random
 
 # ######### class   ##########
-
 
 class Configuration():
     def __init__(self):
@@ -18,7 +18,7 @@ class Configuration():
         self._exit: tuple = ()
         self._output_file: str = ""
         self._perfect = None
-        self._seed: int = -1
+        self._seed: int = None
         self._algorythm = "Backtracking"
         self._display_mode = "ASCII"
         self._data_check: int = 0
@@ -55,6 +55,10 @@ class Configuration():
         elif truc == "PERFECT=":
             c = self.split_bool(line)
             self._perfect = c
+        elif truc == "SEED=":
+            d = self.split_seed(line)
+            self._seed = d
+            random.seed(self._seed)
 
     # return 'True' or 'False' on success | 'None' on failed
     def split_bool(self, line) -> bool:
@@ -87,6 +91,22 @@ class Configuration():
         except TypeError as e:
             print(f"WRONG DATA : {e}")
         return -1
+
+      # return a positive INT on success | neg on failed
+    def split_seed(self, line) -> int | None:
+        rslt = line.split("=")
+        # verifier que line [1] est bien un integer
+        # return l'intenger si positive
+        try:
+            if rslt[1] == "None":
+                return None
+            ret = int(rslt[1])
+            if ret < 0:
+                raise err.NegativeError("Seed cannot be negative.")
+            return ret
+        except TypeError as e:
+                print(f"WRONG SEED DATA : {e}")
+        return None
 
     # return an STR on success | empty on fail
     def split_str(self, line) -> str:

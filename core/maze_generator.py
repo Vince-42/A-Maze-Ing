@@ -9,8 +9,6 @@ import random
 from utils.design import MAZE
 from utils import error as err
 
-random.seed(6)
-
 # ######### class   ##########
 
 # I NEED TO HAVE ONLY MAZE GENERATOR
@@ -22,6 +20,8 @@ class MazeGenerator():
         self.exit = conf._exit
         self.width = conf._width
         self.height = conf._height
+        self.output_name = conf._output_file
+        self.output_txt = ""
 
     def cell_gen(self):
         generator = CellGenerator(0, 0, width=self.width, height=self.height)
@@ -31,7 +31,8 @@ class MazeGenerator():
         generator.backtracker()
         print("\n\n")
         generator.print_maze(True)
-        generator.print_data()
+        self.output_txt = generator.print_data(self.output_name)
+        ## Call your Maze Solver Class / Method from HERE
 
     def get_entry(self) -> tuple:
         return self.entry
@@ -74,13 +75,14 @@ class CellGenerator(MazeGenerator):
                 new = CellGenerator(ii, i, self.width, self.height)
                 self._all_cells.append(new)
     
-    def print_data(self):
+    def print_data(self, file: str) -> str:
         count = 0
+        maze_heza = ""
         for height in range(self.height):
             for width in range(self.width):
                 current_cell = self.ret_cell((width,height))
                 if count == self.width:
-                    print()
+                    maze_heza += "\n"
                     count = 0
                 sn = 0 if current_cell.stateN else 1
                 se = 0 if current_cell.stateE else 1
@@ -88,14 +90,17 @@ class CellGenerator(MazeGenerator):
                 sw = 0 if current_cell.stateW else 1
                 str_bi = str(sn) + str(se) + str(ss) + str(sw)
                 hexa = int(str_bi, 2)
-                print(f"{hexa:x}", end="")
+                maze_heza += f"{hexa:x}"
                 count += 1
-        print()
-        print()
+        maze_heza += "\n\n"
         data_entry = str(self.entry_maze).replace("(", "")
+        maze_heza += f"{data_entry.replace(")", "")}"
+        maze_heza += "\n"
         data_exit = str(self.exit_maze).replace("(", "")
-        print(data_entry.replace(")", ""))
-        print(data_exit.replace(")", ""))
+        maze_heza += f"{data_exit.replace(")", "")}"
+        with open(file, "w") as f:
+            print(maze_heza, file=f)
+        return maze_heza
 
     def update_fortytwo(self, coordinate: tuple):
         cell_forty = self.ret_cell(coordinate)
@@ -163,7 +168,7 @@ class CellGenerator(MazeGenerator):
                         display[ligne][col - 1] = "path"
                 else:
                     self.update_fortytwo((x, y))
-                    if self.entry_maze == ((x,y)):
+                    if self.entry_maze == ((x,y)) or self.exit_maze == ((x,y)):
                         raise err.FortyTwoError("entry within 42 logo.")
 
         # start & end
@@ -190,7 +195,7 @@ class CellGenerator(MazeGenerator):
         current_cell = random.choice(self._all_cells)
         while current_cell.fortytwo is True:
             current_cell = random.choice(self._all_cells)
-        print(f"Coordinate Starting Maze Cell : {current_cell.coordinate}")
+        # print(f"Coordinate Starting Maze Cell : {current_cell.coordinate}")
         current_cell.visit = True
         # visited cell in list
         visited_stack = [current_cell]
