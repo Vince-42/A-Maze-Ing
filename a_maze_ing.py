@@ -43,7 +43,7 @@ def main() -> bool:
 
 
 def print_menu():
-    print("\n\n**********\n1 - REGENERATE\n2 - CHANGE WALL COLOR\n3 - SHOW SOLUTION\n4 - OUTPUT MAZE DATA (Bonus)\n5 - CHANGE 42 COLOR (Bonus)\n6 - QUIT\n**********\n\n")
+    print("\n\n**********\n1 - REGENERATE\n2 - CHANGE WALL COLOR\n3 - SHOW SOLUTION\n4 - OUTPUT MAZE DATA (Bonus)\n5 - CHANGE 42 COLOR (Bonus)\n6 - CHANGE PERFECT MAZE (Bonus)\n7 - QUIT\n**********\n\n")
 
 
 if __name__ == "__main__":
@@ -94,8 +94,16 @@ if __name__ == "__main__":
                     if count == 4:
                         count = 0
                     gen_obj.print_maze(True)
-                    print_menu()    
+                    print_menu()
                 if user_input == "6":
+                    if maze_o.perfect:
+                        maze_o.perfect = False
+                    else:
+                        maze_o.perfect = True
+                    maze_bis = MazeGenerator(conf)
+                    gen_obj = maze_o.cell_gen()
+                    print_menu()
+                if user_input == "7":
                     exit(0)
         
     # this below is just for checking purpose
