@@ -5,7 +5,7 @@ MAZE = {
         "path":  color.PURPLE + "  " + color.RESET,
         "start": color.GREEN  + "🐍" + color.RESET,
         "end":   color.RED  + "🍎" + color.RESET,
-        "fortytwo":   color.BLUE  + "██" + color.RESET
+        "fortytwo":   color.BLUE  + "⁴²" + color.RESET
     }
 
 MAZE_ONE = {
@@ -13,7 +13,7 @@ MAZE_ONE = {
         "path":  color.YELLOW + "  " + color.RESET,
         "start": color.GREEN  + "🐍" + color.RESET,
         "end":   color.RED  + "🍎" + color.RESET,
-        "fortytwo":   color.BLUE  + "██" + color.RESET
+        "fortytwo":   color.BLUE  + "⁴²" + color.RESET
     }
 
 MAZE_TWO = {
@@ -21,5 +21,5 @@ MAZE_TWO = {
         "path":  color.PURPLE + "  " + color.RESET,
         "start": color.GREEN  + "🐍" + color.RESET,
         "end":   color.RED  + "🍎" + color.RESET,
-        "fortytwo":   color.BLUE  + "██" + color.RESET
+        "fortytwo":   color.BLUE  + "⁴²" + color.RESET
     }

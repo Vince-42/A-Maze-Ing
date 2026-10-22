@@ -43,7 +43,7 @@ def main() -> bool:
 
 
 def print_menu():
-    print("\n\n**********\n1 - REGENERATE\n2 - CHANGE WALL COLOR\n3 - SHOW SOLUTION\n4 - OUTPUT MAZE DATA (Bonus)\n5 - CHANGE 42 COLOR (Bonus)\n6 - CHANGE PERFECT MAZE (Bonus)\n7 - QUIT\n**********\n\n")
+    print("\n\n**********\n1 - REGENERATE\n2 - CHANGE WALL COLOR\n3 - SHOW SOLUTION\n4 - OUTPUT MAZE DATA (Bonus)\n5 - CHANGE 42 COLOR &... (Bonus)\n6 - CHANGE PERFECT MAZE (Bonus)\n7 - QUIT\n**********\n\n")
 
 
 if __name__ == "__main__":
@@ -84,9 +84,9 @@ if __name__ == "__main__":
                     print(maze_o.output_txt)
                 if user_input == "5":
                     choice = [
-                        color.PURPLE + "██" + color.RESET,
-                        color.YELLOW + "██" + color.RESET,
-                        color.ORANGE + "██" + color.RESET,
+                        color.PURPLE + "42" + color.RESET,
+                        color.YELLOW + "🔥" + color.RESET,
+                        color.ORANGE + "👾" + color.RESET,
                         color.GREEN + "██" + color.RESET
                     ]
                     design.MAZE["fortytwo"] =  choice[count]
