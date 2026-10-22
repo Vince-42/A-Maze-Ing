@@ -1,22 +1,22 @@
 # MANDATORY KEY
 
 # HEIGHT Maze height (x)
-HEIGHT=15
+HEIGHT=10
 
 # WIDTH Maze width (y)
-WIDTH=22
+WIDTH=10
 
 # ENTRY Entry coordinates (x,y) 
 ENTRY=0,0
 
 # EXIT Exit coordinates (x,y) 
-EXIT=12,12
+EXIT=9,9
 
 # OUTPUT_FILE Output filename
 OUTPUT_FILE=maze.txt
 
 # PERFECT Is the maze perfect? 
-PERFECT=True
+PERFECT=False
 
 # ADDITIONAL KEY
 

@@ -42,6 +42,10 @@ def main() -> bool:
     return start()
 
 
+def print_menu():
+    print("\n\n**********\n1 - REGENERATE\n2 - CHANGE COLORS\n3 - SHOW SOLUTION\n4 - OUTPUT MAZE DATA\n5 - QUIT\n**********\n\n")
+
+
 if __name__ == "__main__":
     count = 0
     # could be the main menu on LOOP
@@ -54,27 +58,32 @@ if __name__ == "__main__":
                     gen_obj = maze_o.cell_gen()
             except err.FortyTwoError as e:
                 print("You can't have the entry/exit within the 42 logo.")
-            print("**********\n1 - REGENERATE\n2 - CHANGE COLORS\n3 - SHOW SOLUTION\n4 - QUIT\n")
-            sys.stdout.flush()
-            user_input = sys.stdin.readline().rstrip()
-            if user_input == "1":
-                print("REGENERATE THE MAZE")
-            if user_input == "2":
-                print("CHANGE THE MAZE COLORS")
-                choice = [
-                    color.PURPLE + "██" + color.RESET,
-                    color.YELLOW + "██" + color.RESET,
-                    color.ORANGE + "██" + color.RESET,
-                    color.GREEN + "██" + color.RESET
-                ]
-                design.MAZE["wall"] =  choice[count]
-                count += 1
-                if count == 4:
-                    count = 0
-            if user_input == "3":
-                print("SHOW THE SOLUTION")
-            if user_input == "4":
-                break
+            print_menu()
+            while(1):
+                sys.stdout.flush()
+                user_input = sys.stdin.readline().rstrip()
+                if user_input == "1":
+                    print("GENERATE NEW MAZE")
+                    break
+                if user_input == "2":
+                    choice = [
+                        color.PURPLE + "██" + color.RESET,
+                        color.YELLOW + "██" + color.RESET,
+                        color.ORANGE + "██" + color.RESET,
+                        color.GREEN + "██" + color.RESET
+                    ]
+                    design.MAZE["wall"] =  choice[count]
+                    count += 1
+                    if count == 4:
+                        count = 0
+                    gen_obj.print_maze(True)
+                    print_menu()
+                if user_input == "3":
+                    print("SHOW THE SOLUTION")
+                if user_input == "4":
+                    print(maze_o.output_txt)
+                if user_input == "5":
+                    exit(0)
         
     # this below is just for checking purpose
     # print parameters to check config
