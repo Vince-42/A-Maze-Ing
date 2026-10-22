@@ -28,3 +28,7 @@ class EntryExitError(Exception):
 class FortyTwoError(Exception):
     def __init__(self, *args):
         super().__init__(*args)
+
+class StringError(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)

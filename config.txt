@@ -1,13 +1,13 @@
 # MANDATORY KEY
 
 # HEIGHT Maze height (x)
-HEIGHT=10
+HEIGHT=15
 
 # WIDTH Maze width (y)
-WIDTH=10
+WIDTH=15
 
 # ENTRY Entry coordinates (x,y) 
-ENTRY=0,0
+ENTRY=5,0
 
 # EXIT Exit coordinates (x,y) 
 EXIT=9,9
@@ -21,7 +21,7 @@ PERFECT=True
 # ADDITIONAL KEY
 
 # SEED
-SEED=797
+SEED=None
 
 # algorithm
 # display mode

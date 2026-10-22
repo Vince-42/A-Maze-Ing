@@ -51,6 +51,8 @@ class Configuration():
             self._exit = a
         elif truc == "OUTPUT_FILE=":
             b = self.split_str(line)
+            if b == "":
+                raise err.StringError("String cannot be empty")
             self._output_file = b
         elif truc == "PERFECT=":
             c = self.split_bool(line)
@@ -178,5 +180,7 @@ def main_config():
         print(f"Error in the boolean part of config file. {e}")
     except err.EntryExitError as e:
         print(f"Error in the entry/exit parameters. {e}")
+    except err.StringError as e:
+        print(f"Empty string. {e}")
     return default
 

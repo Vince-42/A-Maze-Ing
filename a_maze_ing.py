@@ -56,8 +56,15 @@ if __name__ == "__main__":
                 if conf._data_check >= 6:
                     maze_o = MazeGenerator(conf)
                     gen_obj = maze_o.cell_gen()
+                else:
+                    print("Error on config - No Maze to be generated")
+                    break
             except err.FortyTwoError as e:
-                print("You can't have the entry/exit within the 42 logo.")
+                print("Error. You can't have the entry/exit within the 42 logo.")
+                break
+            except IndexError as e:
+                print(f"Error in the configuration. {e}")
+                break
             print_menu()
             while(1):
                 sys.stdout.flush()
@@ -108,6 +115,7 @@ if __name__ == "__main__":
         
     # this below is just for checking purpose
     # print parameters to check config
+    '''
     print("\n")
     try:
         print("*"*45)
@@ -122,3 +130,4 @@ if __name__ == "__main__":
             print("Error on config - No Maze to be generated")
     except Exception as e:
         print(f"Error in checking printing parameters. {e}")
+    '''
