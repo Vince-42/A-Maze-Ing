@@ -66,6 +66,7 @@ if __name__ == "__main__":
                 print(f"Error in the configuration. {e}")
                 break
             while(1):
+                print_menu()
                 sys.stdout.flush()
                 user_input = sys.stdin.readline().rstrip()
                 print_menu()
