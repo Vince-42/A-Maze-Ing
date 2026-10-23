@@ -69,7 +69,6 @@ if __name__ == "__main__":
                 print_menu()
                 sys.stdout.flush()
                 user_input = sys.stdin.readline().rstrip()
-                print_menu()
                 if user_input == "1":
                     print("GENERATE NEW MAZE")
                     break
@@ -88,7 +87,7 @@ if __name__ == "__main__":
                 elif user_input == "3":
                     print("SHOW THE SOLUTION PATH")
                 elif user_input == "4":
-                    print(maze_o.output_txt)
+                    print(f"\n\n{maze_o.output_txt}")
                 elif user_input == "5":
                     choice = [
                         color.PURPLE + "42" + color.RESET,
