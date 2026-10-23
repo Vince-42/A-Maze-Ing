@@ -65,10 +65,10 @@ if __name__ == "__main__":
             except IndexError as e:
                 print(f"Error in the configuration. {e}")
                 break
-            print_menu()
             while(1):
                 sys.stdout.flush()
                 user_input = sys.stdin.readline().rstrip()
+                print_menu()
                 if user_input == "1":
                     print("GENERATE NEW MAZE")
                     break
@@ -84,7 +84,6 @@ if __name__ == "__main__":
                     if count == 4:
                         count = 0
                     gen_obj.print_maze(True)
-                    print_menu()
                 elif user_input == "3":
                     print("SHOW THE SOLUTION PATH")
                 elif user_input == "4":
@@ -101,7 +100,6 @@ if __name__ == "__main__":
                     if count == 4:
                         count = 0
                     gen_obj.print_maze(True)
-                    print_menu()
                 elif user_input == "6":
                     if maze_o.perfect:
                         maze_o.perfect = False
@@ -109,7 +107,6 @@ if __name__ == "__main__":
                         maze_o.perfect = True
                     maze_bis = MazeGenerator(conf)
                     gen_obj = maze_o.cell_gen()
-                    print_menu()
                 else :
                     exit(0)
         
