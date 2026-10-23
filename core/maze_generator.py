@@ -80,10 +80,12 @@ class CellGenerator(MazeGenerator):
         self.exit_maze = exit_m
 
     def create(self):
-        for i in range(self.height):
-            for ii in range(self.width):
-                new = CellGenerator(ii, i, self.width, self.height)
+        for x in range(self.width):
+            for y in range(self.height):
+                #print(f"x{x},y{y}")
+                new = CellGenerator(x, y, self.width, self.height)
                 self._all_cells.append(new)
+            #print()
     
     def print_data(self, file: str) -> str:
         count = 0
@@ -98,7 +100,7 @@ class CellGenerator(MazeGenerator):
                 se = 0 if current_cell.stateE else 1
                 ss = 0 if current_cell.stateS else 1
                 sw = 0 if current_cell.stateW else 1
-                str_bi = str(sn) + str(se) + str(ss) + str(sw)
+                str_bi = str(sw) + str(ss) + str(se) + str(sn)
                 hexa = int(str_bi, 2)
                 maze_heza += f"{hexa:x}"
                 count += 1
@@ -116,42 +118,42 @@ class CellGenerator(MazeGenerator):
         cell_forty = self.ret_cell(coordinate)
         if cell_forty:
             cell_forty.visit = True
-            cell_forty.stateN = False
-            cell_forty.stateE = False
-            cell_forty.stateS = False
-            cell_forty.stateW = False
+            #cell_forty.stateN = False
+            #cell_forty.stateE = False
+            #cell_forty.stateS = False
+            #cell_forty.stateW = False
             cell_forty.fortytwo = True
+            cell_forty.isblocked = True
 
     def create_fortytwo(self) -> list:
         rows = 2 * self.height + 1
         cols = 2 * self.width + 1
-        offset_row = (cols - 6) // 2
-        offset_col = (rows - 7) // 2
+        offset_row = (rows - 6) // 2
+        offset_col = (cols - 7) // 2
         display = [
-            ["wall"] * rows
-            for _ in range(cols)
+            ["wall"] * cols
+            for _ in range(rows)
                 ]
         if self.height <= 7 or self.width <= 7:
             return display
         for i in range(3):
-            display[3 + offset_row][i + offset_col] = "fortytwo"
-            # self.update_fortytwo((3 + offset_row, i + offset_col))
-            display[i + 1 + offset_row][6 + offset_col] = "fortytwo"
-            # self.update_fortytwo((i + 1 + offset_row, 6 + offset_col))
-            display[i + 3 + offset_row][4 + offset_col] = "fortytwo"
-            # self.update_fortytwo((i + 3 + offset_row, 4 + offset_col))
-            display[offset_row + 1][i + 4 + offset_col] = "fortytwo"
-            # self.update_fortytwo((offset_row, i + 4 + offset_col))
-            display[i + 1 + offset_row][offset_col] = "fortytwo"
-        for i in range(1, 6):
+            # Barre 4
+            display[2 + offset_row][i + offset_col] = "fortytwo"
+            # Barres 2
+            display[offset_row][i + 4 + offset_col] = "fortytwo"
+            display[2 + offset_row][i + 4 + offset_col] = "fortytwo"
+            display[4 + offset_row][i + 4 + offset_col] = "fortytwo"
+        # Partie gauche du 4
+        for i in range(0, 3):
+            display[i + offset_row][offset_col] = "fortytwo"
+        # Partie droite du 4
+        for i in range(5):
             display[i + offset_row][2 + offset_col] = "fortytwo"
-            # self.update_fortytwo((i + offset_row, 2 + offset_col))
-        display[3 + offset_row][5 + offset_col] = "fortytwo"
-        # self.update_fortytwo((3 + offset_row, 5 + offset_col))
-        display[5 + offset_row][5 + offset_col] = "fortytwo"
-        # self.update_fortytwo((5 + offset_row, 5 + offset_col))
-        display[5 + offset_row][6 + offset_col] = "fortytwo"
-        # self.update_fortytwo((5 + offset_row, 6 + offset_col))
+        # Parties verticales du 2
+        display[1 + offset_row][6 + offset_col] = "fortytwo"
+        display[3 + offset_row][4 + offset_col] = "fortytwo"
+        for ligne in display:
+            print("".join(MAZE[pixel] for pixel in ligne))
         return display
 
     def print_maze(self, printing: bool):
@@ -160,12 +162,16 @@ class CellGenerator(MazeGenerator):
         for x in range(self.width):
             for y in range(self.height):
                 cell = self.ret_cell((x, y))
-                ligne = 2 * x + 1
-                col = 2 * y + 1
+                ligne = 2 * y + 1
+                col = 2 * x + 1
+                print(f"cell {x},{y}")
                 # open the middle part of the displays
-                if display[ligne][col] != "fortytwo" and\
-                    display[ligne + 1][col] != "fortytwo" and\
-                    display[ligne - 1][col] != "fortytwo":
+                if display[ligne][col] == "fortytwo":
+                    if not printing:
+                        self.update_fortytwo((x, y))
+                    if self.entry_maze == ((x,y)) or self.exit_maze == ((x,y)):
+                        raise err.FortyTwoError("entry within 42 logo.")
+                else:
                     display[ligne][col] = "path"
                     # open next cell if true
                     if cell.stateN and display[ligne - 1][col] != "fortytwo":
@@ -176,14 +182,9 @@ class CellGenerator(MazeGenerator):
                         display[ligne + 1][col] = "path"
                     if cell.stateW and display[ligne][col - 1] != "fortytwo":
                         display[ligne][col - 1] = "path"
-                else:
-                    self.update_fortytwo((x, y))
-                    if self.entry_maze == ((x,y)) or self.exit_maze == ((x,y)):
-                        raise err.FortyTwoError("entry within 42 logo.")
-
         # start & end
-        display[2 * self.entry_maze[0] + 1][2 * self.entry_maze[1] + 1] = "start"
-        display[2 * self.exit_maze[0] + 1][2 * self.exit_maze[1] + 1] = "end"
+        display[2 * self.entry_maze[1] + 1][2 * self.entry_maze[0] + 1] = "start"
+        display[2 * self.exit_maze[1] + 1][2 * self.exit_maze[0] + 1] = "end"
         if printing:
             for ligne in display:
                 print("".join(MAZE[pixel] for pixel in ligne))
@@ -230,18 +231,18 @@ class CellGenerator(MazeGenerator):
                     # define diff between x,y of current/next cell
                     d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                     d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
-                    if d_y == 1:  # This means moving East / Right
-                        current_cell.stateE = True
-                        next_cell.stateW = True
-                    elif d_y == -1:  # This means moving West / Left
-                        current_cell.stateW = True
-                        next_cell.stateE = True
-                    elif d_x == 1:  # This means moving South / Down
+                    if d_y == 1:  # This means moving SOUTH / BAS
                         current_cell.stateS = True
                         next_cell.stateN = True
-                    elif d_x == -1:  # This means moving North / Up
+                    elif d_y == -1:  # This means moving West / Left
                         current_cell.stateN = True
                         next_cell.stateS = True
+                    elif d_x == 1:  # This means moving EAST / DROITE
+                        current_cell.stateE = True
+                        next_cell.stateW = True
+                    elif d_x == -1:  # This means moving WEST / GAUCHE
+                        current_cell.stateW = True
+                        next_cell.stateE = True
                     # 6. Push the current cell to the stack, move to next, mark visited
                     visited_stack.append(current_cell)
                     current_cell = next_cell
@@ -252,40 +253,48 @@ class CellGenerator(MazeGenerator):
             except ImportError:
                 print("ERR")
 
-    def imperfect_helper(self):
-        current_cell = random.choice(self._all_cells)
-        while current_cell.fortytwo is True or current_cell.blocked is True:
-            current_cell = random.choice(self._all_cells)
-        current_cell.blocked = True
-        cell_x = current_cell.coordinate[0]
-        cell_y = current_cell.coordinate[1]
-        # get info on cell next to current cell 
-        lst_et = [
-            self.ret_cell((cell_x, cell_y + 1)),  # Right
-            self.ret_cell((cell_x + 1, cell_y)),  # Down
-            self.ret_cell((cell_x - 1, cell_y)),  # Up
-            self.ret_cell((cell_x, cell_y - 1))   # Left
-                        ]
-        unvisited_ok_cell = [obj for obj in lst_et if obj is not None]
-        if unvisited_ok_cell:
-            next_cell = random.choice(unvisited_ok_cell)
-            d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
-            d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
-            if d_y == 1:  # This means moving East / Right
-                current_cell.stateE = True
-                next_cell.stateW = True
-            elif d_y == -1:  # This means moving West / Left
-                current_cell.stateW = True
-                next_cell.stateE = True
-            elif d_x == 1:  # This means moving South / Down
-                current_cell.stateS = True
-                next_cell.stateN = True
-            elif d_x == -1:  # This means moving North / Up
-                current_cell.stateN = True
-                next_cell.stateS = True
-            next_cell.blocked = True
+    def imperfect_helper(self, dead_cell: list):
+        current_cell = random.choice(dead_cell)
+        while len(dead_cell) > 1:
+            helper = 0
+            while current_cell.fortytwo is True or current_cell.blocked is True:
+                current_cell = random.choice(dead_cell)
+                helper += 1
+                if helper >= 20:
+                    break
+
+            current_cell.blocked = True
+            cell_x = current_cell.coordinate[0]
+            cell_y = current_cell.coordinate[1]
+            # get info on cell next to current cell 
+            lst_et = [
+                self.ret_cell((cell_x, cell_y + 1)),  # Right
+                self.ret_cell((cell_x + 1, cell_y)),  # Down
+                self.ret_cell((cell_x - 1, cell_y)),  # Up
+                self.ret_cell((cell_x, cell_y - 1))   # Left
+                            ]
+            unvisited_ok_cell = [obj for obj in lst_et if obj is not None]
+            if unvisited_ok_cell:
+                next_cell = random.choice(unvisited_ok_cell)
+                d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
+                d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
+                if d_y == 1:  # This means moving East / Right
+                    current_cell.stateE = True
+                    next_cell.stateW = True
+                elif d_y == -1:  # This means moving West / Left
+                    current_cell.stateW = True
+                    next_cell.stateE = True
+                elif d_x == 1:  # This means moving South / Down
+                    current_cell.stateS = True
+                    next_cell.stateN = True
+                elif d_x == -1:  # This means moving North / Up
+                    current_cell.stateN = True
+                    next_cell.stateS = True
+                current_cell = next_cell
+                current_cell = dead_cell.pop()
     
     def backtracker_imperfect(self):
+        dead_cell = []
         # cell to start the maze generation
         current_cell = random.choice(self._all_cells)
         while current_cell.fortytwo is True:
@@ -326,10 +335,10 @@ class CellGenerator(MazeGenerator):
                     current_cell.visit = True
                 else:
                     current_cell = visited_stack.pop()
+                    dead_cell.append(current_cell)
             except ImportError:
                 print("ERR")
-        for _ in range((self.width * self.height) // 2):
-            self.imperfect_helper()
+        self.imperfect_helper(dead_cell)
 
     def ret_cell(self, coordinate: tuple):
         try:

@@ -39,10 +39,10 @@ class Configuration():
     def placing_data(self, truc, line):
         if truc == "WIDTH=":
             x = self.split_int(line)
-            self._height = x # inversed because inv in the code with x,y
+            self._width = x # inversed because inv in the code with x,y | reinversed
         elif truc == "HEIGHT=":
             y = self.split_int(line)
-            self._width = y # inversed because inv in the code with x,y
+            self._height = y # inversed because inv in the code with x,y | reinversed
         elif truc == "ENTRY=":
             z = self.split_tuple(line)
             self._entry = z
