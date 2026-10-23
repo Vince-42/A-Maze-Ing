@@ -43,7 +43,7 @@ def main() -> bool:
 
 
 def print_menu():
-    print("\n\n**********\n1 - REGENERATE\n2 - CHANGE WALL COLOR\n3 - SHOW SOLUTION\n4 - OUTPUT MAZE DATA (Bonus)\n5 - CHANGE 42 COLOR &... (Bonus)\n6 - CHANGE PERFECT MAZE (Bonus)\n7 - QUIT\n**********\n\n")
+    print("\n\n**********\n1 - REGENERATE\n2 - CHANGE WALL COLOR\n3 - SHOW SOLUTION\n4 - OUTPUT MAZE DATA (Bonus)\n5 - CHANGE 42 COLOR &... (Bonus)\n6 - CHANGE PERFECT MAZE (Bonus)\nAny - QUIT\n**********\n\n")
 
 
 if __name__ == "__main__":
@@ -72,7 +72,7 @@ if __name__ == "__main__":
                 if user_input == "1":
                     print("GENERATE NEW MAZE")
                     break
-                if user_input == "2":
+                elif user_input == "2":
                     choice = [
                         color.PURPLE + "██" + color.RESET,
                         color.YELLOW + "██" + color.RESET,
@@ -85,11 +85,11 @@ if __name__ == "__main__":
                         count = 0
                     gen_obj.print_maze(True)
                     print_menu()
-                if user_input == "3":
+                elif user_input == "3":
                     print("SHOW THE SOLUTION PATH")
-                if user_input == "4":
+                elif user_input == "4":
                     print(maze_o.output_txt)
-                if user_input == "5":
+                elif user_input == "5":
                     choice = [
                         color.PURPLE + "42" + color.RESET,
                         color.YELLOW + "🔥" + color.RESET,
@@ -102,7 +102,7 @@ if __name__ == "__main__":
                         count = 0
                     gen_obj.print_maze(True)
                     print_menu()
-                if user_input == "6":
+                elif user_input == "6":
                     if maze_o.perfect:
                         maze_o.perfect = False
                     else:
@@ -110,7 +110,7 @@ if __name__ == "__main__":
                     maze_bis = MazeGenerator(conf)
                     gen_obj = maze_o.cell_gen()
                     print_menu()
-                if user_input == "7":
+                else :
                     exit(0)
         
     # this below is just for checking purpose
