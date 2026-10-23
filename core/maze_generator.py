@@ -278,64 +278,72 @@ class CellGenerator(MazeGenerator):
                 next_cell = random.choice(unvisited_ok_cell)
                 d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                 d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
-                if d_y == 1:  # This means moving East / Right
-                    current_cell.stateE = True
-                    next_cell.stateW = True
-                elif d_y == -1:  # This means moving West / Left
-                    current_cell.stateW = True
-                    next_cell.stateE = True
-                elif d_x == 1:  # This means moving South / Down
+                if d_y == 1:  # This means moving SOUTH / BAS
                     current_cell.stateS = True
                     next_cell.stateN = True
-                elif d_x == -1:  # This means moving North / Up
+                elif d_y == -1:  # This means moving West / Left
                     current_cell.stateN = True
                     next_cell.stateS = True
+                elif d_x == 1:  # This means moving EAST / DROITE
+                    current_cell.stateE = True
+                    next_cell.stateW = True
+                elif d_x == -1:  # This means moving WEST / GAUCHE
+                    current_cell.stateW = True
+                    next_cell.stateE = True
                 current_cell = next_cell
                 current_cell = dead_cell.pop()
     
     def backtracker_imperfect(self):
         dead_cell = []
-        # cell to start the maze generation
+ # cell to start the maze generation
         current_cell = random.choice(self._all_cells)
         while current_cell.fortytwo is True:
             current_cell = random.choice(self._all_cells)
+        # print(f"Coordinate Starting Maze Cell : {current_cell.coordinate}")
         current_cell.visit = True
+        # visited cell in list
         visited_stack = [current_cell]
         while len(visited_stack) > 0:
             try:
                 cell_x = current_cell.coordinate[0]
                 cell_y = current_cell.coordinate[1]
+                # get info on cell next to current cell 
                 lst_et = [
                     self.ret_cell((cell_x, cell_y + 1)),  # Right
                     self.ret_cell((cell_x + 1, cell_y)),  # Down
                     self.ret_cell((cell_x - 1, cell_y)),  # Up
                     self.ret_cell((cell_x, cell_y - 1))   # Left
                 ]
+                # filtered None return from next to current cell
                 unvisited_ok_cell = [obj for obj in lst_et if obj is not None
                                      and not obj.visit]
                 if unvisited_ok_cell:
+                    # 5. Choose a random unvisited neighbor to move to
                     next_cell = random.choice(unvisited_ok_cell)
+                    # Breaking the Wall between cell
+                    # define diff between x,y of current/next cell
                     d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                     d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
-                    if d_y == 1:  # This means moving East / Right
-                        current_cell.stateE = True
-                        next_cell.stateW = True
-                    elif d_y == -1:  # This means moving West / Left
-                        current_cell.stateW = True
-                        next_cell.stateE = True
-                    elif d_x == 1:  # This means moving South / Down
+                    if d_y == 1:  # This means moving SOUTH / BAS
                         current_cell.stateS = True
                         next_cell.stateN = True
-                    elif d_x == -1:  # This means moving North / Up
+                    elif d_y == -1:  # This means moving West / Left
                         current_cell.stateN = True
                         next_cell.stateS = True
+                    elif d_x == 1:  # This means moving EAST / DROITE
+                        current_cell.stateE = True
+                        next_cell.stateW = True
+                    elif d_x == -1:  # This means moving WEST / GAUCHE
+                        current_cell.stateW = True
+                        next_cell.stateE = True
+                    # 6. Push the current cell to the stack, move to next, mark visited
                     visited_stack.append(current_cell)
-                    current_cell.visit = True
                     current_cell = next_cell
                     current_cell.visit = True
                 else:
-                    current_cell = visited_stack.pop()
+                    # This is a dead end
                     dead_cell.append(current_cell)
+                    current_cell = visited_stack.pop()
             except ImportError:
                 print("ERR")
         self.imperfect_helper(dead_cell)
