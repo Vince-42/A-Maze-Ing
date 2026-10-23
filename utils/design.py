@@ -5,7 +5,7 @@ MAZE = {
         "path":  color.PURPLE + "  " + color.RESET,
         "start": color.GREEN  + "🐍" + color.RESET,
         "end":   color.RED  + "🍎" + color.RESET,
-        "fortytwo":   color.BLUE  + "⁴²" + color.RESET
+        "fortytwo":   color.BLUE  + "██" + color.RESET
     }
 
 MAZE_ONE = {

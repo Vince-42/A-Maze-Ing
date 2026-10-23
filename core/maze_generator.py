@@ -117,13 +117,23 @@ class CellGenerator(MazeGenerator):
     def update_fortytwo(self, coordinate: tuple):
         cell_forty = self.ret_cell(coordinate)
         if cell_forty:
+            cell_x = cell_forty.coordinate[0]
+            cell_y = cell_forty.coordinate[1]
+            # get info on cell next to current cell 
+            lst_et = [
+                    self.ret_cell((cell_x, cell_y + 1)),  # Right
+                    self.ret_cell((cell_x + 1, cell_y)),  # Down
+                    self.ret_cell((cell_x - 1, cell_y)),  # Up
+                    self.ret_cell((cell_x, cell_y - 1))   # Left
+            ]
             cell_forty.visit = True
-            #cell_forty.stateN = False
-            #cell_forty.stateE = False
-            #cell_forty.stateS = False
-            #cell_forty.stateW = False
             cell_forty.fortytwo = True
             cell_forty.isblocked = True
+            ok_cell = [obj for obj in lst_et if obj is not None]
+            for cell in ok_cell:
+                cell.isblocked = True
+                cell.fortytwo = True
+                cell.visit = True
 
     def create_fortytwo(self) -> list:
         rows = 2 * self.height + 1
@@ -152,8 +162,6 @@ class CellGenerator(MazeGenerator):
         # Parties verticales du 2
         display[1 + offset_row][6 + offset_col] = "fortytwo"
         display[3 + offset_row][4 + offset_col] = "fortytwo"
-        for ligne in display:
-            print("".join(MAZE[pixel] for pixel in ligne))
         return display
 
     def print_maze(self, printing: bool):
@@ -164,7 +172,7 @@ class CellGenerator(MazeGenerator):
                 cell = self.ret_cell((x, y))
                 ligne = 2 * y + 1
                 col = 2 * x + 1
-                print(f"cell {x},{y}")
+                # print(f"cell {x},{y}")
                 # open the middle part of the displays
                 if display[ligne][col] == "fortytwo":
                     if not printing:
@@ -187,7 +195,7 @@ class CellGenerator(MazeGenerator):
         display[2 * self.exit_maze[1] + 1][2 * self.exit_maze[0] + 1] = "end"
         if printing:
             for ligne in display:
-                print("".join(MAZE[pixel] for pixel in ligne))
+                print("".join(MAZE[elem] for elem in ligne))
 
 # 1 Départ : Choisir une case au hasard. Marquer comme Visité.
 # 2. Boucle : Tant qu'il reste des cases non visitées dans le labyrinthe :
