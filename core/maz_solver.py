@@ -49,7 +49,15 @@ class MazSolver:
         while queue:
             current = queue.popleft()
             if current == self.exit:
-                # return stat later ####################
                 break
+            
+            for neighb in self.get_neighbors(current):
+                if neighb not in visited:
+                    visited.add(neighb)
+                    came_from[neighb] = current
+                    queue.append(neighb)
+
+        return came_from
+
 
         current_cell = self.cell_dict[current]
