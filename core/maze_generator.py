@@ -116,7 +116,6 @@ class CellGenerator(MazeGenerator):
 
     def update_fortytwo(self, coordinate: tuple):
         cell_forty = self.ret_cell(coordinate)
-        print(f"fortytwo cell{cell_forty.coordinate}")
         if cell_forty:
             cell_x = cell_forty.coordinate[0]
             cell_y = cell_forty.coordinate[1]
@@ -132,14 +131,11 @@ class CellGenerator(MazeGenerator):
             ok_cell = [obj for obj in lst_et if obj is not None]
             count = 0
             for cell in ok_cell:
-                print(f"ok cell:{cell.coordinate}")
                 cell.isblocked = True
                 cell.fortytwo = True
                 if count > 0:
-                    print(f" visit cell{cell.coordinate}")
                     cell.visit = True
                 count += 1
-            print()
 
     def create_fortytwo(self) -> list:
         rows = 2 * self.height + 1
@@ -183,7 +179,6 @@ class CellGenerator(MazeGenerator):
                 if display[ligne][col] == "fortytwo" or\
                     display[ligne - 1][col] == "fortytwo" or\
                         display[ligne][col + 1] == "fortytwo":
-                    print("ft_printmaze:42")
                     if not printing:
                         self.update_fortytwo((x, y))
                     if self.entry_maze == ((x,y)) or self.exit_maze == ((x,y)):
