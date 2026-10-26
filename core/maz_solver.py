@@ -9,16 +9,53 @@ class MazSolver:
         for cell in cells:
             self.cell_dict[cell.coordinate] = cell
 
-    def get_neighbers(
+    """
+    Find all accessible neighbors of the current cell.
+    """
+    def get_neighbors(
             self, current: tuple[int, int]
     ) -> list[tuple[int, int]]:
-        x, y = current
         
+        x, y = current
+        neighbors: list[tuple[int, int]] = []
+        cell = self.cell_dict[current]
 
-    def build_path(self, parent):
-        pass
+        if cell.stateN:
+            if  (x, y - 1) in self.cell_dict and not self.cell_dict[x, y - 1].fortytwo:
+                neighbors.append((x, y - 1))
+        if cell.stateE:
+            if (x + 1, y) in self.cell_dict and not self.cell_dict[x + 1, y].fortytwo:
+                neighbors.append((x + 1, y))
+        if cell.stateS:
+            if (x, y + 1) in self.cell_dict and not self.cell_dict[x, y + 1].fortytwo:
+                neighbors.append((x, y + 1))
+
+        if cell.stateW:
+            if (x - 1, y) in self.cell_dict and not self.cell_dict[x - 1, y].fortytwo:
+                neighbors.append((x - 1, y))
+
+        return neighbors
 
 
+    """Build path backwards,
+    from exit to entry, then return reverse"""
+    def build_path(self, came_from):
+        path: list[tuple[int, int]] = []
+        current = self.exit
+
+        while current is not None:
+            path.append(current)
+            current = came_from[current]
+
+        path.reverse()
+        return path
+
+        
+    """
+    Find the shortest path using BFS.
+    Return path as a list of coordinates,
+    or an empty list if no path exists.
+    """
     def solve(self):
         queue = deque([self.entry])
         visited = {self.entry}
@@ -27,7 +64,15 @@ class MazSolver:
         while queue:
             current = queue.popleft()
             if current == self.exit:
-                # return stat later ####################
                 break
 
-        current_cell = self.cell_dict[current]
+            for neighb in self.get_neighbors(current):
+                if neighb not in visited:
+                    visited.add(neighb)
+                    came_from[neighb] = current
+                    queue.append(neighb)
+
+        if self.exit not in came_from:
+            return []
+        
+        return self.build_path(came_from)
