@@ -72,6 +72,7 @@ if __name__ == "__main__":
                 user_input = sys.stdin.readline().rstrip()
                 if user_input == "1":
                     print("GENERATE NEW MAZE")
+                    solution = False
                     break
                 elif user_input == "2":
                     choice = [
@@ -86,10 +87,14 @@ if __name__ == "__main__":
                         count = 0
                     gen_obj.print_maze(True, solution)
                 elif user_input == "3":
-                    solution = True
+                    if solution:
+                        solution = False
+                    else:
+                        solution = True
+                    # init the display with the solution
+                    gen_obj.print_maze(False, False)
+                    # display the maze
                     gen_obj.print_maze(True, solution)
-                    print("SHOW THE SOLUTION PATH")
-                    ## solver
                 elif user_input == "4":
                     print(f"\n\n{maze_o.output_txt}")
                 elif user_input == "5":
