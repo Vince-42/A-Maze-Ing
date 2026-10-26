@@ -35,12 +35,16 @@ class MazSolver:
                 neighbors.append((x - 1, y))
 
         return neighbors
-        
 
     def build_path(self, parent):
-        pass
+            pass
+        
 
-
+    """
+    Find the shortest path using BFS.
+    Return path as a list of coordinates,
+    or an empty list if no path exists.
+    """
     def solve(self):
         queue = deque([self.entry])
         visited = {self.entry}
@@ -50,14 +54,14 @@ class MazSolver:
             current = queue.popleft()
             if current == self.exit:
                 break
-            
+
             for neighb in self.get_neighbors(current):
                 if neighb not in visited:
                     visited.add(neighb)
                     came_from[neighb] = current
                     queue.append(neighb)
 
-        return came_from
-
-
-        current_cell = self.cell_dict[current]
+        if self.exit not in came_from:
+            return []
+        
+        return self.build_path(came_from)
