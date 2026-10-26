@@ -43,7 +43,7 @@ def main() -> bool:
 
 
 def print_menu():
-    print("\n\n**********\n1 - REGENERATE\n2 - CHANGE WALL COLOR\n3 - SHOW SOLUTION\n4 - OUTPUT MAZE DATA (Bonus)\n5 - CHANGE 42 COLOR &... (Bonus)\n6 - CHANGE PERFECT MAZE (Bonus)\nAny - QUIT\n**********\n\n")
+    print("\n\n**********\n1 - Generate Maze (cf. config.txt)\n2 - Rotate wall color\n3 - Show/Hide the solution\n4 - Output maze coordinate on terminal (Bonus)\n5 - Rotate color & design 42 (Bonus)\n6 - Generate a Perfect/Imperfect Maze (Bonus)\nAny - QUIT\n**********\n\n")
 
 
 if __name__ == "__main__":
