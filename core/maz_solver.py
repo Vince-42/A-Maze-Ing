@@ -76,3 +76,31 @@ class MazSolver:
             return []
         
         return self.build_path(came_from)
+
+
+        """
+        Convert solution path into a string of
+        N, E, S, W directions
+        """
+    def path_to_directions(
+            self, path: list[tuple[int, int]]
+    ) -> str:
+        
+        directions = ""
+
+        for i in range(len(path) - 1):
+            x1, y1 = path[i]
+            x2, y2 = path[i + 1]
+
+            if x2 > x1:
+                directions += 'E'
+            elif x2 < x1:
+                directions += 'W'
+            elif y2 > y1:
+                directions += 'S'
+            elif y2 < y1:
+                directions += 'N'
+
+        return directions
+        
+
