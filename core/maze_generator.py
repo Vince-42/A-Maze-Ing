@@ -8,6 +8,7 @@ import utils.color as color
 import random
 from utils.design import MAZE
 from utils import error as err
+from core.maz_solver import MazSolver
 
 # ######### class   ##########
 
@@ -37,9 +38,29 @@ class MazeGenerator():
         print("\n\n")
         generator.print_maze(True)
         self.output_txt = generator.print_data(self.output_name)
+
+
+    
+        ## Call Solver Class from HERE
+        ## Run the solver and store the shortest path
+
+        solver = MazSolver(
+            generator.get_all_cells(),
+            generator.entry_maze,
+            generator.exit_maze       
+        )
+        generator.solution_path = solver.solve()
+
+
         
-        ## Call your Maze Solver Class / Method from HERE
+        ##  set Atribute with Maze solution
+        
+        for coordinate in generator.solution_path:
+            generator.ret_cell(coordinate).solution = True
+
+
         return generator
+    
 
     def get_entry(self) -> tuple:
         return self.entry

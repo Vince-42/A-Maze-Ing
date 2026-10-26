@@ -86,6 +86,7 @@ if __name__ == "__main__":
                     gen_obj.print_maze(True)
                 elif user_input == "3":
                     print("SHOW THE SOLUTION PATH")
+                    ## solver
                 elif user_input == "4":
                     print(f"\n\n{maze_o.output_txt}")
                 elif user_input == "5":
