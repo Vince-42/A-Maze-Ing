@@ -47,6 +47,7 @@ def print_menu():
 
 
 if __name__ == "__main__":
+    solution = False
     count = 0
     # could be the main menu on LOOP
     if main():
@@ -83,8 +84,10 @@ if __name__ == "__main__":
                     count += 1
                     if count == 4:
                         count = 0
-                    gen_obj.print_maze(True)
+                    gen_obj.print_maze(True, solution)
                 elif user_input == "3":
+                    solution = True
+                    gen_obj.print_maze(True, solution)
                     print("SHOW THE SOLUTION PATH")
                     ## solver
                 elif user_input == "4":
@@ -100,7 +103,7 @@ if __name__ == "__main__":
                     count += 1
                     if count == 4:
                         count = 0
-                    gen_obj.print_maze(True)
+                    gen_obj.print_maze(True, solution)
                 elif user_input == "6":
                     if maze_o.perfect:
                         maze_o.perfect = False

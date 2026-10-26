@@ -29,36 +29,26 @@ class MazeGenerator():
         generator = CellGenerator(0, 0, width=self.width, height=self.height)
         generator.fill(self.entry, self.exit)
         generator.create()
-        generator.print_maze(False)
+        generator.print_maze(False, False)
         # create a IF here if perfect backtracker if not perfect UNPERFECT algo.
         if self.perfect:
             generator.backtracker()
         else:
             generator.backtracker_imperfect()
         print("\n\n")
-        generator.print_maze(True)
-        self.output_txt = generator.print_data(self.output_name)
-
-
-    
-        ## Call Solver Class from HERE
         ## Run the solver and store the shortest path
-
         solver = MazSolver(
             generator.get_all_cells(),
             generator.entry_maze,
             generator.exit_maze       
         )
         generator.solution_path = solver.solve()
-
-
-        
         ##  set Atribute with Maze solution
-        
         for coordinate in generator.solution_path:
             generator.ret_cell(coordinate).solution = True
-
-
+        # Print maze with solution true
+        generator.print_maze(True, False)
+        self.output_txt = generator.print_data(self.output_name)
         return generator
     
 
@@ -187,7 +177,7 @@ class CellGenerator(MazeGenerator):
         display[3 + offset_row][4 + offset_col] = "fortytwo"
         return display
 
-    def print_maze(self, printing: bool):
+    def print_maze(self, printing: bool, solution: bool):
         display = self.create_fortytwo()
         # create the path
         for x in range(self.width):
@@ -196,6 +186,19 @@ class CellGenerator(MazeGenerator):
                 ligne = 2 * y + 1
                 col = 2 * x + 1
                 # print(f"cell {x},{y}")
+                if solution:
+                    if cell.solution == True:
+                        display[ligne][col] = "solution"
+                        if cell.stateN and display[ligne - 1][col] == "wall":
+                            display[ligne - 1][col] = "solution"
+                        if cell.stateE and display[ligne][col + 1] == "wall":
+                            display[ligne][col + 1] = "solution"
+                        if cell.stateS and display[ligne + 1][col] == "wall":
+                            display[ligne + 1][col] = "solution"
+                        if cell.stateW and display[ligne][col - 1] == "wall":
+                            display[ligne][col - 1] = "solution"
+                        continue
+
                 # open the middle part of the displays
                 if display[ligne][col] == "fortytwo" or\
                     display[ligne - 1][col] == "fortytwo" or\
