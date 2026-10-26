@@ -36,10 +36,21 @@ class MazSolver:
 
         return neighbors
 
-    def build_path(self, parent):
-            pass
-        
 
+    """Build path backwards,
+    from exit to entry, then return reverse"""
+    def build_path(self, came_from):
+        path: list[tuple[int, int]] = []
+        current = self.exit
+
+        while current is not None:
+            path.append(current)
+            current = came_from[current]
+
+        path.reverse()
+        return path
+
+        
     """
     Find the shortest path using BFS.
     Return path as a list of coordinates,

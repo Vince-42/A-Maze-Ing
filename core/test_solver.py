@@ -4,10 +4,10 @@ from core.maz_solver import MazSolver
 class FakeCell:
     def __init__(self, x, y, value):
         self.coordinate = (x, y)
-        self.stateN = bool(value & 1)
-        self.stateE = bool(value & 2)
-        self.stateS = bool(value & 4)
-        self.stateW = bool(value & 8)
+        self.stateN = not bool(value & 1)
+        self.stateE = not bool(value & 2)
+        self.stateS = not bool(value & 4)
+        self.stateW = not bool(value & 8)
         self.fortytwo = False
 
 
@@ -28,6 +28,16 @@ exit = (9, 13)
 
 solver = MazSolver(cells, entry, exit)
 
-print("Entry neighbors:", solver.get_neighbors(entry))
-print("Exit neighbors:", solver.get_neighbors(exit))
-print("Solution:", solver.solve())
+# print("Entry neighbors:", solver.get_neighbors(entry))
+# print("Exit neighbors:", solver.get_neighbors(exit))
+# print("Solution:", solver.solve())
+
+path = solver.solve()
+
+print("Shortest path:", path)
+print("Path found:", bool(path))
+
+if path:
+    print("Path length:", len(path) - 1)
+    print("Start:", path[0])
+    print("End:", path[-1])
