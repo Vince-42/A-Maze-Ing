@@ -6,7 +6,7 @@ MAZE = {
         "start": color.GREEN  + "🐍" + color.RESET,
         "end":   color.RED  + "🍎" + color.RESET,
         "fortytwo":   color.BLUE  + "██" + color.RESET,
-        "solution":   color.GREEN  + "██" + color.RESET,
+        "solution":   color.GREEN  + "🔹" + color.RESET,
     }
 
 MAZE_ONE = {
