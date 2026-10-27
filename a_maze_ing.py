@@ -10,6 +10,7 @@ from core.maze_generator import MazeGenerator
 from utils import error as err
 from utils import design
 from utils import color
+from core.maz_solver import MazSolver
 
 # ######### class   ##########
 
