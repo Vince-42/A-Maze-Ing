@@ -4,7 +4,6 @@
 
 # ######### import  ##########
 
-import utils.color as color
 import random
 from utils.design import MAZE
 from utils import error as err
@@ -12,7 +11,6 @@ from core.maz_solver import MazSolver
 
 # ######### class   ##########
 
-# I NEED TO HAVE ONLY MAZE GENERATOR
 
 class MazeGenerator():
     def __init__(self, conf: object):
@@ -30,17 +28,16 @@ class MazeGenerator():
         generator.fill(self.entry, self.exit)
         generator.create()
         generator.print_maze(False, False)
-        # create a IF here if perfect backtracker if not perfect UNPERFECT algo.
         if self.perfect:
             generator.backtracker()
         else:
             generator.backtracker_imperfect()
         print("\n\n")
-        ## Run the solver and store the shortest path
+        # Run the solver belooooow
         solver = MazSolver(
             generator.get_all_cells(),
             generator.entry_maze,
-            generator.exit_maze       
+            generator.exit_maze
         )
         generator.solution_path = solver.solve()
         print("SOLUTION_00: ")
@@ -52,7 +49,6 @@ class MazeGenerator():
         generator.print_maze(True, False)
         self.output_txt = generator.print_data(self.output_name)
         return generator
-    
 
     def get_entry(self) -> tuple:
         return self.entry
@@ -61,9 +57,9 @@ class MazeGenerator():
 def chg_state(Cell):
     Cell.visit = True
 
+
 def chgstateN(Cell):
     Cell.stateN = True
-
 
 
 class CellGenerator(MazeGenerator):
@@ -87,7 +83,6 @@ class CellGenerator(MazeGenerator):
         self._all_cells = []
         self.solution = False
 
-    
     def fill(self, entry_m: tuple[int, int], exit_m: tuple):
         self.entry_maze = entry_m
         self.exit_maze = exit_m
@@ -95,11 +90,9 @@ class CellGenerator(MazeGenerator):
     def create(self):
         for x in range(self.width):
             for y in range(self.height):
-                #print(f"x{x},y{y}")
                 new = CellGenerator(x, y, self.width, self.height)
                 self._all_cells.append(new)
-            #print()
-    
+
     def print_data(self, file: str) -> str:
         count = 0
         maze_heza = ""
