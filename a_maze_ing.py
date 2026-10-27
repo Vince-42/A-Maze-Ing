@@ -73,57 +73,60 @@ if __name__ == "__main__":
                 print(f"Error in the configuration. {e}")
                 break
             while (1):
-                print_menu()
-                sys.stdout.flush()
-                user_input = sys.stdin.readline().rstrip()
-                if user_input == "1":
-                    print("GENERATE NEW MAZE")
-                    solution = False
-                    break
-                elif user_input == "2":
-                    choice = [
-                        color.PURPLE + "██" + color.RESET,
-                        color.YELLOW + "██" + color.RESET,
-                        color.ORANGE + "██" + color.RESET,
-                        color.GREEN + "██" + color.RESET
-                    ]
-                    design.MAZE["wall"] = choice[count]
-                    count += 1
-                    if count == 4:
-                        count = 0
-                    gen_obj.print_maze(True, solution)
-                elif user_input == "3":
-                    if solution:
+                try:
+                    print_menu()
+                    sys.stdout.flush()
+                    user_input = sys.stdin.readline().rstrip()
+                    if user_input == "1":
+                        print("GENERATE NEW MAZE")
                         solution = False
+                        break
+                    elif user_input == "2":
+                        choice = [
+                            color.PURPLE + "██" + color.RESET,
+                            color.YELLOW + "██" + color.RESET,
+                            color.ORANGE + "██" + color.RESET,
+                            color.GREEN + "██" + color.RESET
+                        ]
+                        design.MAZE["wall"] = choice[count]
+                        count += 1
+                        if count == 4:
+                            count = 0
+                        gen_obj.print_maze(True, solution)
+                    elif user_input == "3":
+                        if solution:
+                            solution = False
+                        else:
+                            solution = True
+                        # init the display with the solution
+                        gen_obj.print_maze(False, False)
+                        # display the maze
+                        gen_obj.print_maze(True, solution)
+                    elif user_input == "4":
+                        print(f"\n\n{maze_o.output_txt}")
+                    elif user_input == "5":
+                        choice = [
+                            color.PURPLE + "42" + color.RESET,
+                            color.YELLOW + "🔥" + color.RESET,
+                            color.ORANGE + "👾" + color.RESET,
+                            color.GREEN + "██" + color.RESET
+                        ]
+                        design.MAZE["fortytwo"] = choice[count]
+                        count += 1
+                        if count == 4:
+                            count = 0
+                        gen_obj.print_maze(True, solution)
+                    elif user_input == "6":
+                        if maze_o.perfect:
+                            maze_o.perfect = False
+                        else:
+                            maze_o.perfect = True
+                        maze_bis = MazeGenerator(conf)
+                        gen_obj = maze_o.cell_gen()
                     else:
-                        solution = True
-                    # init the display with the solution
-                    gen_obj.print_maze(False, False)
-                    # display the maze
-                    gen_obj.print_maze(True, solution)
-                elif user_input == "4":
-                    print(f"\n\n{maze_o.output_txt}")
-                elif user_input == "5":
-                    choice = [
-                        color.PURPLE + "42" + color.RESET,
-                        color.YELLOW + "🔥" + color.RESET,
-                        color.ORANGE + "👾" + color.RESET,
-                        color.GREEN + "██" + color.RESET
-                    ]
-                    design.MAZE["fortytwo"] = choice[count]
-                    count += 1
-                    if count == 4:
-                        count = 0
-                    gen_obj.print_maze(True, solution)
-                elif user_input == "6":
-                    if maze_o.perfect:
-                        maze_o.perfect = False
-                    else:
-                        maze_o.perfect = True
-                    maze_bis = MazeGenerator(conf)
-                    gen_obj = maze_o.cell_gen()
-                else:
-                    exit(0)
+                        exit(0)
+                except KeyboardInterrupt:
+                    print("  Not quit properly. Press any key .. --'")
 
     # this below is just for checking purpose
     # print parameters to check config

@@ -33,22 +33,34 @@ class MazeGenerator():
         else:
             generator.backtracker_imperfect()
         print("\n\n")
+        # returning maze txt in var
+        self.output_txt = generator.print_data(self.output_name)
+        # print("\n CELL GEN FT\n")
+        # print(self.output_txt)
+        # print(f" OUTPUT ALL CELL {generator.get_all_cells()}")
+        # print(f"ENTRY {generator.entry_maze}")
+        # print(f"EXIT {generator.exit_maze}")
         # Run the solver belooooow
         solver = MazSolver(
             generator.get_all_cells(),
             generator.entry_maze,
             generator.exit_maze
         )
+        # print(f"INSIDE SOLVER ENTRANCE {solver.entry}")
+        # print(f"INSIDE SOLVER EXIT {solver.exit}")
         generator.solution_path = solver.solve()
         # DEBUGGING PRINT STATEMENT BELOW
         # print("SOLUTION_00: ")
         # print("SOLUTION_1: ", generator.solution_path)
         # set Atribute with Maze solution
+        # print("SOLUTION_00: ")
+        # print("SOLUTION_1: ", generator.solution_path)
+        #  set Atribute with Maze solution
         for coordinate in generator.solution_path:
             generator.ret_cell(coordinate).solution = True
         # Print maze with solution true
         generator.print_maze(True, False)
-        self.output_txt = generator.print_data(self.output_name)
+        
         return generator
 
     def get_entry(self) -> tuple:
@@ -83,6 +95,7 @@ class CellGenerator(MazeGenerator):
         self.coordinate = (x, y)
         self._all_cells = []
         self.solution = False
+        self.imperfect_help = False
 
     def fill(self, entry_m: tuple[int, int], exit_m: tuple):
         self.entry_maze = entry_m
@@ -140,8 +153,9 @@ class CellGenerator(MazeGenerator):
             ok_cell = [obj for obj in lst_et if obj is not None]
             count = 0
             for cell in ok_cell:
-                cell.isblocked = False
-                cell.fortytwo = False
+                # TO BE CHECKED HERE
+                # cell.blocked = True
+                cell.fortytwo = True
                 if count > 0:
                     pass
                     # cell.visit = True
@@ -294,13 +308,13 @@ class CellGenerator(MazeGenerator):
         current_cell = random.choice(dead_cell)
         while len(dead_cell) > 1:
             helper = 0
-            while current_cell.fortytwo is True or current_cell.blocked is True:
+            while current_cell.fortytwo is True or current_cell.imperfect_help is True:
                 current_cell = random.choice(dead_cell)
                 helper += 1
                 if helper >= 20:
                     break
 
-            current_cell.blocked = True
+            current_cell.imperfect_help = True
             cell_x = current_cell.coordinate[0]
             cell_y = current_cell.coordinate[1]
             # get info on cell next to current cell 
@@ -332,7 +346,7 @@ class CellGenerator(MazeGenerator):
     
     def backtracker_imperfect(self):
         dead_cell = []
- # cell to start the maze generation
+        # cell to start the maze generation
         current_cell = random.choice(self._all_cells)
         while current_cell.fortytwo is True:
             current_cell = random.choice(self._all_cells)
