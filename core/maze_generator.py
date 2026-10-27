@@ -40,9 +40,10 @@ class MazeGenerator():
             generator.exit_maze
         )
         generator.solution_path = solver.solve()
-        print("SOLUTION_00: ")
-        print("SOLUTION_1: ", generator.solution_path)
-        ##  set Atribute with Maze solution
+        # DEBUGGING PRINT STATEMENT BELOW
+        # print("SOLUTION_00: ")
+        # print("SOLUTION_1: ", generator.solution_path)
+        # set Atribute with Maze solution
         for coordinate in generator.solution_path:
             generator.ret_cell(coordinate).solution = True
         # Print maze with solution true
@@ -98,7 +99,7 @@ class CellGenerator(MazeGenerator):
         maze_heza = ""
         for height in range(self.height):
             for width in range(self.width):
-                current_cell = self.ret_cell((width,height))
+                current_cell = self.ret_cell((width, height))
                 if count == self.width:
                     maze_heza += "\n"
                     count = 0
@@ -112,11 +113,11 @@ class CellGenerator(MazeGenerator):
                 count += 1
         maze_heza += "\n\n"
         data_entry = str(self.entry_maze).replace("(", "")
-        ## maze_heza += f"{data_entry.replace(")", "")}"
+        # maze_heza += f"{data_entry.replace(")", "")}"
         maze_heza += data_entry.replace(")", "")
         maze_heza += "\n"
         data_exit = str(self.exit_maze).replace("(", "")
-        ## maze_heza += f"{data_exit.replace(")", "")}"
+        # maze_heza += f"{data_exit.replace(")", "")}"
         maze_heza += data_exit.replace(")", "")
         with open(file, "w") as f:
             print(maze_heza, file=f)
@@ -139,10 +140,11 @@ class CellGenerator(MazeGenerator):
             ok_cell = [obj for obj in lst_et if obj is not None]
             count = 0
             for cell in ok_cell:
-                cell.isblocked = True
-                cell.fortytwo = True
+                cell.isblocked = False
+                cell.fortytwo = False
                 if count > 0:
-                    cell.visit = True
+                    pass
+                    # cell.visit = True
                 count += 1
 
     def create_fortytwo(self) -> list:
@@ -216,7 +218,8 @@ class CellGenerator(MazeGenerator):
                     if cell.stateW and display[ligne][col - 1] != "fortytwo":
                         display[ligne][col - 1] = "path"
         # start & end
-        display[2 * self.entry_maze[1] + 1][2 * self.entry_maze[0] + 1] = "start"
+        display[2 * self.entry_maze[1] + 1][2 * self.entry_maze[0] + 1] = \
+            "start"
         display[2 * self.exit_maze[1] + 1][2 * self.exit_maze[0] + 1] = "end"
         if printing:
             for ligne in display:
@@ -224,15 +227,16 @@ class CellGenerator(MazeGenerator):
 
 # 1 Départ : Choisir une case au hasard. Marquer comme Visité.
 # 2. Boucle : Tant qu'il reste des cases non visitées dans le labyrinthe :
-#	• Regardez autour : Listez les cases voisines de la case actuelle (haut, bas, gauche, droite) qui sont encore Non visitées.
-#	• Choix 1 : S'il y a des voisins non visités :
-#		1. Choisissez-en un au hasard.
-#		2. Abattez le mur entre la case actuelle et ce voisin choisi.
-#		3. Ajoutez la case actuelle à la Pile.
-#		4. Déplacez-vous sur le voisin, et marquez-le comme Visité.
-#	• Choix 2 : Si tous les voisins sont déjà visités (Cul-de-sac) :
-#		1. Sortez la dernière case de la Pile (on revient en arrière).
-#		2. Cette case redevient votre case actuelle.
+# • Regardez autour : Listez les cases voisines de la case actuelle
+# (haut, bas, gauche, droite) qui sont encore Non visitées.
+# • Choix 1 : S'il y a des voisins non visités :
+# 1. Choisissez-en un au hasard.
+# 2. Abattez le mur entre la case actuelle et ce voisin choisi.
+# 3. Ajoutez la case actuelle à la Pile.
+# 4. Déplacez-vous sur le voisin, et marquez-le comme Visité.
+# • Choix 2 : Si tous les voisins sont déjà visités (Cul-de-sac) :
+# 1. Sortez la dernière case de la Pile (on revient en arrière).
+# 2. Cette case redevient votre case actuelle.
 
     def backtracker(self):
         # cell to start the maze generation
