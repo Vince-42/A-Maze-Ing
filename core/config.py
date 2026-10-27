@@ -9,6 +9,7 @@ import random
 
 # ######### class   ##########
 
+
 class Configuration():
     def __init__(self):
         self.__file_name: str = "config.txt"
@@ -39,10 +40,10 @@ class Configuration():
     def placing_data(self, truc, line):
         if truc == "WIDTH=":
             x = self.split_int(line)
-            self._width = x # inversed because inv in the code with x,y | reinversed
+            self._width = x
         elif truc == "HEIGHT=":
             y = self.split_int(line)
-            self._height = y # inversed because inv in the code with x,y | reinversed
+            self._height = y
         elif truc == "ENTRY=":
             z = self.split_tuple(line)
             self._entry = z
@@ -75,7 +76,7 @@ class Configuration():
                 self._data_check += 1
                 return False
             else:
-                raise err.BooleanError("Perfect config issue. Must be True or False")
+                raise err.BooleanError("Perfect must be True or False")
         except err.BooleanError:
             raise err.BooleanError
 
@@ -94,7 +95,7 @@ class Configuration():
             print(f"WRONG DATA : {e}")
         return -1
 
-      # return a positive INT on success | neg on failed
+        # return a positive INT on success | neg on failed
     def split_seed(self, line) -> int | None:
         rslt = line.split("=")
         # verifier que line [1] est bien un integer
@@ -107,7 +108,7 @@ class Configuration():
                 raise err.NegativeError("Seed cannot be negative.")
             return ret
         except TypeError as e:
-                print(f"WRONG SEED DATA : {e}")
+            print(f"WRONG SEED DATA : {e}")
         return None
 
     # return an STR on success | empty on fail
@@ -142,26 +143,24 @@ class Configuration():
     def validation(self):
         # checking entry/exit
         # NEED TO BE SURE THAT ENTRANCE AND EXIT ARE ON THE BORDER
-        if int(self._exit[0]) > self._width or int(self._exit[1]) > self._height:
+        if int(self._exit[0]) > self._width or\
+           int(self._exit[1]) > self._height:
             self._data_check -= 1
             raise err.EntryExitError("Entry point outside of the maze.")
         if self._entry == self._exit:
             self._data_check -= 1
-            raise err.EntryExitError("Entry can not be the same point as the Exit.")
-        if int(self._entry[0]) > self._width or int(self._entry[1]) > self._height:
+            raise err.EntryExitError("Entry can't be the same as the Exit.")
+        if int(self._entry[0]) > self._width or\
+           int(self._entry[1]) > self._height:
             self._data_check -= 1
-            raise err.EntryExitError("Entry point cannot be outside the maze boundaries.")
-        if int(self._exit[0]) >= self._width or int(self._exit[1]) >= self._height:
+            raise err.EntryExitError("Exit can't be outside maze limits.")
+        if int(self._exit[0]) >= self._width or\
+           int(self._exit[1]) >= self._height:
             self._data_check -= 1
-            raise err.EntryExitError("Exit point cannot be outside the maze boundaries.")
-        # if self._entry[0] != 0 and self._entry[0] != self._width - 1 and self._entry[1] != 0 and self._entry[1] != self._width - 1:
-        #    print(f"entry point 0 : {self._entry[0]} | width - 1 : {self._width - 1}")
-        #    raise err.EntryExitError("Entry point cannot be within the boundaries of the maze.")
-        # if self._exit[0] != 0 and self._exit[0] != self._width - 1 and self._exit[1] != 0 and self._exit[1] != self._width - 1:
-        #    print(f"exit point 0 : {self._exit[0]} | width - 1 : {self._width - 1}")
-        #    raise err.EntryExitError("Exit point cannot be within the boundaries of the maze.")
+            raise err.EntryExitError("Exit can't be outside the maze limits.")
 
 # ######### methods ##########
+
 
 def main_config():
     default = Configuration()
@@ -183,4 +182,3 @@ def main_config():
     except err.StringError as e:
         print(f"Empty string. {e}")
     return default
-

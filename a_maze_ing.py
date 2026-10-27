@@ -7,7 +7,6 @@
 import sys
 from core.config import main_config
 from core.maze_generator import MazeGenerator
-from core.maze_generator import CellGenerator
 from utils import error as err
 from utils import design
 from utils import color
@@ -43,7 +42,13 @@ def main() -> bool:
 
 
 def print_menu():
-    print("\n\n**********\n1 - Generate Maze (cf. config.txt)\n2 - Rotate wall color\n3 - Show/Hide the solution\n4 - Output maze coordinate on terminal (Bonus)\n5 - Rotate color & design 42 (Bonus)\n6 - Generate a Perfect/Imperfect Maze (Bonus)\nAny - QUIT\n**********\n\n")
+    print("\n\n**********\n"
+          "1 - Generate Maze (cf. config.txt)\n"
+          "2 - Rotate wall color\n3 - Show/Hide the solution\n"
+          "4 - Output maze coordinate on terminal (Bonus)\n"
+          "5 - Rotate color & design 42 (Bonus)\n"
+          "6 - Generate a Perfect/Imperfect Maze (Bonus)\nAny - QUIT\n"
+          "**********\n\n")
 
 
 if __name__ == "__main__":
@@ -51,7 +56,7 @@ if __name__ == "__main__":
     count = 0
     # could be the main menu on LOOP
     if main():
-        while(1):
+        while (1):
             try:
                 conf = main_config()
                 if conf._data_check >= 6:
@@ -61,12 +66,12 @@ if __name__ == "__main__":
                     print("Error on config - No Maze to be generated")
                     break
             except err.FortyTwoError as e:
-                print("Error. You can't have the entry/exit within the 42 logo.")
+                print(f"Error. The entry/exit can't be within the 42 logo.{e}")
                 break
             except IndexError as e:
                 print(f"Error in the configuration. {e}")
                 break
-            while(1):
+            while (1):
                 print_menu()
                 sys.stdout.flush()
                 user_input = sys.stdin.readline().rstrip()
@@ -81,7 +86,7 @@ if __name__ == "__main__":
                         color.ORANGE + "██" + color.RESET,
                         color.GREEN + "██" + color.RESET
                     ]
-                    design.MAZE["wall"] =  choice[count]
+                    design.MAZE["wall"] = choice[count]
                     count += 1
                     if count == 4:
                         count = 0
@@ -104,7 +109,7 @@ if __name__ == "__main__":
                         color.ORANGE + "👾" + color.RESET,
                         color.GREEN + "██" + color.RESET
                     ]
-                    design.MAZE["fortytwo"] =  choice[count]
+                    design.MAZE["fortytwo"] = choice[count]
                     count += 1
                     if count == 4:
                         count = 0
@@ -116,9 +121,9 @@ if __name__ == "__main__":
                         maze_o.perfect = True
                     maze_bis = MazeGenerator(conf)
                     gen_obj = maze_o.cell_gen()
-                else :
+                else:
                     exit(0)
-        
+
     # this below is just for checking purpose
     # print parameters to check config
     '''
