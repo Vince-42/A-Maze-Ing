@@ -43,6 +43,8 @@ class MazeGenerator():
             generator.exit_maze       
         )
         generator.solution_path = solver.solve()
+        print("SOLUTION_00: ")
+        print("SOLUTION_1: ", generator.solution_path)
         ##  set Atribute with Maze solution
         for coordinate in generator.solution_path:
             generator.ret_cell(coordinate).solution = True
@@ -117,10 +119,12 @@ class CellGenerator(MazeGenerator):
                 count += 1
         maze_heza += "\n\n"
         data_entry = str(self.entry_maze).replace("(", "")
-        maze_heza += f"{data_entry.replace(")", "")}"
+        ## maze_heza += f"{data_entry.replace(")", "")}"
+        maze_heza += data_entry.replace(")", "")
         maze_heza += "\n"
         data_exit = str(self.exit_maze).replace("(", "")
-        maze_heza += f"{data_exit.replace(")", "")}"
+        ## maze_heza += f"{data_exit.replace(")", "")}"
+        maze_heza += data_exit.replace(")", "")
         with open(file, "w") as f:
             print(maze_heza, file=f)
         return maze_heza
