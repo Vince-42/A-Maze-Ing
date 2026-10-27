@@ -1,16 +1,16 @@
 # MANDATORY KEY
 
 # WIDTH Maze width (x)
-WIDTH=7
+WIDTH=25
 
 # HEIGHT Maze height (y)
-HEIGHT=7
+HEIGHT=25
 
 # ENTRY Entry coordinates (x,y) 
 ENTRY=0,0
 
 # EXIT Exit coordinates (x,y) 
-EXIT=6,6
+EXIT=1,0
 
 # OUTPUT_FILE Output filename
 OUTPUT_FILE=maze.txt

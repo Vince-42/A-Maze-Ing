@@ -15,16 +15,23 @@ class MazSolver:
     def get_neighbors(
             self, current: tuple[int, int]
     ) -> list[tuple[int, int]]:
-        
+        # print(f"\n\nGET NEIGHT FT _ Current {current}")
         x, y = current
         neighbors: list[tuple[int, int]] = []
         cell = self.cell_dict[current]
-
+        # DEBUG PRINT STATEMENT
+        # print(f"STATE CELL {current} NORTH -> {cell.stateN}")
+        # print(f"STATE CELL {current} EAST -> {cell.stateE}")
+        # print(f"STATE CELL {current} SOUTH -> {cell.stateS}")
+        # print(f"STATE CELL {current} WEST -> {cell.stateW}")
         if cell.stateN:
             if  (x, y - 1) in self.cell_dict and not self.cell_dict[x, y - 1].blocked:
                 neighbors.append((x, y - 1))
         if cell.stateE:
+            # print("INTO CELL.STATEe")
+            # print(f"CELL STATE E - BLOCKED ? -> {cell.blocked}")
             if (x + 1, y) in self.cell_dict and not self.cell_dict[x + 1, y].blocked:
+                # print("APPENDING IN EAST")
                 neighbors.append((x + 1, y))
         if cell.stateS:
             if (x, y + 1) in self.cell_dict and not self.cell_dict[x, y + 1].blocked:
@@ -60,12 +67,14 @@ class MazSolver:
         queue = deque([self.entry])
         visited = {self.entry}
         came_from = {self.entry: None}
-
+        # print("\nSOLVE FT\n")
+        # print(f"QUEUE IS : {queue}")
+        # print(f"VISITED IS : {visited}")
+        # print(f"CAME FROM : {came_from}")
         while queue:
             current = queue.popleft()
             if current == self.exit:
                 break
-
             for neighb in self.get_neighbors(current):
                 if neighb not in visited:
                     visited.add(neighb)
@@ -73,6 +82,7 @@ class MazSolver:
                     queue.append(neighb)
 
         if self.exit not in came_from:
+            print("Error. EXIT NOT FOUND.")
             return []
         
         return self.build_path(came_from)
