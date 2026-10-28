@@ -106,7 +106,7 @@ The interactive menu currently offers:
 | `1` | Generate a new maze |
 | `2` | Rotate wall color |
 | `3` | Show or hide the solution |
-| `4` | Print the maze's encoded output in the terminal |
+| `4` | Print the maze's coordinate output in the terminal |
 | `5` | Change the color/design of the `42` motif |
 | `6` | Toggle perfect/imperfect mode (bonus menu option) |
 | `7` | Change display speed |
@@ -167,7 +167,19 @@ The analyzer also supports `--min-loops` and `--max-dead-ends` thresholds. Its p
 
 ## Reusable maze module and packaging
 
-The maze-generation classes are separated under `core/`, and the application imports them from there. However, the supplied archive does not contain a `pyproject.toml`, `setup.py`, or built `mazegen` wheel/source distribution. **Packaging the reusable module and documenting its public API remain outstanding tasks** if required for the final submission.
+The MazeGenerator class has to be instanciated with an object file that include the below variable :
+obj._entry
+obj._exit
+obj._width
+obj._height
+obj._output_file
+obj._perfect
+
+Custom parameters can be shared via the `config.txt` file -> e.g Seeds
+
+The maze structure can be printed on the terminal via `print_maze`
+The solution can be printed if solution=True is passed to `print_maze`
+The maze data can be accessed via `maze.txt` or `obj.output_txt`
 
 ## Team and project management
 
