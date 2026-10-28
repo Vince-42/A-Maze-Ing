@@ -124,6 +124,7 @@ if __name__ == "__main__":
                             maze_o.perfect = True
                         maze_bis = MazeGenerator(conf)
                         gen_obj = maze_o.cell_gen()
+                        solution = False
                     elif user_input == "7":
                         try:
                             new = float(input("Speed ... : ")) / 10
