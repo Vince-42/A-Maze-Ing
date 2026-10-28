@@ -344,49 +344,13 @@ class CellGenerator(MazeGenerator):
 
     def imperfect_helper(self, dead_cell: list):
         all_cell = self.get_all_cells()
-<<<<<<< HEAD
         dead_end = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 1 and cell.blocked is False]
         # dead_end3 = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 3 and cell.blocked is False]
-=======
-        for cell in all_cell:
-            print(cell.coordinate)
-        print()
-        dead_end = [
-            cell for cell in all_cell
-            if (
-                cell.stateN + cell.stateE + cell.stateS + cell.stateW
-                ) == 1
-            and cell.blocked is False
-        ]
-        for cell in dead_end:
-            print(f"{cell.coordinate}")
-        dead_end3 = [
-            cell for cell in all_cell
-            if (
-                cell.stateN + cell.stateE + cell.stateS + cell.stateW
-                ) == 3
-            and cell.blocked is False
-        ]
-        print()
-        for cell in dead_end3:
-            print(f"{cell.coordinate}")
-        print(f"DEAD END1 LIST = {len(dead_end)}")
-        print(f"DEAD END3 LIST = {len(dead_end3)}")
-
->>>>>>> e3be7b5a9c095b536039439182c5418c650d0f51
         current_cell = random.choice(dead_end)
         while len(dead_end) > 1:
             dead_end = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 1 and cell.fortytwo is False]
             helper = 0
-<<<<<<< HEAD
             while current_cell.fortytwo is True or current_cell.imperfect_help is True:
-=======
-            print("loop")
-            while (
-                current_cell.fortytwo is True
-                or current_cell.imperfect_help is True
-            ):
->>>>>>> e3be7b5a9c095b536039439182c5418c650d0f51
                 current_cell = random.choice(dead_end)
                 helper += 1
                 if helper >= 20:
@@ -428,12 +392,8 @@ class CellGenerator(MazeGenerator):
                     current_cell.stateW = True
                     next_cell.stateE = True
                 current_cell = next_cell
-<<<<<<< HEAD
                 current_cell = dead_end.pop()
     
-=======
-
->>>>>>> e3be7b5a9c095b536039439182c5418c650d0f51
     def backtracker_imperfect(self):
         dead_cell = []
         # cell to start the maze generation
