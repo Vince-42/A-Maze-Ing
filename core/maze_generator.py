@@ -190,8 +190,55 @@ class CellGenerator(MazeGenerator):
         display[3 + offset_row][4 + offset_col] = "fortytwo"
         return display
 
+
+    def create_fortytwo2(self) -> list:
+        rows = 2 * self.height + 1
+        cols = 2 * self.width + 1
+        offset_row = (rows - 6) // 2
+        offset_col = (cols - 7) // 2
+        display = [
+            ["wall"] * cols
+            for _ in range(rows)
+                ]
+        if self.height <= 7 or self.width <= 7:
+            return display
+        # quatre
+        # haut
+        display[offset_row + 2][offset_col] = "fortytwo"
+        display[offset_row + 1][offset_col] = "fortytwo"
+        display[offset_row][offset_col] = "fortytwo"
+        # middle middle
+        display[offset_row + 2][offset_col + 1] = "fortytwo"
+        display[offset_row + 2][offset_col + 2] = "fortytwo"
+        display[offset_row + 3][offset_col + 2] = "fortytwo"
+        display[offset_row + 4][offset_col + 2] = "fortytwo"
+        # bas
+        # deux
+        # haut gauche
+        display[offset_row][offset_col + 6] = "fortytwo"
+        display[offset_row + 2][offset_col + 6] = "fortytwo"
+        display[offset_row + 4][offset_col + 6] = "fortytwo"
+        # bas gauche
+        # haut droite
+        display[offset_row][offset_col + 8] = "fortytwo"
+        display[offset_row + 2][offset_col + 8] = "fortytwo"
+        display[offset_row + 4][offset_col + 8] = "fortytwo"
+        # bas droite
+        # middle haut
+        display[offset_row][offset_col + 7] = "fortytwo"
+        # droite middle
+        display[offset_row + 1][offset_col + 8] = "fortytwo"
+        # middle middle
+        display[offset_row + 2][offset_col + 7] = "fortytwo"
+        # gauche middle
+        display[offset_row + 3][offset_col + 6] = "fortytwo"
+        # middle bas
+        display[offset_row + 4][offset_col + 7] = "fortytwo"
+        return display
+
+
     def print_maze(self, printing: bool, solution: bool):
-        display = self.create_fortytwo()
+        display = self.create_fortytwo2()
         # create the path
         for x in range(self.width):
             for y in range(self.height):
