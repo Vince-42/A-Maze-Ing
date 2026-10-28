@@ -4,7 +4,9 @@ VENV_PYTHON = $(VENV)/bin/python
 
 install:
 	$(SYSTEM_PYTHON) -m venv $(VENV)
+	$(VENV_PYTHON) -m pip install --upgrade pip build
 	$(VENV_PYTHON) -m pip install flake8 mypy
+	. .venv/bin/activate && python -m build
 
 run:
 	$(VENV_PYTHON) a_maze_ing.py config.txt
