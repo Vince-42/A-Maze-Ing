@@ -21,7 +21,7 @@ PERFECT=True
 # ADDITIONAL KEY
 
 # SEED
-SEED=None
+SEED=6
 
 # algorithm
 # display mode

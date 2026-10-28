@@ -212,7 +212,7 @@ class CellGenerator(MazeGenerator):
         display[offset_row + 2][offset_col + 2] = "fortytwo"
         display[offset_row + 3][offset_col + 2] = "fortytwo"
         display[offset_row + 4][offset_col + 2] = "fortytwo"
-        # bas
+        # bassolution
         # deux
         # haut gauche
         display[offset_row][offset_col + 6] = "fortytwo"
@@ -287,6 +287,8 @@ class CellGenerator(MazeGenerator):
         if printing:
             for ligne in display:
                 print("".join(MAZE[elem] for elem in ligne))
+               #
+               
                 time.sleep(0.1)
 
 # 1 Départ : Choisir une case au hasard. Marquer comme Visité.

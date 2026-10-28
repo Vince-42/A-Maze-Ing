@@ -123,6 +123,7 @@ if __name__ == "__main__":
                             maze_o.perfect = True
                         maze_bis = MazeGenerator(conf)
                         gen_obj = maze_o.cell_gen()
+                        solution = False
                     else:
                         exit(0)
                 except KeyboardInterrupt:
