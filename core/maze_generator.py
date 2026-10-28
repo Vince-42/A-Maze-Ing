@@ -5,6 +5,7 @@
 # ######### import  ##########
 
 import random
+import time
 from utils.design import MAZE
 from utils import error as err
 from core.maz_solver import MazSolver
@@ -285,6 +286,7 @@ class CellGenerator(MazeGenerator):
         if printing:
             for ligne in display:
                 print("".join(MAZE[elem] for elem in ligne))
+                time.sleep(0.1)
 
 # 1 Départ : Choisir une case au hasard. Marquer comme Visité.
 # 2. Boucle : Tant qu'il reste des cases non visitées dans le labyrinthe :
@@ -352,11 +354,26 @@ class CellGenerator(MazeGenerator):
                 print("ERR")
 
     def imperfect_helper(self, dead_cell: list):
-        current_cell = random.choice(dead_cell)
-        while len(dead_cell) > 1:
+        all_cell = self.get_all_cells()
+        for cell in all_cell:
+            print(cell.coordinate)
+        print()
+        dead_end = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 1 and cell.blocked is False]
+        for cell in dead_end:
+            print(f"{cell.coordinate}")
+        dead_end3 = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 3 and cell.blocked is False]
+        print()
+        for cell in dead_end3:
+                    print(f"{cell.coordinate}")
+        print(f"DEAD END1 LIST = {len(dead_end)}")
+        print(f"DEAD END3 LIST = {len(dead_end3)}")
+
+        current_cell = random.choice(dead_end)
+        while len(dead_end) > 1:
             helper = 0
+            print("loop")
             while current_cell.fortytwo is True or current_cell.imperfect_help is True:
-                current_cell = random.choice(dead_cell)
+                current_cell = random.choice(dead_end)
                 helper += 1
                 if helper >= 20:
                     break
@@ -374,8 +391,10 @@ class CellGenerator(MazeGenerator):
             unvisited_ok_cell = [obj for obj in lst_et if obj is not None]
             if unvisited_ok_cell:
                 next_cell = random.choice(unvisited_ok_cell)
+                print(f"next cell nord {next_cell.stateN} | east {next_cell.stateE} | south {next_cell.stateS} | west {next_cell.stateW} | coordinate {next_cell.coordinate}")
                 d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                 d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
+                print("break")
                 if d_y == 1:  # This means moving SOUTH / BAS
                     current_cell.stateS = True
                     next_cell.stateN = True
@@ -388,8 +407,8 @@ class CellGenerator(MazeGenerator):
                 elif d_x == -1:  # This means moving WEST / GAUCHE
                     current_cell.stateW = True
                     next_cell.stateE = True
+                current_cell = dead_end.pop()
                 current_cell = next_cell
-                current_cell = dead_cell.pop()
     
     def backtracker_imperfect(self):
         dead_cell = []
