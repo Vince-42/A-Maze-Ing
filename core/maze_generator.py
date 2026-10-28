@@ -384,13 +384,9 @@ class CellGenerator(MazeGenerator):
                 self.ret_cell((cell_x - 1, cell_y)),  # Up
                 self.ret_cell((cell_x, cell_y - 1))   # Left
                             ]
-            print(f"lst et list {lst_et}")
             unvisited_ok_cell = [obj for obj in lst_et if obj is not None]
-            print(f"unvisited list {unvisited_ok_cell}")
             if unvisited_ok_cell:
-                print("bef unvisited")
                 next_cell = random.choice(unvisited_ok_cell)
-                print("aft unvisited")
                 total = next_cell.stateN + next_cell.stateE + next_cell.stateS + next_cell.stateW
                 totalcur = current_cell.stateN + current_cell.stateE + current_cell.stateS + current_cell.stateW
                 #print(f"current cell nord {current_cell.stateN} | east {current_cell.stateE} | south {current_cell.stateS} | west {current_cell.stateW} | total = {totalcur} |coordinate {current_cell.coordinate}")
@@ -459,8 +455,7 @@ class CellGenerator(MazeGenerator):
                         if (
                             cell.stateN + cell.stateE + cell.stateS + cell.stateW
                         ) == 1]
-            print(len(dead_end_test))
-        print(f"SHOULD BE 0 -> {dead_end_test}")
+
 
     def backtracker_imperfect(self):
         dead_cell = []
