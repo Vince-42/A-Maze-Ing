@@ -283,8 +283,10 @@ class CellGenerator(MazeGenerator):
         coor_y_entry = self.entry_maze[0]  # type: ignore[misc]
         display[2 * coor_x_entry + 1][2 * coor_y_entry + 1] = \
             "start"
-        display[2 * self.exit_maze[1] + 1][2 * self.exit_maze[0] + 1] = "end"\
-            # type: ignore[misc]
+        coor_x_exit = self.exit_maze[1]  # type: ignore[misc]
+        coor_y_exit = self.exit_maze[0]  # type: ignore[misc]
+        display[2 * coor_x_exit + 1][2 * coor_y_exit + 1] = \
+            "end"
         if printing:
             for ligne in display:
                 print("".join(MAZE[elem] for elem in ligne))
