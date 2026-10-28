@@ -14,9 +14,9 @@ from core.maz_solver import MazSolver
 # ######### class   ##########
 
 
-
 class MazeGenerator():
     counter_time = 0
+
     def __init__(self, conf: object):
         self.maze = conf
         self.entry = conf._entry
@@ -85,6 +85,7 @@ class CellGenerator(MazeGenerator):
         self._all_cells = []
         self.solution = False
         self.imperfect_help = False
+
     def fill(self, entry_m: tuple[int, int], exit_m: tuple):
         self.entry_maze = entry_m
         self.exit_maze = exit_m
@@ -233,7 +234,7 @@ class CellGenerator(MazeGenerator):
                 col = 2 * x + 1
                 # print(f"cell {x},{y}")
                 if solution:
-                    if (cell.solution == True):
+                    if (cell.solution is True):
                         display[ligne][col] = "solution"
                         if cell.stateN and display[ligne - 1][col] == "wall":
                             display[ligne - 1][col] = "solution"
@@ -344,13 +345,25 @@ class CellGenerator(MazeGenerator):
 
     def imperfect_helper(self, dead_cell: list):
         all_cell = self.get_all_cells()
-        dead_end = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 1 and cell.blocked is False]
+        dead_end = [
+            cell for cell in all_cell
+            if (
+                cell.stateN + cell.stateE + cell.stateS + cell.stateW
+            ) == 1
+            and cell.blocked is False]
         # dead_end3 = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 3 and cell.blocked is False]
         current_cell = random.choice(dead_end)
         while len(dead_end) > 1:
-            dead_end = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 1 and cell.fortytwo is False]
+            dead_end = [
+                cell for cell in all_cell
+                if (
+                    cell.stateN + cell.stateE + cell.stateS + cell.stateW
+                ) == 1 and cell.fortytwo is False]
             helper = 0
-            while current_cell.fortytwo is True or current_cell.imperfect_help is True:
+            while (
+                current_cell.fortytwo is True
+                or current_cell.imperfect_help is True
+            ):
                 current_cell = random.choice(dead_end)
                 helper += 1
                 if helper >= 20:
@@ -393,7 +406,7 @@ class CellGenerator(MazeGenerator):
                     next_cell.stateE = True
                 current_cell = next_cell
                 current_cell = dead_end.pop()
-    
+
     def backtracker_imperfect(self):
         dead_cell = []
         # cell to start the maze generation
