@@ -382,7 +382,6 @@ class CellGenerator(MazeGenerator):
                     current_cell = random.choice(dead_end_test)
                     if current_cell.imperfect_help is False:
                         break
-                    print("no more")
             current_cell.imperfect_help = True
             cell_x = current_cell.coordinate[0]
             cell_y = current_cell.coordinate[1]
@@ -396,10 +395,6 @@ class CellGenerator(MazeGenerator):
             unvisited_ok_cell = [obj for obj in lst_et if obj is not None]
             if unvisited_ok_cell:
                 next_cell = random.choice(unvisited_ok_cell)
-                total = next_cell.stateN + next_cell.stateE + next_cell.stateS + next_cell.stateW
-                totalcur = current_cell.stateN + current_cell.stateE + current_cell.stateS + current_cell.stateW
-                #print(f"current cell nord {current_cell.stateN} | east {current_cell.stateE} | south {current_cell.stateS} | west {current_cell.stateW} | total = {totalcur} |coordinate {current_cell.coordinate}")
-                #print(f"next cell nord {next_cell.stateN} | east {next_cell.stateE} | south {next_cell.stateS} | west {next_cell.stateW} | total = {total} |coordinate {next_cell.coordinate}")
                 d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                 d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
                 if d_y == 1 and current_cell.stateS is True:
@@ -425,7 +420,6 @@ class CellGenerator(MazeGenerator):
                     next_cell = random.choice(unvisited_ok_cell)
                     d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                     d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
-
                 if d_x == -1 and current_cell.stateW is True:
                     # take the next cell out from unvisited ok cell
                     index_cible = unvisited_ok_cell.index(next_cell)
@@ -434,10 +428,6 @@ class CellGenerator(MazeGenerator):
                     next_cell = random.choice(unvisited_ok_cell)
                     d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                     d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
-
-                # print(f"current cell nord {current_cell.stateN} | east {current_cell.stateE} | south {current_cell.stateS} | west {current_cell.stateW} | total = {totalcur} |coordinate {current_cell.coordinate}")
-                # print(f"next cell nord {next_cell.stateN} | east {next_cell.stateE} | south {next_cell.stateS} | west {next_cell.stateW} | total = {total} |coordinate {next_cell.coordinate}")
-
                 if d_y == 1:  # This means moving SOUTH / BAS
                     current_cell.stateS = True
                     next_cell.stateN = True
@@ -460,6 +450,12 @@ class CellGenerator(MazeGenerator):
                         if (
                             cell.stateN + cell.stateE + cell.stateS + cell.stateW
                         ) == 1]
+        emptycell = [ cell for cell in all_cell
+                        if (
+                            cell.stateN + cell.stateE + cell.stateS + cell.stateW
+                        ) == 4]
+        for cell in emptycell:
+            print(f"should not be neighboor cells -> {cell.coordinate}")
 
 
     def backtracker_imperfect(self):
