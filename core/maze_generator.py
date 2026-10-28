@@ -450,12 +450,6 @@ class CellGenerator(MazeGenerator):
                         if (
                             cell.stateN + cell.stateE + cell.stateS + cell.stateW
                         ) == 1]
-        emptycell = [ cell for cell in all_cell
-                        if (
-                            cell.stateN + cell.stateE + cell.stateS + cell.stateW
-                        ) == 4]
-        for cell in emptycell:
-            print(f"should not be neighboor cells -> {cell.coordinate}")
 
 
     def backtracker_imperfect(self):
