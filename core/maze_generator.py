@@ -439,19 +439,15 @@ class CellGenerator(MazeGenerator):
                 # print(f"next cell nord {next_cell.stateN} | east {next_cell.stateE} | south {next_cell.stateS} | west {next_cell.stateW} | total = {total} |coordinate {next_cell.coordinate}")
 
                 if d_y == 1:  # This means moving SOUTH / BAS
-                    print("break SOUTH")
                     current_cell.stateS = True
                     next_cell.stateN = True
                 elif d_y == -1:  # This means moving West / Left
-                    print("break NORD")
                     current_cell.stateN = True
                     next_cell.stateS = True
                 elif d_x == 1:  # This means moving EAST / DROITE
-                    print("break EAST")
                     current_cell.stateE = True
                     next_cell.stateW = True
                 elif d_x == -1:  # This means moving WEST / GAUCHE
-                    print("break WEST")
                     current_cell.stateW = True
                     next_cell.stateE = True
                 current_cell = next_cell
