@@ -70,6 +70,9 @@ if __name__ == "__main__":
             except err.FortyTwoError as e:
                 print(f"Error. The entry/exit can't be within the 42 logo.{e}")
                 break
+            except ImportError as e:
+                print(f"Error in import. {e}")
+                break
             while (1):
                 try:
                     print_menu()

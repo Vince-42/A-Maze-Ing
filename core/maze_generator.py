@@ -53,7 +53,7 @@ class MazeGenerator():
         )
 
         with open(self.output_name, "a") as f:
-            f.write("\n" + directions + "\n")
+            f.write(directions + "\n")
 
         for coordinate in generator.solution_path:
             generator.ret_cell(coordinate).solution = True
