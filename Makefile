@@ -13,8 +13,9 @@ debug:
 	$(VENV_PYTHON) -m pdb a_maze_ing.py config.txt
 
 clean:
-	find . -type d -name "__pycache__" -prune -exec rm -rf {} +
-	rm -rf .mypy_cache .pytest_cache
+	find . -path "./.venv" -prune -o -type d -name "__pycache__" -prune -exec rm -rf {} +
+	find . -path "./.venv" -prune -o -type d -name ".mypy_cache" -prune -exec rm -rf {} +
+	find . -path "./.venv" -prune -o -type d -name ".pytest_cache" -prune -exec rm -rf {} +
 
 lint:
 	$(VENV_PYTHON) -m flake8 .
