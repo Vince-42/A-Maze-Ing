@@ -45,7 +45,16 @@ class MazeGenerator():
             generator.entry_maze,
             generator.exit_maze
         )
+
         generator.solution_path = solver.solve()
+
+        directions: str = solver.path_to_directions(
+            generator.solution_path
+        )
+
+        with open(self.output_name, "a") as f:
+            f.write("\n" + directions + "\n")
+
         for coordinate in generator.solution_path:
             generator.ret_cell(coordinate).solution = True
         # Print maze with solution true
