@@ -382,7 +382,6 @@ class CellGenerator(MazeGenerator):
                     current_cell = random.choice(dead_end_test)
                     if current_cell.imperfect_help is False:
                         break
-                    print("no more")
             current_cell.imperfect_help = True
             cell_x = current_cell.coordinate[0]
             cell_y = current_cell.coordinate[1]
@@ -393,17 +392,9 @@ class CellGenerator(MazeGenerator):
                 self.ret_cell((cell_x - 1, cell_y)),  # Up
                 self.ret_cell((cell_x, cell_y - 1))   # Left
                             ]
-            print(f"lst et list {lst_et}")
             unvisited_ok_cell = [obj for obj in lst_et if obj is not None]
-            print(f"unvisited list {unvisited_ok_cell}")
             if unvisited_ok_cell:
-                print("bef unvisited")
                 next_cell = random.choice(unvisited_ok_cell)
-                print("aft unvisited")
-                total = next_cell.stateN + next_cell.stateE + next_cell.stateS + next_cell.stateW
-                totalcur = current_cell.stateN + current_cell.stateE + current_cell.stateS + current_cell.stateW
-                #print(f"current cell nord {current_cell.stateN} | east {current_cell.stateE} | south {current_cell.stateS} | west {current_cell.stateW} | total = {totalcur} |coordinate {current_cell.coordinate}")
-                #print(f"next cell nord {next_cell.stateN} | east {next_cell.stateE} | south {next_cell.stateS} | west {next_cell.stateW} | total = {total} |coordinate {next_cell.coordinate}")
                 d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                 d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
                 if d_y == 1 and current_cell.stateS is True:
@@ -429,7 +420,6 @@ class CellGenerator(MazeGenerator):
                     next_cell = random.choice(unvisited_ok_cell)
                     d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                     d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
-
                 if d_x == -1 and current_cell.stateW is True:
                     # take the next cell out from unvisited ok cell
                     index_cible = unvisited_ok_cell.index(next_cell)
@@ -438,24 +428,16 @@ class CellGenerator(MazeGenerator):
                     next_cell = random.choice(unvisited_ok_cell)
                     d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                     d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
-
-                # print(f"current cell nord {current_cell.stateN} | east {current_cell.stateE} | south {current_cell.stateS} | west {current_cell.stateW} | total = {totalcur} |coordinate {current_cell.coordinate}")
-                # print(f"next cell nord {next_cell.stateN} | east {next_cell.stateE} | south {next_cell.stateS} | west {next_cell.stateW} | total = {total} |coordinate {next_cell.coordinate}")
-
                 if d_y == 1:  # This means moving SOUTH / BAS
-                    print("break SOUTH")
                     current_cell.stateS = True
                     next_cell.stateN = True
                 elif d_y == -1:  # This means moving West / Left
-                    print("break NORD")
                     current_cell.stateN = True
                     next_cell.stateS = True
                 elif d_x == 1:  # This means moving EAST / DROITE
-                    print("break EAST")
                     current_cell.stateE = True
                     next_cell.stateW = True
                 elif d_x == -1:  # This means moving WEST / GAUCHE
-                    print("break WEST")
                     current_cell.stateW = True
                     next_cell.stateE = True
                 current_cell = next_cell
@@ -468,8 +450,7 @@ class CellGenerator(MazeGenerator):
                         if (
                             cell.stateN + cell.stateE + cell.stateS + cell.stateW
                         ) == 1]
-            print(len(dead_end_test))
-        print(f"SHOULD BE 0 -> {dead_end_test}")
+
 
     def backtracker_imperfect(self):
         dead_cell = []

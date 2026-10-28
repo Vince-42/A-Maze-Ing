@@ -48,7 +48,7 @@ def print_menu():
           "4 - Output maze coordinate on terminal (Bonus)\n"
           "5 - Rotate color & design 42 (Bonus)\n"
           "6 - Generate a Perfect/Imperfect Maze (Bonus)\n"
-          "7 - Change display speed (0 to 10)\n"
+          "7 - Change display speed (0=FAST to +10=SLOW)\n"
           "\nAny key -> QUIT\n"
           "**********\n\n")
 
