@@ -287,8 +287,6 @@ class CellGenerator(MazeGenerator):
         if printing:
             for ligne in display:
                 print("".join(MAZE[elem] for elem in ligne))
-               #
-               
                 time.sleep(0.1)
 
 # 1 Départ : Choisir une case au hasard. Marquer comme Visité.
