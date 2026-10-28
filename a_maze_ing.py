@@ -11,11 +11,11 @@ from utils import error as err
 from utils import design
 from utils import color
 
+
 # ######### class   ##########
 
 
 # ######### methods ##########
-
 
 def start() -> bool:
     arg = sys.argv
@@ -47,7 +47,9 @@ def print_menu():
           "2 - Rotate wall color\n3 - Show/Hide the solution\n"
           "4 - Output maze coordinate on terminal (Bonus)\n"
           "5 - Rotate color & design 42 (Bonus)\n"
-          "6 - Generate a Perfect/Imperfect Maze (Bonus)\nAny - QUIT\n"
+          "6 - Generate a Perfect/Imperfect Maze (Bonus)\n"
+          "7 - Change display speed (0 to 10)\n"
+          "\nAny key -> QUIT\n"
           "**********\n\n")
 
 
@@ -122,7 +124,12 @@ if __name__ == "__main__":
                             maze_o.perfect = True
                         maze_bis = MazeGenerator(conf)
                         gen_obj = maze_o.cell_gen()
-                        solution = False
+                    elif user_input == "7":
+                        try:
+                            MazeGenerator.counter_time = int(input("Speed ... : ")) / 10
+                        except ValueError:
+                            print("Nice try but error is handled.")
+
                     else:
                         exit(0)
                 except KeyboardInterrupt:

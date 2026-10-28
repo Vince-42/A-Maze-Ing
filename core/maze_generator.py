@@ -9,11 +9,14 @@ import time
 from utils.design import MAZE
 from utils import error as err
 from core.maz_solver import MazSolver
+# from a_maze_ing import counter_sleep
 
 # ######### class   ##########
 
 
+
 class MazeGenerator():
+    counter_time = 0
     def __init__(self, conf: object):
         self.maze = conf
         self.entry = conf._entry
@@ -36,27 +39,12 @@ class MazeGenerator():
         print("\n\n")
         # returning maze txt in var
         self.output_txt = generator.print_data(self.output_name)
-        # print("\n CELL GEN FT\n")
-        # print(self.output_txt)
-        # print(f" OUTPUT ALL CELL {generator.get_all_cells()}")
-        # print(f"ENTRY {generator.entry_maze}")
-        # print(f"EXIT {generator.exit_maze}")
-        # Run the solver belooooow
         solver = MazSolver(
             generator.get_all_cells(),
             generator.entry_maze,
             generator.exit_maze
         )
-        # print(f"INSIDE SOLVER ENTRANCE {solver.entry}")
-        # print(f"INSIDE SOLVER EXIT {solver.exit}")
         generator.solution_path = solver.solve()
-        # DEBUGGING PRINT STATEMENT BELOW
-        # print("SOLUTION_00: ")
-        # print("SOLUTION_1: ", generator.solution_path)
-        # set Atribute with Maze solution
-        # print("SOLUTION_00: ")
-        # print("SOLUTION_1: ", generator.solution_path)
-        #  set Atribute with Maze solution
         for coordinate in generator.solution_path:
             generator.ret_cell(coordinate).solution = True
         # Print maze with solution true
@@ -97,7 +85,6 @@ class CellGenerator(MazeGenerator):
         self._all_cells = []
         self.solution = False
         self.imperfect_help = False
-
     def fill(self, entry_m: tuple[int, int], exit_m: tuple):
         self.entry_maze = entry_m
         self.exit_maze = exit_m
@@ -287,7 +274,11 @@ class CellGenerator(MazeGenerator):
         if printing:
             for ligne in display:
                 print("".join(MAZE[elem] for elem in ligne))
+<<<<<<< HEAD
                 time.sleep(0.1)
+=======
+                time.sleep(MazeGenerator.counter_time)
+>>>>>>> 3dec980e52c73586e27f163825c6b1c4a8390f41
 
 # 1 Départ : Choisir une case au hasard. Marquer comme Visité.
 # 2. Boucle : Tant qu'il reste des cases non visitées dans le labyrinthe :
@@ -357,6 +348,10 @@ class CellGenerator(MazeGenerator):
 
     def imperfect_helper(self, dead_cell: list):
         all_cell = self.get_all_cells()
+<<<<<<< HEAD
+        dead_end = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 1 and cell.blocked is False]
+        # dead_end3 = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 3 and cell.blocked is False]
+=======
         for cell in all_cell:
             print(cell.coordinate)
         print()
@@ -382,19 +377,25 @@ class CellGenerator(MazeGenerator):
         print(f"DEAD END1 LIST = {len(dead_end)}")
         print(f"DEAD END3 LIST = {len(dead_end3)}")
 
+>>>>>>> e3be7b5a9c095b536039439182c5418c650d0f51
         current_cell = random.choice(dead_end)
         while len(dead_end) > 1:
+            dead_end = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 1 and cell.fortytwo is False]
             helper = 0
+<<<<<<< HEAD
+            while current_cell.fortytwo is True or current_cell.imperfect_help is True:
+=======
             print("loop")
             while (
                 current_cell.fortytwo is True
                 or current_cell.imperfect_help is True
             ):
+>>>>>>> e3be7b5a9c095b536039439182c5418c650d0f51
                 current_cell = random.choice(dead_end)
                 helper += 1
                 if helper >= 20:
                     break
-
+            print(len(dead_end))
             current_cell.imperfect_help = True
             cell_x = current_cell.coordinate[0]
             cell_y = current_cell.coordinate[1]
@@ -408,25 +409,35 @@ class CellGenerator(MazeGenerator):
             unvisited_ok_cell = [obj for obj in lst_et if obj is not None]
             if unvisited_ok_cell:
                 next_cell = random.choice(unvisited_ok_cell)
-                print(f"next cell nord {next_cell.stateN} | east {next_cell.stateE} | south {next_cell.stateS} | west {next_cell.stateW} | coordinate {next_cell.coordinate}")
+                total = next_cell.stateN + next_cell.stateE + next_cell.stateS + next_cell.stateW
+                totalcur = current_cell.stateN + current_cell.stateE + current_cell.stateS + current_cell.stateW
+                print(f"current cell nord {current_cell.stateN} | east {current_cell.stateE} | south {current_cell.stateS} | west {current_cell.stateW} | total = {totalcur} |coordinate {current_cell.coordinate}")
+                print(f"next cell nord {next_cell.stateN} | east {next_cell.stateE} | south {next_cell.stateS} | west {next_cell.stateW} | total = {total} |coordinate {next_cell.coordinate}")
                 d_x = next_cell.coordinate[0] - current_cell.coordinate[0]
                 d_y = next_cell.coordinate[1] - current_cell.coordinate[1]
-                print("break")
                 if d_y == 1:  # This means moving SOUTH / BAS
+                    print("break SOUTH")
                     current_cell.stateS = True
                     next_cell.stateN = True
                 elif d_y == -1:  # This means moving West / Left
+                    print("break NORD")
                     current_cell.stateN = True
                     next_cell.stateS = True
                 elif d_x == 1:  # This means moving EAST / DROITE
+                    print("break EAST")
                     current_cell.stateE = True
                     next_cell.stateW = True
                 elif d_x == -1:  # This means moving WEST / GAUCHE
+                    print("break WEST")
                     current_cell.stateW = True
                     next_cell.stateE = True
-                current_cell = dead_end.pop()
                 current_cell = next_cell
+<<<<<<< HEAD
+                current_cell = dead_end.pop()
+    
+=======
 
+>>>>>>> e3be7b5a9c095b536039439182c5418c650d0f51
     def backtracker_imperfect(self):
         dead_cell = []
         # cell to start the maze generation
