@@ -5,6 +5,7 @@
 # ######### import  ##########
 
 import random
+from typing import Any
 import time
 from utils.design import MAZE
 from utils import error as err
@@ -15,17 +16,17 @@ from core.maz_solver import MazSolver
 
 
 class MazeGenerator():
-    counter_time = 0
+    counter_time: float = 0
 
-    def __init__(self, conf: object):
+    def __init__(self, conf: Any):
         self.maze = conf
-        self.entry = conf._entry
-        self.exit = conf._exit
-        self.width = conf._width
-        self.height = conf._height
-        self.output_name = conf._output_file
-        self.perfect = conf._perfect
-        self.output_txt = ""
+        self.entry: tuple[int, int] = conf._entry
+        self.exit: tuple[int, int] = conf._exit
+        self.width: int = conf._width
+        self.height: int = conf._height
+        self.output_name: str = conf._output_file
+        self.perfect: Any = conf._perfect
+        self.output_txt: str = ""
 
     def cell_gen(self):
         generator = CellGenerator(0, 0, width=self.width, height=self.height)
@@ -75,20 +76,20 @@ class CellGenerator(MazeGenerator):
         self.stateS = False  # True = Open | False = Wall
         self.stateW = False  # True = Open | False = Wall
         self.visit = False  # False = closed
-        self.entry = False
-        self.exit = False
+        self.entry: Any = False
+        self.exit: Any = False
         self.width = width
         self.height = height
         self.fortytwo = False
         self.blocked = False
         self.coordinate = (x, y)
-        self._all_cells = []
+        self._all_cells: Any = []
         self.solution = False
         self.imperfect_help = False
 
-    def fill(self, entry_m: tuple[int, int], exit_m: tuple):
-        self.entry_maze = entry_m
-        self.exit_maze = exit_m
+    def fill(self, entry_m, exit_m):
+        self.entry_maze: tuple[int, int] = entry_m
+        self.exit_maze: tuple[int, int] = exit_m
 
     def create(self):
         for x in range(self.width):
@@ -269,9 +270,11 @@ class CellGenerator(MazeGenerator):
                     if cell.stateW and display[ligne][col - 1] != "fortytwo":
                         display[ligne][col - 1] = "path"
         # start & end
-        display[2 * self.entry_maze[1] + 1][2 * self.entry_maze[0] + 1] = \
+        coor_x_entry = self.entry_maze[1] # type: ignore[misc]
+        coor_y_entry = self.entry_maze[0] # type: ignore[misc]
+        display[2 * coor_x_entry + 1][2 * coor_y_entry + 1] = \
             "start"
-        display[2 * self.exit_maze[1] + 1][2 * self.exit_maze[0] + 1] = "end"
+        display[2 * self.exit_maze[1] + 1][2 * self.exit_maze[0] + 1] = "end" # type: ignore[misc]
         if printing:
             for ligne in display:
                 print("".join(MAZE[elem] for elem in ligne))

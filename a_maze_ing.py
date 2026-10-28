@@ -126,7 +126,8 @@ if __name__ == "__main__":
                         gen_obj = maze_o.cell_gen()
                     elif user_input == "7":
                         try:
-                            MazeGenerator.counter_time = int(input("Speed ... : ")) / 10
+                            new = float(input("Speed ... : ")) / 10
+                            MazeGenerator.counter_time = new
                         except ValueError:
                             print("Nice try but error is handled.")
 
