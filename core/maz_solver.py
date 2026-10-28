@@ -1,5 +1,6 @@
 from collections import deque
 
+
 class MazSolver:
     def __init__(self, cells, entry, exit):
         self.cells = cells
@@ -25,24 +26,35 @@ class MazSolver:
         # print(f"STATE CELL {current} SOUTH -> {cell.stateS}")
         # print(f"STATE CELL {current} WEST -> {cell.stateW}")
         if cell.stateN:
-            if  (x, y - 1) in self.cell_dict and not self.cell_dict[x, y - 1].blocked:
+            if (
+                (x, y - 1) in self.cell_dict
+                and not self.cell_dict[x, y - 1].blocked
+            ):
                 neighbors.append((x, y - 1))
         if cell.stateE:
             # print("INTO CELL.STATEe")
             # print(f"CELL STATE E - BLOCKED ? -> {cell.blocked}")
-            if (x + 1, y) in self.cell_dict and not self.cell_dict[x + 1, y].blocked:
+            if (
+                (x + 1, y) in self.cell_dict
+                and not self.cell_dict[x + 1, y].blocked
+            ):
                 # print("APPENDING IN EAST")
                 neighbors.append((x + 1, y))
         if cell.stateS:
-            if (x, y + 1) in self.cell_dict and not self.cell_dict[x, y + 1].blocked:
+            if (
+                (x, y + 1) in self.cell_dict
+                and not self.cell_dict[x, y + 1].blocked
+            ):
                 neighbors.append((x, y + 1))
 
         if cell.stateW:
-            if (x - 1, y) in self.cell_dict and not self.cell_dict[x - 1, y].blocked:
+            if (
+                (x - 1, y) in self.cell_dict
+                and not self.cell_dict[x - 1, y].blocked
+            ):
                 neighbors.append((x - 1, y))
 
         return neighbors
-
 
     """Build path backwards,
     from exit to entry, then return reverse"""
@@ -57,7 +69,6 @@ class MazSolver:
         path.reverse()
         return path
 
-        
     """
     Find the shortest path using BFS.
     Return path as a list of coordinates,
@@ -84,9 +95,8 @@ class MazSolver:
         if self.exit not in came_from:
             print("Error. EXIT NOT FOUND.")
             return []
-        
-        return self.build_path(came_from)
 
+        return self.build_path(came_from)
 
         """
         Convert solution path into a string of
@@ -95,7 +105,7 @@ class MazSolver:
     def path_to_directions(
             self, path: list[tuple[int, int]]
     ) -> str:
-        
+
         directions = ""
 
         for i in range(len(path) - 1):
@@ -112,5 +122,3 @@ class MazSolver:
                 directions += 'N'
 
         return directions
-        
-
