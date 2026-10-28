@@ -274,13 +274,7 @@ class CellGenerator(MazeGenerator):
         if printing:
             for ligne in display:
                 print("".join(MAZE[elem] for elem in ligne))
-<<<<<<< HEAD
                 time.sleep(MazeGenerator.counter_time)
-=======
-               #
-               
-                time.sleep(0.1)
->>>>>>> e3be7b5a9c095b536039439182c5418c650d0f51
 
 # 1 Départ : Choisir une case au hasard. Marquer comme Visité.
 # 2. Boucle : Tant qu'il reste des cases non visitées dans le labyrinthe :
