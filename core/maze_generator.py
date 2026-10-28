@@ -61,7 +61,7 @@ class MazeGenerator():
             generator.ret_cell(coordinate).solution = True
         # Print maze with solution true
         generator.print_maze(True, False)
-        
+
         return generator
 
     def get_entry(self) -> tuple:
@@ -142,7 +142,7 @@ class CellGenerator(MazeGenerator):
         if cell_forty:
             cell_x = cell_forty.coordinate[0]
             cell_y = cell_forty.coordinate[1]
-            # get info on cell next to current cell 
+            # get info on cell next to current cell
             lst_et = [
                     self.ret_cell((cell_x, cell_y + 1)),  # Right
                     self.ret_cell((cell_x + 1, cell_y)),  # Down
@@ -191,7 +191,6 @@ class CellGenerator(MazeGenerator):
         display[3 + offset_row][4 + offset_col] = "fortytwo"
         return display
 
-
     def create_fortytwo2(self) -> list:
         rows = 2 * self.height + 1
         cols = 2 * self.width + 1
@@ -237,7 +236,6 @@ class CellGenerator(MazeGenerator):
         display[offset_row + 4][offset_col + 7] = "fortytwo"
         return display
 
-
     def print_maze(self, printing: bool, solution: bool):
         display = self.create_fortytwo2()
         # create the path
@@ -248,7 +246,7 @@ class CellGenerator(MazeGenerator):
                 col = 2 * x + 1
                 # print(f"cell {x},{y}")
                 if solution:
-                    if cell.solution == True:
+                    if (cell.solution == True):
                         display[ligne][col] = "solution"
                         if cell.stateN and display[ligne - 1][col] == "wall":
                             display[ligne - 1][col] = "solution"
@@ -266,7 +264,10 @@ class CellGenerator(MazeGenerator):
                         display[ligne][col + 1] == "fortytwo":
                     if not printing:
                         self.update_fortytwo((x, y))
-                    if self.entry_maze == ((x,y)) or self.exit_maze == ((x,y)):
+                    if (
+                        self.entry_maze == ((x, y))
+                        or self.exit_maze == ((x, y))
+                    ):
                         raise err.FortyTwoError("entry within 42 logo.")
                 else:
                     display[ligne][col] = "path"
@@ -314,7 +315,7 @@ class CellGenerator(MazeGenerator):
             try:
                 cell_x = current_cell.coordinate[0]
                 cell_y = current_cell.coordinate[1]
-                # get info on cell next to current cell 
+                # get info on cell next to current cell
                 lst_et = [
                     self.ret_cell((cell_x, cell_y + 1)),  # Right
                     self.ret_cell((cell_x + 1, cell_y)),  # Down
@@ -343,7 +344,8 @@ class CellGenerator(MazeGenerator):
                     elif d_x == -1:  # This means moving WEST / GAUCHE
                         current_cell.stateW = True
                         next_cell.stateE = True
-                    # 6. Push the current cell to the stack, move to next, mark visited
+                        # 6. Push the current cell to the stack,
+                        # move to next, mark visited
                     visited_stack.append(current_cell)
                     current_cell = next_cell
                     current_cell.visit = True
@@ -358,13 +360,25 @@ class CellGenerator(MazeGenerator):
         for cell in all_cell:
             print(cell.coordinate)
         print()
-        dead_end = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 1 and cell.blocked is False]
+        dead_end = [
+            cell for cell in all_cell
+            if (
+                cell.stateN + cell.stateE + cell.stateS + cell.stateW
+                ) == 1
+            and cell.blocked is False
+        ]
         for cell in dead_end:
             print(f"{cell.coordinate}")
-        dead_end3 = [cell for cell in all_cell if (cell.stateN + cell.stateE + cell.stateS + cell.stateW) == 3 and cell.blocked is False]
+        dead_end3 = [
+            cell for cell in all_cell
+            if (
+                cell.stateN + cell.stateE + cell.stateS + cell.stateW
+                ) == 3
+            and cell.blocked is False
+        ]
         print()
         for cell in dead_end3:
-                    print(f"{cell.coordinate}")
+            print(f"{cell.coordinate}")
         print(f"DEAD END1 LIST = {len(dead_end)}")
         print(f"DEAD END3 LIST = {len(dead_end3)}")
 
@@ -372,7 +386,10 @@ class CellGenerator(MazeGenerator):
         while len(dead_end) > 1:
             helper = 0
             print("loop")
-            while current_cell.fortytwo is True or current_cell.imperfect_help is True:
+            while (
+                current_cell.fortytwo is True
+                or current_cell.imperfect_help is True
+            ):
                 current_cell = random.choice(dead_end)
                 helper += 1
                 if helper >= 20:
@@ -381,7 +398,7 @@ class CellGenerator(MazeGenerator):
             current_cell.imperfect_help = True
             cell_x = current_cell.coordinate[0]
             cell_y = current_cell.coordinate[1]
-            # get info on cell next to current cell 
+            # get info on cell next to current cell
             lst_et = [
                 self.ret_cell((cell_x, cell_y + 1)),  # Right
                 self.ret_cell((cell_x + 1, cell_y)),  # Down
@@ -409,7 +426,7 @@ class CellGenerator(MazeGenerator):
                     next_cell.stateE = True
                 current_cell = dead_end.pop()
                 current_cell = next_cell
-    
+
     def backtracker_imperfect(self):
         dead_cell = []
         # cell to start the maze generation
@@ -424,7 +441,7 @@ class CellGenerator(MazeGenerator):
             try:
                 cell_x = current_cell.coordinate[0]
                 cell_y = current_cell.coordinate[1]
-                # get info on cell next to current cell 
+                # get info on cell next to current cell
                 lst_et = [
                     self.ret_cell((cell_x, cell_y + 1)),  # Right
                     self.ret_cell((cell_x + 1, cell_y)),  # Down
@@ -453,7 +470,8 @@ class CellGenerator(MazeGenerator):
                     elif d_x == -1:  # This means moving WEST / GAUCHE
                         current_cell.stateW = True
                         next_cell.stateE = True
-                    # 6. Push the current cell to the stack, move to next, mark visited
+                    # 6. Push the current cell to the stack,
+                    # move to next, mark visited
                     visited_stack.append(current_cell)
                     current_cell = next_cell
                     current_cell.visit = True

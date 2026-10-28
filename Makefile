@@ -18,7 +18,7 @@ clean:
 	find . -path "./.venv" -prune -o -type d -name ".pytest_cache" -prune -exec rm -rf {} +
 
 lint:
-	$(VENV_PYTHON) -m flake8 .
-	$(VENV_PYTHON) -m mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
+	$(VENV_PYTHON) -m flake8 . --exclude=.venv
+	$(VENV_PYTHON) -m mypy . --exclude '(^|/)\.venv/' --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
 
 .PHONY: install run debug clean lint
